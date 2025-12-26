@@ -7,7 +7,9 @@ import InputText from 'primevue/inputtext';
 import Avatar from 'primevue/avatar';
 import DataView from 'primevue/dataview';
 import Dialog from 'primevue/dialog';
+import Skeleton from 'primevue/skeleton';
 import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 import type { TabGroup, TabItem } from '~/types/TabGroup';
 import { useTabStore } from '~/stores/useTabStore';
 import { openTabs, openSingleTab } from '~/utils/tabManager';
@@ -18,6 +20,7 @@ const props = defineProps<{
 
 const tabStore = useTabStore();
 const confirm = useConfirm();
+const toast = useToast();
 
 // Editable title state
 const isEditingTitle = ref(false);
@@ -26,6 +29,36 @@ const editedTitle = ref(props.group.name || '');
 // Name input dialog state
 const showNameDialog = ref(false);
 const newGroupName = ref('');
+
+// Favicon loading state
+const faviconLoadingStates = ref<Record<string, boolean>>({});
+const faviconErrorStates = ref<Record<string, boolean>>({});
+
+// Initialize loading states for all tabs
+props.group.tabs.forEach(tab => {
+  faviconLoadingStates.value[tab.id] = true;
+  faviconErrorStates.value[tab.id] = false;
+});
+
+// Get favicon URL with fallback
+function getFaviconUrl(tab: TabItem): string {
+  if (faviconErrorStates.value[tab.id]) {
+    // Return default icon on error
+    return '/icon/32.png';
+  }
+  return `chrome://favicon/${tab.url}`;
+}
+
+// Handle favicon load success
+function handleFaviconLoad(tabId: string) {
+  faviconLoadingStates.value[tabId] = false;
+}
+
+// Handle favicon load error
+function handleFaviconError(tabId: string) {
+  faviconLoadingStates.value[tabId] = false;
+  faviconErrorStates.value[tabId] = true;
+}
 
 // Format creation date
 const formattedDate = computed(() => {
@@ -51,7 +84,23 @@ function startEditingTitle() {
 // Save edited title
 async function saveTitle() {
   if (editedTitle.value.trim()) {
-    await tabStore.updateGroup(props.group.id, { name: editedTitle.value.trim() });
+    try {
+      await tabStore.updateGroup(props.group.id, { name: editedTitle.value.trim() });
+      toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Group name updated successfully',
+        life: 3000
+      });
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to update group name',
+        life: 3000
+      });
+      console.error('Failed to update group name:', error);
+    }
   }
   isEditingTitle.value = false;
 }
@@ -184,13 +233,22 @@ function handleDeleteGroup() {
             :key="tab.id"
             class="flex align-items-center p-2 hover:surface-hover cursor-pointer border-bottom-1 surface-border"
           >
-            <!-- Favicon -->
-            <Avatar 
-              :image="`chrome://favicon/${tab.url}`" 
-              shape="circle" 
-              size="small"
-              class="mr-2"
-            />
+            <!-- Favicon with loading skeleton and error fallback -->
+            <div class="mr-2" style="width: 32px; height: 32px;">
+              <Skeleton 
+                v-if="faviconLoadingStates[tab.id]" 
+                shape="circle" 
+                size="2rem"
+              />
+              <Avatar 
+                v-else
+                :image="getFaviconUrl(tab)" 
+                shape="circle" 
+                size="normal"
+                @error="handleFaviconError(tab.id)"
+                @load="handleFaviconLoad(tab.id)"
+              />
+            </div>
             
             <!-- Tab title as clickable link -->
             <span 
