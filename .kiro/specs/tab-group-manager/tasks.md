@@ -133,12 +133,12 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 3: Automatic Tab Cleanup**
     - **Validates: Requirements 1.3**
 
-- [ ] 8. Checkpoint - Ensure background script and store integration works
+- [x] 8. Checkpoint - Ensure background script and store integration works
   - Run tests with `bun run test`
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 9. Implement TabGroupCard component
-  - [ ] 9.1 Create TabGroupCard component structure
+- [x] 9. Implement TabGroupCard component
+  - [x] 9.1 Create TabGroupCard component structure
     - Create `components/TabGroupCard.vue` with proper Vue 3 setup
     - Use PrimeVue Card component with header/content/footer slots
     - Implement editable title with inline editing
@@ -146,29 +146,29 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Display tab count using Chip component
     - _Requirements: 5.5, 6.1, 6.2_
   
-  - [ ] 9.2 Implement tab list display in card body
+  - [x] 9.2 Implement tab list display in card body
     - Use PrimeVue DataView for tab list rendering
     - Display favicon using Avatar component with chrome://favicon/ protocol
     - Display tab title as clickable link
     - Add delete button for each tab using Button component
     - _Requirements: 6.3, 6.4_
   
-  - [ ] 9.3 Implement card footer actions
+  - [x] 9.3 Implement card footer actions
     - Add "Open All" button with click handler
     - Add conditional "Save" button for history groups
     - Add conditional "Update" button for named groups
     - Add "Delete" button with confirmation dialog
     - _Requirements: 4.1, 6.5, 9.1_
   
-  - [ ]* 9.4 Write property test for tab card structure consistency
+  - [x] 9.4 Write property test for tab card structure consistency
     - **Property 16: Tab Card Structure Consistency**
     - **Validates: Requirements 5.5, 6.1, 6.2, 6.5**
   
-  - [ ]* 9.5 Write property test for tab entry display completeness
+  - [x] 9.5 Write property test for tab entry display completeness
     - **Property 17: Tab Entry Display Completeness**
     - **Validates: Requirements 6.3, 6.4**
   
-  - [ ]* 9.6 Write unit tests for TabGroupCard component
+  - [x] 9.6 Write unit tests for TabGroupCard component
     - Test button click handlers
     - Test inline editing functionality
     - Test conditional rendering of Save/Update buttons
@@ -181,7 +181,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Handle empty state display
     - _Requirements: 5.3, 5.4_
   
-  - [ ]* 10.2 Write unit tests for TabGroupList component
+  - [ ] 10.2 Write unit tests for TabGroupList component
     - Test rendering multiple cards
     - Test empty state display
     - _Requirements: 5.3_
@@ -206,11 +206,11 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Show success notification using PrimeVue Toast
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
   
-  - [ ]* 11.4 Write property test for sidebar content accuracy
+  - [ ] 11.4 Write property test for sidebar content accuracy
     - **Property 14: Sidebar Content Accuracy**
     - **Validates: Requirements 5.3**
   
-  - [ ]* 11.5 Write property test for navigation consistency
+  - [ ] 11.5 Write property test for navigation consistency
     - **Property 15: Navigation Consistency**
     - **Validates: Requirements 5.4**
 
@@ -231,7 +231,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 7: Group Conversion**
     - **Validates: Requirements 3.1, 9.2, 9.3**
   
-  - [ ]* 12.4 Write property test for UI state consistency after conversion
+  - [ ] 12.4 Write property test for UI state consistency after conversion
     - **Property 20: UI State Consistency After Conversion**
     - **Validates: Requirements 9.5**
 
@@ -280,7 +280,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Call openSingleTab from tab manager
     - _Requirements: 4.3, 8.3_
   
-  - [ ]* 15.3 Write property test for individual tab opening
+  - [ ] 15.3 Write property test for individual tab opening
     - **Property 12: Individual Tab Opening**
     - **Validates: Requirements 4.3, 8.3**
   
