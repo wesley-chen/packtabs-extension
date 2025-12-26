@@ -186,31 +186,31 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Test empty state display
     - _Requirements: 5.3_
 
-- [ ] 11. Implement main App component with navigation
-  - [ ] 11.1 Create App.vue with layout structure
+- [x] 11. Implement main App component with navigation
+  - [x] 11.1 Create App.vue with layout structure
     - Update `entrypoints/dashboard/App.vue` with proper layout
     - Implement PrimeVue Sidebar with Menu component
     - Implement Toolbar with "Save Current Tabs" button
     - Add content area for displaying tab groups
     - _Requirements: 5.1, 5.2, 5.3_
   
-  - [ ] 11.2 Implement sidebar navigation logic
+  - [x] 11.2 Implement sidebar navigation logic
     - Build menu items from Pinia store (history + named groups)
     - Handle menu item clicks to update selected group
     - Implement sidebar toggle functionality
     - _Requirements: 5.3, 5.4_
   
-  - [ ] 11.3 Implement save current tabs functionality
+  - [x] 11.3 Implement save current tabs functionality
     - Add click handler for "Save Current Tabs" button
     - Invoke Pinia store action to capture and save tabs
     - Show success notification using PrimeVue Toast
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
   
-  - [ ] 11.4 Write property test for sidebar content accuracy
+  - [x] 11.4 Write property test for sidebar content accuracy
     - **Property 14: Sidebar Content Accuracy**
     - **Validates: Requirements 5.3**
   
-  - [ ] 11.5 Write property test for navigation consistency
+  - [x] 11.5 Write property test for navigation consistency
     - **Property 15: Navigation Consistency**
     - **Validates: Requirements 5.4**
 
@@ -227,7 +227,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Implement confirmation for tab deletion
     - _Requirements: 3.4_
   
-  - [ ]* 12.3 Write property test for group conversion
+  - [ ] 12.3 Write property test for group conversion
     - **Property 7: Group Conversion**
     - **Validates: Requirements 3.1, 9.2, 9.3**
   
@@ -259,11 +259,11 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Display user-friendly error messages
     - _Requirements: 7.4_
   
-  - [ ]* 14.4 Write property test for storage error handling
+  - [ ] 14.4 Write property test for storage error handling
     - **Property 18: Storage Error Handling**
     - **Validates: Requirements 7.4**
   
-  - [ ]* 14.5 Write unit tests for error scenarios
+  - [ ] 14.5 Write unit tests for error scenarios
     - Test network failure handling
     - Test invalid URL handling
     - Test user input validation
@@ -290,7 +290,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Show success notification
     - _Requirements: 3.3_
   
-  - [ ]* 15.5 Write property test for name modification persistence
+  - [ ] 15.5 Write property test for name modification persistence
     - **Property 8: Name Modification Persistence**
     - **Validates: Requirements 3.3**
 
