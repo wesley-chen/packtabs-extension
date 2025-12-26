@@ -15,13 +15,13 @@ This implementation plan breaks down the PackTabs extension development into dis
   - Install fast-check for property-based testing
   - _Requirements: All (foundational)_
 
-- [ ] 2. Define core TypeScript types and interfaces
-  - [ ] 2.1 Create TabGroup and TabItem type definitions
+- [x] 2. Define core TypeScript types and interfaces
+  - [x] 2.1 Create TabGroup and TabItem type definitions
     - Define interfaces in `types/TabGroup.ts`
     - Include id, name, createdAt, tabs, isHistory fields
     - _Requirements: 1.1, 1.2, 1.4, 2.2_
   
-  - [ ] 2.2 Create Storage schema types
+  - [x] 2.2 Create Storage schema types
     - Define StorageSchema interface in `types/Storage.ts`
     - Define WXT storage items with `storage.defineItem`
     - Include tabGroups and settings storage definitions
