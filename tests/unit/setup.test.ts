@@ -1,0 +1,15 @@
+import { describe, it, expect } from 'vitest';
+
+describe('Project Setup', () => {
+  it('should have Chrome API mocks available', () => {
+    expect((global as any).chrome).toBeDefined();
+    expect((global as any).chrome.storage).toBeDefined();
+    expect((global as any).chrome.tabs).toBeDefined();
+    expect((global as any).chrome.runtime).toBeDefined();
+  });
+
+  it('should support TypeScript strict mode', () => {
+    const testValue: string = 'test';
+    expect(testValue).toBe('test');
+  });
+});

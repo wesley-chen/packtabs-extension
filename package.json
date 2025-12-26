@@ -12,7 +12,11 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "vue-tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --run --coverage"
   },
   "dependencies": {
     "@primeuix/themes": "^2.0.2",
@@ -22,8 +26,15 @@
     "vue": "^3.5.26"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
+    "@vue/test-utils": "^2.4.6",
     "@wxt-dev/module-vue": "^1.0.3",
+    "fast-check": "^4.5.2",
+    "jsdom": "^27.4.0",
     "typescript": "^5.9.3",
+    "vitest": "^4.0.16",
     "vue-tsc": "^3.2.1",
     "wxt": "^0.20.13"
   }

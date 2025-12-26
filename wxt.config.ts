@@ -3,19 +3,20 @@ import { defineConfig } from 'wxt';
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   modules: ['@wxt-dev/module-vue'],
-   webExt: {
+  webExt: {
     chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
-   },
-   manifest: {
-    name: "PackTabs",
+  },
+  manifest: {
+    name: 'PackTabs',
+    description: 'Efficient tab group management for Chrome',
     permissions: [
-      "tabs", 
-      "storage", 
-      "sessions", // Useful for the "History Snapshot" feature
-      "favicon"   // Allows using chrome://favicon2/ protocol
+      'tabs', 
+      'storage', 
+      'sessions', // Useful for the "History Snapshot" feature
+      'favicon'   // Allows using chrome://favicon/ protocol
     ],
     action: {
-      default_title: "Pack Tabs"
+      default_title: 'PackTabs Manager'
     }
   },
 });

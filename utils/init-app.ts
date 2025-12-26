@@ -3,6 +3,8 @@ import { createApp, type Component } from 'vue';
 import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import Material from '@primeuix/themes/material';
+import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 import 'primeicons/primeicons.css';
 
 export function bootstrap(RootComponent: Component) {
@@ -18,6 +20,8 @@ export function bootstrap(RootComponent: Component) {
       }
     }
   });
+  app.use(ToastService);
+  app.use(ConfirmationService);
 
   return app;
 }
