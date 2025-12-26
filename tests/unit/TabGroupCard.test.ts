@@ -120,7 +120,7 @@ describe('TabGroupCard Component', () => {
     expect(wrapper.text()).not.toContain('Save');
   });
 
-  it('emits save event when Save button clicked on history group', async () => {
+  it('shows name input dialog when Save button clicked on history group', async () => {
     const historyGroup = { ...mockGroup, isHistory: true };
     const wrapper = mount(TabGroupCard, {
       props: { group: historyGroup },
@@ -135,8 +135,15 @@ describe('TabGroupCard Component', () => {
     
     if (saveButton) {
       await saveButton.trigger('click');
-      expect(wrapper.emitted('save')).toBeTruthy();
-      expect(wrapper.emitted('save')?.[0]).toEqual([historyGroup.id]);
+      await wrapper.vm.$nextTick();
+      
+      // Check that the dialog is visible
+      const dialog = wrapper.findComponent({ name: 'Dialog' });
+      expect(dialog.exists()).toBe(true);
+      expect(dialog.props('visible')).toBe(true);
+      
+      // Check that the dialog has the correct header
+      expect(dialog.props('header')).toBe('Name Tab Group');
     }
   });
 

@@ -7,6 +7,7 @@ import Menu from 'primevue/menu';
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
 import { useToast } from 'primevue/usetoast';
 import type { MenuItem } from 'primevue/menuitem';
 
@@ -148,6 +149,9 @@ function handleSave(groupId: string) {
     
     <!-- Toast for notifications -->
     <Toast />
+    
+    <!-- Confirmation Dialog -->
+    <ConfirmDialog />
   </div>
 </template>
 

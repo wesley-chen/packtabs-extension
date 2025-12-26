@@ -6,6 +6,7 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Avatar from 'primevue/avatar';
 import DataView from 'primevue/dataview';
+import Dialog from 'primevue/dialog';
 import { useConfirm } from 'primevue/useconfirm';
 import type { TabGroup, TabItem } from '~/types/TabGroup';
 import { useTabStore } from '~/stores/useTabStore';
@@ -21,6 +22,10 @@ const confirm = useConfirm();
 // Editable title state
 const isEditingTitle = ref(false);
 const editedTitle = ref(props.group.name || '');
+
+// Name input dialog state
+const showNameDialog = ref(false);
+const newGroupName = ref('');
 
 // Format creation date
 const formattedDate = computed(() => {
@@ -94,7 +99,18 @@ const emit = defineEmits<{
 }>();
 
 function handleSave() {
-  emit('save', props.group.id);
+  // Show name input dialog
+  newGroupName.value = '';
+  showNameDialog.value = true;
+}
+
+// Save with name (convert history group to named group)
+async function saveWithName() {
+  if (newGroupName.value.trim()) {
+    await tabStore.convertToNamed(props.group.id, newGroupName.value.trim());
+    showNameDialog.value = false;
+    newGroupName.value = '';
+  }
 }
 
 // Handle Update button (for named groups)
@@ -236,6 +252,37 @@ function handleDeleteGroup() {
       </div>
     </template>
   </Card>
+
+  <!-- Name Input Dialog for History Group Conversion -->
+  <Dialog 
+    v-model:visible="showNameDialog" 
+    header="Name Tab Group" 
+    modal
+    :style="{ width: '400px' }"
+  >
+    <div class="flex flex-column gap-2">
+      <label for="groupName">Group Name</label>
+      <InputText 
+        id="groupName" 
+        v-model="newGroupName" 
+        autofocus
+        placeholder="Enter a name for this tab group"
+        @keydown.enter="saveWithName"
+      />
+    </div>
+    <template #footer>
+      <Button 
+        label="Cancel" 
+        severity="secondary" 
+        @click="showNameDialog = false" 
+      />
+      <Button 
+        label="Save" 
+        @click="saveWithName"
+        :disabled="!newGroupName.trim()"
+      />
+    </template>
+  </Dialog>
 </template>
 
 <style scoped>

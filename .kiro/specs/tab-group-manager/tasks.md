@@ -214,24 +214,24 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 15: Navigation Consistency**
     - **Validates: Requirements 5.4**
 
-- [ ] 12. Implement dialog components for user interactions
-  - [ ] 12.1 Add name input dialog for history group conversion
+- [x] 12. Implement dialog components for user interactions
+  - [x] 12.1 Add name input dialog for history group conversion
     - Use PrimeVue Dialog component
     - Add InputText for group name input
     - Implement save handler to call convertToNamed action
     - _Requirements: 3.1, 9.1, 9.2_
   
-  - [ ] 12.2 Add confirmation dialog for deletions
+  - [x] 12.2 Add confirmation dialog for deletions
     - Use PrimeVue ConfirmDialog component
     - Implement confirmation for group deletion
     - Implement confirmation for tab deletion
     - _Requirements: 3.4_
   
-  - [ ] 12.3 Write property test for group conversion
+  - [x] 12.3 Write property test for group conversion
     - **Property 7: Group Conversion**
     - **Validates: Requirements 3.1, 9.2, 9.3**
   
-  - [ ] 12.4 Write property test for UI state consistency after conversion
+  - [x] 12.4 Write property test for UI state consistency after conversion
     - **Property 20: UI State Consistency After Conversion**
     - **Validates: Requirements 9.5**
 
