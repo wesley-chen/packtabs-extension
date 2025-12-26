@@ -23,5 +23,26 @@ export function bootstrap(RootComponent: Component) {
   app.use(ToastService);
   app.use(ConfirmationService);
 
+  // Global error handler
+  app.config.errorHandler = (err, instance, info) => {
+    console.error('Global error:', err, info);
+    
+    // Get the toast service from the app instance
+    const toast = app.config.globalProperties.$toast;
+    
+    if (toast) {
+      // Extract error message
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      
+      // Display error using PrimeVue Toast
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: errorMessage,
+        life: 5000
+      });
+    }
+  };
+
   return app;
 }

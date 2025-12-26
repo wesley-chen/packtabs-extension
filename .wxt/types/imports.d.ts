@@ -4,7 +4,12 @@ declare global {
   const ContentScriptContext: typeof import('wxt/utils/content-script-context').ContentScriptContext
   const EffectScope: typeof import('vue').EffectScope
   const InvalidMatchPattern: typeof import('wxt/utils/match-patterns').InvalidMatchPattern
+  const InvalidUrlError: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').InvalidUrlError
   const MatchPattern: typeof import('wxt/utils/match-patterns').MatchPattern
+  const StorageQuotaExceededError: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage').StorageQuotaExceededError
+  const StorageSyncConflictError: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage').StorageSyncConflictError
+  const TabNotFoundError: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').TabNotFoundError
+  const TabPermissionDeniedError: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').TabPermissionDeniedError
   const bootstrap: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/init-app').bootstrap
   const browser: typeof import('wxt/browser').browser
   const captureCurrentWindow: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').captureCurrentWindow
@@ -119,10 +124,10 @@ declare global {
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
-  export type { StorageService } from '/Users/wesley/Dev/projects/packtabs-extension/utils/storage'
+  export type { StorageQuotaExceededError, StorageSyncConflictError, StorageService } from '/Users/wesley/Dev/projects/packtabs-extension/utils/storage'
   import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')
   // @ts-ignore
-  export type { TabManager } from '/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager'
+  export type { TabPermissionDeniedError, TabNotFoundError, InvalidUrlError, TabManager } from '/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager'
   import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')
 }
 // for vue template auto import
@@ -132,7 +137,12 @@ declare module 'vue' {
     readonly ContentScriptContext: UnwrapRef<typeof import('wxt/utils/content-script-context')['ContentScriptContext']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly InvalidMatchPattern: UnwrapRef<typeof import('wxt/utils/match-patterns')['InvalidMatchPattern']>
+    readonly InvalidUrlError: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['InvalidUrlError']>
     readonly MatchPattern: UnwrapRef<typeof import('wxt/utils/match-patterns')['MatchPattern']>
+    readonly StorageQuotaExceededError: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')['StorageQuotaExceededError']>
+    readonly StorageSyncConflictError: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')['StorageSyncConflictError']>
+    readonly TabNotFoundError: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['TabNotFoundError']>
+    readonly TabPermissionDeniedError: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['TabPermissionDeniedError']>
     readonly bootstrap: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/init-app')['bootstrap']>
     readonly browser: UnwrapRef<typeof import('wxt/browser')['browser']>
     readonly captureCurrentWindow: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['captureCurrentWindow']>

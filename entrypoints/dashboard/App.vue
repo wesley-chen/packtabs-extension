@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
-import { useTabStore } from '~/stores/useTabStore';
+import { useTabStore, setStoreErrorHandler } from '~/stores/useTabStore';
 import TabGroupList from '~/components/TabGroupList.vue';
 import Sidebar from 'primevue/sidebar';
 import Menu from 'primevue/menu';
@@ -10,10 +10,33 @@ import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { useToast } from 'primevue/usetoast';
 import type { MenuItem } from 'primevue/menuitem';
+import { StorageQuotaExceededError } from '~/utils/storage';
+import { TabPermissionDeniedError, InvalidUrlError } from '~/utils/tabManager';
 
 // Store and toast
 const tabStore = useTabStore();
 const toast = useToast();
+
+// Set up error handler for the store
+setStoreErrorHandler((error: Error) => {
+  let message = error.message;
+  
+  // Provide user-friendly messages for specific error types
+  if (error instanceof StorageQuotaExceededError) {
+    message = 'Storage quota exceeded. Please delete some tab groups to free up space.';
+  } else if (error instanceof TabPermissionDeniedError) {
+    message = 'Permission denied to access some tabs. Restricted tabs were skipped.';
+  } else if (error instanceof InvalidUrlError) {
+    message = 'Invalid URL detected. Some tabs could not be opened.';
+  }
+  
+  toast.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: message,
+    life: 5000
+  });
+});
 
 // Sidebar state
 const sidebarVisible = ref(false);
