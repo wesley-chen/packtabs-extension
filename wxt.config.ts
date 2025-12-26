@@ -8,7 +8,7 @@ export default defineConfig({
   },
   manifest: {
     name: 'PackTabs',
-    description: 'Efficient tab group management for Chrome',
+    description: 'A simple, efficient Chrome extension to save and manage groups of browser tabs.',
     permissions: [
       'tabs', 
       'storage', 
@@ -16,7 +16,7 @@ export default defineConfig({
       'favicon'   // Allows using chrome://favicon/ protocol
     ],
     action: {
-      default_title: 'PackTabs Manager'
+      default_title: "Pack Tabs"
     }
   },
 });
