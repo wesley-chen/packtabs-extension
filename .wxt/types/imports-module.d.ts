@@ -20,4 +20,5 @@ declare module '#imports' {
   export { fakeBrowser } from 'wxt/testing';
   export { bootstrap } from '../utils/init-app';
   export { saveTabGroup, getTabGroups, updateTabGroup, deleteTabGroup, deleteTabFromGroup, StorageService } from '../utils/storage';
+  export { captureCurrentWindow, openTabs, openSingleTab, closeCurrentTabs, TabManager } from '../utils/tabManager';
 }

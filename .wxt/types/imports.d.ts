@@ -7,6 +7,8 @@ declare global {
   const MatchPattern: typeof import('wxt/utils/match-patterns').MatchPattern
   const bootstrap: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/init-app').bootstrap
   const browser: typeof import('wxt/browser').browser
+  const captureCurrentWindow: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').captureCurrentWindow
+  const closeCurrentTabs: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').closeCurrentTabs
   const computed: typeof import('vue').computed
   const createApp: typeof import('vue').createApp
   const createIframeUi: typeof import('wxt/utils/content-script-ui/iframe').createIframeUi
@@ -52,6 +54,8 @@ declare global {
   const onUnmounted: typeof import('vue').onUnmounted
   const onUpdated: typeof import('vue').onUpdated
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
+  const openSingleTab: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').openSingleTab
+  const openTabs: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager').openTabs
   const provide: typeof import('vue').provide
   const reactive: typeof import('vue').reactive
   const readonly: typeof import('vue').readonly
@@ -117,6 +121,9 @@ declare global {
   // @ts-ignore
   export type { StorageService } from '/Users/wesley/Dev/projects/packtabs-extension/utils/storage'
   import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')
+  // @ts-ignore
+  export type { TabManager } from '/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager'
+  import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')
 }
 // for vue template auto import
 import { UnwrapRef } from 'vue'
@@ -128,6 +135,8 @@ declare module 'vue' {
     readonly MatchPattern: UnwrapRef<typeof import('wxt/utils/match-patterns')['MatchPattern']>
     readonly bootstrap: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/init-app')['bootstrap']>
     readonly browser: UnwrapRef<typeof import('wxt/browser')['browser']>
+    readonly captureCurrentWindow: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['captureCurrentWindow']>
+    readonly closeCurrentTabs: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['closeCurrentTabs']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createIframeUi: UnwrapRef<typeof import('wxt/utils/content-script-ui/iframe')['createIframeUi']>
@@ -173,6 +182,8 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
+    readonly openSingleTab: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['openSingleTab']>
+    readonly openTabs: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/tabManager')['openTabs']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>

@@ -73,12 +73,12 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 13: Tab Data Round-Trip Integrity**
     - **Validates: Requirements 4.4**
 
-- [ ] 5. Checkpoint - Ensure storage and tab utilities work
+- [x] 5. Checkpoint - Ensure storage and tab utilities work
   - Run tests with `bun run test`
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Implement Pinia store for tab groups
-  - [ ] 6.1 Create useTabStore with state and actions
+- [x] 6. Implement Pinia store for tab groups
+  - [x] 6.1 Create useTabStore with state and actions
     - Implement `stores/useTabStore.ts` using Pinia composition API
     - Define state: tabGroups, selectedGroupId
     - Define computed: historyGroups, namedGroups, selectedGroup
@@ -86,7 +86,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Use WXT auto-imports (no need to import defineStore)
     - _Requirements: 5.3, 5.4_
   
-  - [ ] 6.2 Implement tab group CRUD actions
+  - [x] 6.2 Implement tab group CRUD actions
     - Implement saveGroup action (calls tabManager.captureCurrentWindow)
     - Implement updateGroup action
     - Implement deleteGroup action
