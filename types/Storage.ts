@@ -1,3 +1,5 @@
+import { storage } from 'wxt/utils/storage';
+
 /**
  * Storage schema for the extension
  */

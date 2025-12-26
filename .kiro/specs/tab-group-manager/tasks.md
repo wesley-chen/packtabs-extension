@@ -35,7 +35,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Add serialization/deserialization for Date objects
     - _Requirements: 1.5, 2.4, 3.3, 3.4, 3.5, 7.1, 8.4_
   
-  - [ ]* 3.2 Write property test for storage persistence
+  - [x] 3.2 Write property test for storage persistence
     - **Property 2: Tab Group Data Persistence**
     - **Validates: Requirements 1.5, 2.4, 7.1, 8.4**
   
