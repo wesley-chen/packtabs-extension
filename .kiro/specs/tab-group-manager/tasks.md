@@ -98,11 +98,11 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 10: Group Operation Isolation**
     - **Validates: Requirements 3.5, 8.2**
   
-  - [ ]* 6.4 Write property test for individual tab deletion precision
+  - [x] 6.4 Write property test for individual tab deletion precision
     - **Property 19: Individual Tab Deletion Precision**
     - **Validates: Requirements 8.1**
   
-  - [ ]* 6.5 Write unit tests for Pinia store actions
+  - [ ] 6.5 Write unit tests for Pinia store actions
     - Test each CRUD action with mock storage
     - Test computed properties return correct filtered data
     - _Requirements: 3.1, 3.3, 3.4, 3.5, 8.1, 8.2_
@@ -117,7 +117,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Use WXT's unified `browser` API (not `chrome`)
     - _Requirements: 1.4, 2.1, 2.2, 2.3_
   
-  - [ ]* 7.2 Write property test for history group auto-creation
+  - [ ] 7.2 Write property test for history group auto-creation
     - **Property 5: History Group Auto-Creation**
     - **Validates: Requirements 2.1, 2.2**
   
