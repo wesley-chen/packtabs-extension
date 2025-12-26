@@ -69,7 +69,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 11: Tab Restoration Completeness**
     - **Validates: Requirements 4.1, 4.2**
   
-  - [ ]* 4.4 Write property test for round-trip integrity
+  - [x] 4.4 Write property test for round-trip integrity
     - **Property 13: Tab Data Round-Trip Integrity**
     - **Validates: Requirements 4.4**
 
