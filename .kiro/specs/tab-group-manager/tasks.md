@@ -94,7 +94,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Implement convertToNamed action for history group conversion
     - _Requirements: 3.1, 3.3, 3.4, 3.5, 8.1, 8.2, 9.2, 9.3_
   
-  - [ ]* 6.3 Write property test for group operation isolation
+  - [x] 6.3 Write property test for group operation isolation
     - **Property 10: Group Operation Isolation**
     - **Validates: Requirements 3.5, 8.2**
   
