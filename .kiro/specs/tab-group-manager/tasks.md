@@ -102,7 +102,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 19: Individual Tab Deletion Precision**
     - **Validates: Requirements 8.1**
   
-  - [ ] 6.5 Write unit tests for Pinia store actions
+  - [x] 6.5 Write unit tests for Pinia store actions
     - Test each CRUD action with mock storage
     - Test computed properties return correct filtered data
     - _Requirements: 3.1, 3.3, 3.4, 3.5, 8.1, 8.2_
