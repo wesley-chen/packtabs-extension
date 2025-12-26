@@ -20,11 +20,14 @@ declare global {
   const defineContentScript: typeof import('wxt/utils/define-content-script').defineContentScript
   const defineUnlistedScript: typeof import('wxt/utils/define-unlisted-script').defineUnlistedScript
   const defineWxtPlugin: typeof import('wxt/utils/define-wxt-plugin').defineWxtPlugin
+  const deleteTabFromGroup: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage').deleteTabFromGroup
+  const deleteTabGroup: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage').deleteTabGroup
   const effectScope: typeof import('vue').effectScope
   const fakeBrowser: typeof import('wxt/testing').fakeBrowser
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
+  const getTabGroups: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage').getTabGroups
   const h: typeof import('vue').h
   const inject: typeof import('vue').inject
   const injectScript: typeof import('wxt/utils/inject-script').injectScript
@@ -54,6 +57,7 @@ declare global {
   const readonly: typeof import('vue').readonly
   const ref: typeof import('vue').ref
   const resolveComponent: typeof import('vue').resolveComponent
+  const saveTabGroup: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage').saveTabGroup
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
@@ -64,6 +68,7 @@ declare global {
   const toValue: typeof import('vue').toValue
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
+  const updateTabGroup: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage').updateTabGroup
   const useAppConfig: typeof import('wxt/utils/app-config').useAppConfig
   const useAttrs: typeof import('vue').useAttrs
   const useCssModule: typeof import('vue').useCssModule
@@ -109,6 +114,9 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { StorageService } from '/Users/wesley/Dev/projects/packtabs-extension/utils/storage'
+  import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')
 }
 // for vue template auto import
 import { UnwrapRef } from 'vue'
@@ -133,11 +141,14 @@ declare module 'vue' {
     readonly defineContentScript: UnwrapRef<typeof import('wxt/utils/define-content-script')['defineContentScript']>
     readonly defineUnlistedScript: UnwrapRef<typeof import('wxt/utils/define-unlisted-script')['defineUnlistedScript']>
     readonly defineWxtPlugin: UnwrapRef<typeof import('wxt/utils/define-wxt-plugin')['defineWxtPlugin']>
+    readonly deleteTabFromGroup: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')['deleteTabFromGroup']>
+    readonly deleteTabGroup: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')['deleteTabGroup']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly fakeBrowser: UnwrapRef<typeof import('wxt/testing')['fakeBrowser']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
+    readonly getTabGroups: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')['getTabGroups']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectScript: UnwrapRef<typeof import('wxt/utils/inject-script')['injectScript']>
@@ -167,6 +178,7 @@ declare module 'vue' {
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
+    readonly saveTabGroup: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')['saveTabGroup']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
@@ -177,6 +189,7 @@ declare module 'vue' {
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
+    readonly updateTabGroup: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/storage')['updateTabGroup']>
     readonly useAppConfig: UnwrapRef<typeof import('wxt/utils/app-config')['useAppConfig']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>

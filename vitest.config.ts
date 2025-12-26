@@ -1,9 +1,10 @@
 import { defineConfig } from 'vitest/config';
 import vue from '@vitejs/plugin-vue';
+import { WxtVitest } from 'wxt/testing';
 import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), WxtVitest()],
   test: {
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],

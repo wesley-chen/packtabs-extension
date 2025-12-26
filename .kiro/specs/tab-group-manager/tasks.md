@@ -27,8 +27,8 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Include tabGroups and settings storage definitions
     - _Requirements: 1.5, 7.1_
 
-- [ ] 3. Implement storage service layer
-  - [ ] 3.1 Create WXT storage wrapper utilities
+- [x] 3. Implement storage service layer
+  - [x] 3.1 Create WXT storage wrapper utilities
     - Implement `utils/storage.ts` with StorageService interface
     - Implement saveTabGroup, getTabGroups, updateTabGroup functions
     - Implement deleteTabGroup and deleteTabFromGroup functions
