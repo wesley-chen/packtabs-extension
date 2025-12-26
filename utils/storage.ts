@@ -1,0 +1,1 @@
+// WXT Storage definitions (chrome.storage.sync)

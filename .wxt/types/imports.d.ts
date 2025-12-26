@@ -5,6 +5,7 @@ declare global {
   const EffectScope: typeof import('vue').EffectScope
   const InvalidMatchPattern: typeof import('wxt/utils/match-patterns').InvalidMatchPattern
   const MatchPattern: typeof import('wxt/utils/match-patterns').MatchPattern
+  const bootstrap: typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/init-app').bootstrap
   const browser: typeof import('wxt/browser').browser
   const computed: typeof import('vue').computed
   const createApp: typeof import('vue').createApp
@@ -117,6 +118,7 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly InvalidMatchPattern: UnwrapRef<typeof import('wxt/utils/match-patterns')['InvalidMatchPattern']>
     readonly MatchPattern: UnwrapRef<typeof import('wxt/utils/match-patterns')['MatchPattern']>
+    readonly bootstrap: UnwrapRef<typeof import('/Users/wesley/Dev/projects/packtabs-extension/utils/init-app')['bootstrap']>
     readonly browser: UnwrapRef<typeof import('wxt/browser')['browser']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
