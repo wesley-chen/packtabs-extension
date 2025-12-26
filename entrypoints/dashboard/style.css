@@ -19,9 +19,122 @@ body {
   padding: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--p-surface-ground);
 }
 
 #app {
   width: 100%;
   min-height: 100vh;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+  .p-toolbar {
+    flex-wrap: wrap;
+  }
+  
+  .p-toolbar .p-toolbar-group-start,
+  .p-toolbar .p-toolbar-group-end {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--p-surface-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--p-surface-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--p-surface-500);
+}
+
+/* Ensure proper spacing for cards */
+.p-card {
+  margin-bottom: 1rem;
+}
+
+/* Improve sidebar appearance */
+.p-sidebar .p-sidebar-header {
+  padding: 1.5rem;
+}
+
+.p-sidebar .p-menu {
+  border: none;
+  background: transparent;
+}
+
+/* Enhance toolbar appearance */
+.p-toolbar {
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+/* Improve button spacing in card footers */
+.p-card-footer .p-button {
+  margin-right: 0.5rem;
+}
+
+.p-card-footer .p-button:last-child {
+  margin-right: 0;
+}
+
+/* Responsive grid for tab items */
+@media (max-width: 576px) {
+  .p-card-content {
+    padding: 0.5rem;
+  }
+  
+  .p-card-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .p-card-footer .p-button {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+/* Loading state styling */
+.p-skeleton {
+  border-radius: 4px;
+}
+
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--p-text-muted-color);
+}
+
+.empty-state .pi {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Improve focus visibility for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--p-primary-color);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions */
+.p-button,
+.p-card,
+.p-sidebar {
+  transition: all 0.2s ease-in-out;
 }

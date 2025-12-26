@@ -24,7 +24,7 @@ export function bootstrap(RootComponent: Component) {
   app.use(ConfirmationService);
 
   // Global error handler
-  app.config.errorHandler = (err, instance, info) => {
+  app.config.errorHandler = (err, _instance, info) => {
     console.error('Global error:', err, info);
     
     // Get the toast service from the app instance
