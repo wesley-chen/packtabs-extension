@@ -65,7 +65,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - **Property 1: Tab Capture Completeness**
     - **Validates: Requirements 1.1, 1.2**
   
-  - [ ]* 4.3 Write property test for tab restoration completeness
+  - [x] 4.3 Write property test for tab restoration completeness
     - **Property 11: Tab Restoration Completeness**
     - **Validates: Requirements 4.1, 4.2**
   
