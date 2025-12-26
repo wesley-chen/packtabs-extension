@@ -107,8 +107,8 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Test computed properties return correct filtered data
     - _Requirements: 3.1, 3.3, 3.4, 3.5, 8.1, 8.2_
 
-- [ ] 7. Implement service worker (background script)
-  - [ ] 7.1 Create background script with event handlers
+- [x] 7. Implement service worker (background script)
+  - [x] 7.1 Create background script with event handlers
     - Implement `entrypoints/background.ts` using defineBackground
     - Add browser close event listener for History Tab Group creation
     - Implement message handlers for tab capture/restoration
@@ -117,19 +117,19 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Use WXT's unified `browser` API (not `chrome`)
     - _Requirements: 1.4, 2.1, 2.2, 2.3_
   
-  - [ ] 7.2 Write property test for history group auto-creation
+  - [x] 7.2 Write property test for history group auto-creation
     - **Property 5: History Group Auto-Creation**
     - **Validates: Requirements 2.1, 2.2**
   
-  - [ ]* 7.3 Write property test for history group preservation
+  - [x] 7.3 Write property test for history group preservation
     - **Property 6: History Group Preservation**
     - **Validates: Requirements 2.3**
   
-  - [ ]* 7.4 Write property test for timestamp assignment
+  - [x] 7.4 Write property test for timestamp assignment
     - **Property 4: Timestamp Assignment**
     - **Validates: Requirements 1.4**
   
-  - [ ]* 7.5 Write property test for automatic tab cleanup
+  - [x] 7.5 Write property test for automatic tab cleanup
     - **Property 3: Automatic Tab Cleanup**
     - **Validates: Requirements 1.3**
 
