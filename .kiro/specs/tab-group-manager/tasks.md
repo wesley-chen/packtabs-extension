@@ -61,7 +61,7 @@ This implementation plan breaks down the PackTabs extension development into dis
     - Use WXT's unified `browser` API (not `chrome`)
     - _Requirements: 1.1, 1.2, 1.3, 4.1, 4.2, 4.3_
   
-  - [ ]* 4.2 Write property test for tab capture completeness
+  - [x] 4.2 Write property test for tab capture completeness
     - **Property 1: Tab Capture Completeness**
     - **Validates: Requirements 1.1, 1.2**
   

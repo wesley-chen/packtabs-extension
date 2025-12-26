@@ -1,5 +1,16 @@
-import { fakeBrowser } from 'wxt/testing';
+import { beforeEach, vi } from 'vitest';
 
-// WxtVitest plugin automatically sets up fakeBrowser
-// No additional setup needed - @webext-core/fake-browser provides in-memory storage
-
+// Mock browser APIs before each test
+beforeEach(() => {
+  vi.clearAllMocks();
+  
+  // Ensure browser.windows.getCurrent is mocked
+  if (!vi.isMockFunction(browser.windows.getCurrent)) {
+    vi.mocked(browser.windows.getCurrent);
+  }
+  
+  // Ensure browser.tabs.query is mocked
+  if (!vi.isMockFunction(browser.tabs.query)) {
+    vi.mocked(browser.tabs.query);
+  }
+});
