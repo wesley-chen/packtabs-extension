@@ -13,6 +13,7 @@ A simple, efficient Chrome extension to save and manage groups of browser tabs.
 *   **[PrimeVue](https://primevue.org/)** - Vue UI Component Library with Material Design Theme
 *   **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript development
 *   **[Manifest V3](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)** - Latest Chrome extension manifest version
+*   **[Pinia](https://pinia.vuejs.org/introduction.html)** - Use Pinia to share a state across components/pages
 *   **[Bun](https://bun.com/docs)** - Fast JavaScript runtime and package manager
 
 ## Development
