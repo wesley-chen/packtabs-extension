@@ -1,0 +1,32 @@
+# Build outputs
+.output/
+.wxt/
+dist/
+node_modules/
+
+# Generated files
+*.min.js
+*.min.css
+bun.lock
+package-lock.json
+yarn.lock
+
+# Logs
+*.log
+
+# Coverage reports
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Chrome extension data
+.wxt/chrome-data/
