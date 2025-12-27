@@ -1,7 +1,7 @@
 import { settingsStorage } from '~/types/Storage';
 import type { TabGroup, TabItem } from '~/types/TabGroup';
 import { saveTabGroup } from '~/utils/storage';
-import { captureCurrentWindow, closeCurrentTabs, openSingleTab,openTabs } from '~/utils/tabManager';
+import { captureCurrentWindow, closeCurrentTabs, openSingleTab, openTabs } from '~/utils/tabManager';
 
 export default defineBackground(() => {
   console.log('PackTabs background script initialized', { id: browser.runtime.id });

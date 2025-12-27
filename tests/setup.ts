@@ -1,4 +1,4 @@
-import { TextDecoder,TextEncoder } from 'util';
+import { TextDecoder, TextEncoder } from 'util';
 import { beforeEach, vi } from 'vitest';
 
 // Fix for jsdom TextEncoder issue with esbuild

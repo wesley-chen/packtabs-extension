@@ -65,7 +65,9 @@ export async function captureCurrentWindow(): Promise<TabItem[]> {
     const tabItems: TabItem[] = tabs
       .filter((tab) => {
         // Skip tabs without URLs or with restricted URLs
-        if (!tab.url) {return false;}
+        if (!tab.url) {
+          return false;
+        }
 
         try {
           const urlObj = new URL(tab.url);

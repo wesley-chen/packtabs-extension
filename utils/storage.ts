@@ -185,7 +185,6 @@ export async function deleteTabGroup(id: string): Promise<void> {
       throw new Error(`Tab group with id ${id} not found`);
     }
 
-     
     const { [id]: _removed, ...remainingGroups } = allGroups;
 
     await tabGroupsStorage.setValue(remainingGroups);

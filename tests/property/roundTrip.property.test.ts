@@ -240,7 +240,9 @@ describe('Round-Trip Integrity Property Tests', () => {
 
           // Filter out tabs that should be excluded (no URL or restricted protocols)
           const validTabs = originalBrowserTabs.filter((tab) => {
-            if (tab.url == null) {return false;}
+            if (tab.url == null) {
+              return false;
+            }
 
             try {
               const urlObj = new URL(tab.url);

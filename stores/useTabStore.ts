@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed,ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import type { TabGroup } from '~/types/TabGroup';
 import {

@@ -12,7 +12,7 @@ import { beforeEach, describe, it, vi } from 'vitest';
 
 import { tabGroupsStorage } from '~/types/Storage';
 import type { TabGroup } from '~/types/TabGroup';
-import { getTabGroups,updateTabGroup } from '~/utils/storage';
+import { getTabGroups, updateTabGroup } from '~/utils/storage';
 
 // Arbitrary for generating random TabGroup objects
 const tabGroupArbitrary = fc.record({

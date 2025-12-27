@@ -312,7 +312,7 @@ describe('Tab Manager Error Handling', () => {
     });
 
     it('should handle very long URLs', async () => {
-      const longUrl = `https://example.com/${  'a'.repeat(10000)}`;
+      const longUrl = `https://example.com/${'a'.repeat(10000)}`;
       const tab: TabItem = {
         id: '1',
         url: longUrl,

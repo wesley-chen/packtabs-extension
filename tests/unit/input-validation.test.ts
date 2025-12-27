@@ -1,7 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia';
-import { beforeEach,describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { setStoreErrorHandler,useTabStore  } from '../../stores/useTabStore';
+import { setStoreErrorHandler, useTabStore } from '../../stores/useTabStore';
 import { tabGroupsStorage } from '../../types/Storage';
 import type { TabGroup } from '../../types/TabGroup';
 

@@ -1,7 +1,7 @@
 import * as fc from 'fast-check';
 import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 
-import { settingsStorage,tabGroupsStorage } from '../../types/Storage';
+import { settingsStorage, tabGroupsStorage } from '../../types/Storage';
 import { closeCurrentTabs } from '../../utils/tabManager';
 
 /**

@@ -1,4 +1,4 @@
-import { createPinia,setActivePinia } from 'pinia';
+import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useTabStore } from '../../stores/useTabStore';

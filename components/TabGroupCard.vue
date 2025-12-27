@@ -182,10 +182,7 @@
       <div class="flex justify-content-between align-items-center p-3">
         <div class="flex-grow-1">
           <!-- Editable title -->
-          <div
-            v-if="!isEditingTitle"
-            class="flex align-items-center gap-2"
-          >
+          <div v-if="!isEditingTitle" class="flex align-items-center gap-2">
             <h3 class="m-0 text-xl font-semibold">
               {{ group.name || 'History Tab Group' }}
             </h3>
@@ -195,20 +192,15 @@
               rounded
               size="small"
               aria-label="Edit group name"
-              @click="startEditingTitle"
-            />
+              @click="startEditingTitle" />
           </div>
-          <div
-            v-else
-            class="flex align-items-center gap-2"
-          >
+          <div v-else class="flex align-items-center gap-2">
             <InputText
               v-model="editedTitle"
               class="flex-grow-1"
               autofocus
               @keydown="handleTitleKeydown"
-              @blur="saveTitle"
-            />
+              @blur="saveTitle" />
           </div>
 
           <!-- Creation date -->
@@ -225,41 +217,26 @@
 
     <template #content>
       <!-- Tab list display -->
-      <DataView
-        :value="group.tabs"
-        layout="list"
-      >
+      <DataView :value="group.tabs" layout="list">
         <template #list="slotProps">
           <div
             v-for="tab in slotProps.items"
             :key="tab.id"
-            class="flex align-items-center p-2 hover:surface-hover cursor-pointer border-bottom-1 surface-border"
-          >
+            class="flex align-items-center p-2 hover:surface-hover cursor-pointer border-bottom-1 surface-border">
             <!-- Favicon with loading skeleton and error fallback -->
-            <div
-              class="mr-2"
-              style="width: 32px; height: 32px"
-            >
-              <Skeleton
-                v-if="faviconLoadingStates[tab.id]"
-                shape="circle"
-                size="2rem"
-              />
+            <div class="mr-2" style="width: 32px; height: 32px">
+              <Skeleton v-if="faviconLoadingStates[tab.id]" shape="circle" size="2rem" />
               <Avatar
                 v-else
                 :image="getFaviconUrl(tab)"
                 shape="circle"
                 size="normal"
                 @error="handleFaviconError(tab.id)"
-                @load="handleFaviconLoad(tab.id)"
-              />
+                @load="handleFaviconLoad(tab.id)" />
             </div>
 
             <!-- Tab title as clickable link -->
-            <span
-              class="flex-grow-1 text-color cursor-pointer hover:text-primary"
-              @click="handleTabClick(tab)"
-            >
+            <span class="flex-grow-1 text-color cursor-pointer hover:text-primary" @click="handleTabClick(tab)">
               {{ tab.title }}
             </span>
 
@@ -271,8 +248,7 @@
               rounded
               size="small"
               aria-label="Delete tab"
-              @click="handleDeleteTab(tab.id)"
-            />
+              @click="handleDeleteTab(tab.id)" />
           </div>
         </template>
       </DataView>
@@ -282,47 +258,22 @@
       <!-- Footer actions -->
       <div class="flex gap-2">
         <!-- Open All button -->
-        <Button
-          label="Open All"
-          icon="pi pi-external-link"
-          severity="success"
-          @click="handleOpenAll"
-        />
+        <Button label="Open All" icon="pi pi-external-link" severity="success" @click="handleOpenAll" />
 
         <!-- Save button (for history groups) -->
-        <Button
-          v-if="group.isHistory"
-          label="Save"
-          icon="pi pi-save"
-          @click="handleSave"
-        />
+        <Button v-if="group.isHistory" label="Save" icon="pi pi-save" @click="handleSave" />
 
         <!-- Update button (for named groups) -->
-        <Button
-          v-else
-          label="Update"
-          icon="pi pi-refresh"
-          @click="handleUpdate"
-        />
+        <Button v-else label="Update" icon="pi pi-refresh" @click="handleUpdate" />
 
         <!-- Delete button -->
-        <Button
-          label="Delete"
-          icon="pi pi-trash"
-          severity="danger"
-          @click="handleDeleteGroup"
-        />
+        <Button label="Delete" icon="pi pi-trash" severity="danger" @click="handleDeleteGroup" />
       </div>
     </template>
   </Card>
 
   <!-- Name Input Dialog for History Group Conversion -->
-  <Dialog
-    v-model:visible="showNameDialog"
-    header="Name Tab Group"
-    modal
-    :style="{ width: '400px' }"
-  >
+  <Dialog v-model:visible="showNameDialog" header="Name Tab Group" modal :style="{ width: '400px' }">
     <div class="flex flex-column gap-2">
       <label for="groupName">Group Name</label>
       <InputText
@@ -330,20 +281,11 @@
         v-model="newGroupName"
         autofocus
         placeholder="Enter a name for this tab group"
-        @keydown.enter="saveWithName"
-      />
+        @keydown.enter="saveWithName" />
     </div>
     <template #footer>
-      <Button
-        label="Cancel"
-        severity="secondary"
-        @click="showNameDialog = false"
-      />
-      <Button
-        label="Save"
-        :disabled="!newGroupName.trim()"
-        @click="saveWithName"
-      />
+      <Button label="Cancel" severity="secondary" @click="showNameDialog = false" />
+      <Button label="Save" :disabled="!newGroupName.trim()" @click="saveWithName" />
     </template>
   </Dialog>
 </template>

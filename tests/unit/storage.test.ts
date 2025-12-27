@@ -1,8 +1,8 @@
-import { beforeEach,describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { tabGroupsStorage } from '../../types/Storage';
 import type { TabGroup } from '../../types/TabGroup';
-import { deleteTabFromGroup,deleteTabGroup, getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
+import { deleteTabFromGroup, deleteTabGroup, getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 
 describe('Storage Service', () => {
   beforeEach(async () => {

@@ -1,9 +1,9 @@
 import * as fc from 'fast-check';
-import { beforeEach,describe, it } from 'vitest';
+import { beforeEach, describe, it } from 'vitest';
 
 import { tabGroupsStorage } from '../../types/Storage';
 import type { TabGroup, TabItem } from '../../types/TabGroup';
-import { deleteTabFromGroup,deleteTabGroup, getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
+import { deleteTabFromGroup, deleteTabGroup, getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 2: Tab Group Data Persistence

@@ -1,6 +1,6 @@
 import * as fc from 'fast-check';
 import { createPinia, setActivePinia } from 'pinia';
-import { beforeEach,describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { useTabStore } from '~/stores/useTabStore';
 import { tabGroupsStorage } from '~/types/Storage';

@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
-import { beforeEach,describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import TabGroupCard from '../../components/TabGroupCard.vue';
 import TabGroupList from '../../components/TabGroupList.vue';

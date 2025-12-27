@@ -131,19 +131,11 @@
 <template>
   <div class="layout-wrapper">
     <!-- Sidebar Navigation -->
-    <Sidebar
-      v-model:visible="sidebarVisible"
-      :show-close-icon="true"
-    >
+    <Sidebar v-model:visible="sidebarVisible" :show-close-icon="true">
       <template #header>
-        <h2 class="text-xl font-semibold">
-          Tab Groups
-        </h2>
+        <h2 class="text-xl font-semibold">Tab Groups</h2>
       </template>
-      <Menu
-        :model="menuItems"
-        class="w-full border-none"
-      />
+      <Menu :model="menuItems" class="w-full border-none" />
     </Sidebar>
 
     <!-- Main Content Area -->
@@ -151,31 +143,17 @@
       <!-- Toolbar -->
       <Toolbar class="mb-4">
         <template #start>
-          <Button
-            icon="pi pi-bars"
-            text
-            rounded
-            aria-label="Toggle sidebar"
-            @click="sidebarVisible = true"
-          />
+          <Button icon="pi pi-bars" text rounded aria-label="Toggle sidebar" @click="sidebarVisible = true" />
           <span class="ml-2 text-xl font-semibold">PackTabs</span>
         </template>
         <template #end>
-          <Button
-            label="Save Current Tabs"
-            icon="pi pi-save"
-            severity="success"
-            @click="saveCurrentTabs"
-          />
+          <Button label="Save Current Tabs" icon="pi pi-save" severity="success" @click="saveCurrentTabs" />
         </template>
       </Toolbar>
 
       <!-- Content -->
       <div class="p-4">
-        <TabGroupList
-          :groups="displayedGroups"
-          @save="handleSave"
-        />
+        <TabGroupList :groups="displayedGroups" @save="handleSave" />
       </div>
     </div>
 

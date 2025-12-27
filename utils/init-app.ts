@@ -6,8 +6,8 @@ import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
-import type {Component} from 'vue';
-import { createApp  } from 'vue';
+import type { Component } from 'vue';
+import { createApp } from 'vue';
 
 export function bootstrap(RootComponent: Component) {
   const app = createApp(RootComponent);

@@ -3,7 +3,7 @@ import { beforeEach, describe, it, vi } from 'vitest';
 
 import { tabGroupsStorage } from '../../types/Storage';
 import type { TabGroup } from '../../types/TabGroup';
-import { getTabGroups, saveTabGroup, StorageQuotaExceededError,updateTabGroup } from '../../utils/storage';
+import { getTabGroups, saveTabGroup, StorageQuotaExceededError, updateTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 18: Storage Error Handling
