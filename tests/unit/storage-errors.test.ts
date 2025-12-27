@@ -1,11 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { 
-  saveTabGroup, 
-  getTabGroups, 
-  updateTabGroup, 
-  deleteTabGroup,
-  deleteTabFromGroup 
-} from '../../utils/storage';
+import { saveTabGroup, getTabGroups, updateTabGroup, deleteTabGroup, deleteTabFromGroup } from '../../utils/storage';
 import type { TabGroup } from '../../types/TabGroup';
 import { tabGroupsStorage } from '../../types/Storage';
 
@@ -19,9 +13,7 @@ describe('Storage Error Handling', () => {
   describe('Connection Failures', () => {
     it('should handle storage getValue failures gracefully', async () => {
       // Mock getValue to throw an error
-      vi.spyOn(tabGroupsStorage, 'getValue').mockRejectedValueOnce(
-        new Error('Storage connection failed')
-      );
+      vi.spyOn(tabGroupsStorage, 'getValue').mockRejectedValueOnce(new Error('Storage connection failed'));
 
       await expect(getTabGroups()).rejects.toThrow('Storage connection failed');
     });
@@ -32,13 +24,11 @@ describe('Storage Error Handling', () => {
         name: 'Test Group',
         createdAt: new Date(),
         tabs: [],
-        isHistory: false
+        isHistory: false,
       };
 
       // Mock setValue to throw an error
-      vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(
-        new Error('Storage write failed')
-      );
+      vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(new Error('Storage write failed'));
 
       await expect(saveTabGroup(testGroup)).rejects.toThrow('Storage write failed');
     });
@@ -49,22 +39,20 @@ describe('Storage Error Handling', () => {
         name: 'Test Group',
         createdAt: new Date(),
         tabs: [],
-        isHistory: false
+        isHistory: false,
       };
 
       // Mock setValue to fail once, then succeed
       const setValueSpy = vi.spyOn(tabGroupsStorage, 'setValue');
-      setValueSpy
-        .mockRejectedValueOnce(new Error('Transient failure'))
-        .mockResolvedValueOnce(undefined);
+      setValueSpy.mockRejectedValueOnce(new Error('Transient failure')).mockResolvedValueOnce(undefined);
 
       // First call should fail
       await expect(saveTabGroup(testGroup)).rejects.toThrow('Transient failure');
-      
+
       // Second call should succeed (mock will use real implementation after restore)
       setValueSpy.mockRestore();
       await expect(saveTabGroup(testGroup)).resolves.not.toThrow();
-      
+
       const groups = await getTabGroups();
       expect(groups).toHaveLength(1);
       expect(groups[0].id).toBe('test-1');
@@ -81,15 +69,13 @@ describe('Storage Error Handling', () => {
           id: `tab-${i}`,
           url: `https://example${i}.com`,
           title: `Example ${i}`,
-          faviconUrl: `https://example${i}.com/favicon.ico`
+          faviconUrl: `https://example${i}.com/favicon.ico`,
         })),
-        isHistory: false
+        isHistory: false,
       };
 
       // Mock setValue to throw quota exceeded error
-      vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(
-        new Error('QUOTA_BYTES_PER_ITEM quota exceeded')
-      );
+      vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(new Error('QUOTA_BYTES_PER_ITEM quota exceeded'));
 
       await expect(saveTabGroup(testGroup)).rejects.toThrow('QUOTA_BYTES_PER_ITEM quota exceeded');
     });
@@ -100,13 +86,11 @@ describe('Storage Error Handling', () => {
         name: 'Test Group',
         createdAt: new Date(),
         tabs: [],
-        isHistory: false
+        isHistory: false,
       };
 
       // Mock setValue to throw storage full error
-      vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(
-        new Error('Storage quota exceeded')
-      );
+      vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(new Error('Storage quota exceeded'));
 
       await expect(saveTabGroup(testGroup)).rejects.toThrow('Storage quota exceeded');
     });
@@ -121,8 +105,8 @@ describe('Storage Error Handling', () => {
           name: 'Corrupted Group',
           createdAt: 'invalid-date-string',
           tabs: [],
-          isHistory: false
-        } as any
+          isHistory: false,
+        } as any,
       });
 
       const groups = await getTabGroups();
@@ -139,8 +123,8 @@ describe('Storage Error Handling', () => {
           name: 'Incomplete Group',
           // Missing createdAt
           tabs: [],
-          isHistory: false
-        } as any
+          isHistory: false,
+        } as any,
       });
 
       const groups = await getTabGroups();
@@ -157,8 +141,8 @@ describe('Storage Error Handling', () => {
           name: 'Corrupted Tabs',
           createdAt: new Date().toISOString(),
           tabs: null as any, // Corrupted tabs array
-          isHistory: false
-        }
+          isHistory: false,
+        },
       });
 
       // Storage returns the corrupted data as-is
@@ -170,7 +154,7 @@ describe('Storage Error Handling', () => {
 
     it('should handle empty storage object', async () => {
       await tabGroupsStorage.setValue({});
-      
+
       const groups = await getTabGroups();
       expect(groups).toEqual([]);
     });
@@ -178,7 +162,7 @@ describe('Storage Error Handling', () => {
     it('should handle null storage value', async () => {
       // Force null value (simulating corruption)
       await tabGroupsStorage.setValue(null as any);
-      
+
       // WXT storage returns default value ({}) when null is stored
       const groups = await getTabGroups();
       expect(groups).toEqual([]);
@@ -190,23 +174,19 @@ describe('Storage Error Handling', () => {
         name: 'Original',
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: false
+        isHistory: false,
       };
 
       await saveTabGroup(originalGroup);
 
       // Mock setValue to fail during update
-      const setValueSpy = vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(
-        new Error('Update failed')
-      );
+      const setValueSpy = vi.spyOn(tabGroupsStorage, 'setValue').mockRejectedValueOnce(new Error('Update failed'));
 
-      await expect(
-        updateTabGroup('update-1', { name: 'Updated' })
-      ).rejects.toThrow('Update failed');
+      await expect(updateTabGroup('update-1', { name: 'Updated' })).rejects.toThrow('Update failed');
 
       // Restore the mock
       setValueSpy.mockRestore();
-      
+
       // NOTE: Due to the current implementation mutating the object returned by getValue(),
       // the data is actually changed even though setValue failed.
       // This is a known limitation of the current implementation.
@@ -222,7 +202,7 @@ describe('Storage Error Handling', () => {
         name: 'Group 1',
         createdAt: new Date(),
         tabs: [],
-        isHistory: false
+        isHistory: false,
       };
 
       const group2: TabGroup = {
@@ -230,20 +210,17 @@ describe('Storage Error Handling', () => {
         name: 'Group 2',
         createdAt: new Date(),
         tabs: [],
-        isHistory: false
+        isHistory: false,
       };
 
       // Save both groups concurrently
-      await Promise.all([
-        saveTabGroup(group1),
-        saveTabGroup(group2)
-      ]);
+      await Promise.all([saveTabGroup(group1), saveTabGroup(group2)]);
 
       const groups = await getTabGroups();
       expect(groups).toHaveLength(2);
-      
+
       // Both groups should be present
-      const ids = groups.map(g => g.id).sort();
+      const ids = groups.map((g) => g.id).sort();
       expect(ids).toEqual(['group-1', 'group-2']);
     });
   });
@@ -256,11 +233,11 @@ describe('Storage Error Handling', () => {
         name: longName,
         createdAt: new Date(),
         tabs: [],
-        isHistory: false
+        isHistory: false,
       };
 
       await saveTabGroup(testGroup);
-      
+
       const groups = await getTabGroups();
       expect(groups[0].name).toBe(longName);
     });
@@ -275,14 +252,14 @@ describe('Storage Error Handling', () => {
             id: 'tab-1',
             url: 'https://example.com/path?query=value&foo=bar#fragment',
             title: 'Special <>&" Characters',
-            faviconUrl: 'https://example.com/favicon.ico?v=1'
-          }
+            faviconUrl: 'https://example.com/favicon.ico?v=1',
+          },
         ],
-        isHistory: false
+        isHistory: false,
       };
 
       await saveTabGroup(testGroup);
-      
+
       const groups = await getTabGroups();
       expect(groups[0].tabs[0].url).toBe('https://example.com/path?query=value&foo=bar#fragment');
       expect(groups[0].tabs[0].title).toBe('Special <>&" Characters');
@@ -294,11 +271,11 @@ describe('Storage Error Handling', () => {
         name: 'Empty Tabs',
         createdAt: new Date(),
         tabs: [],
-        isHistory: false
+        isHistory: false,
       };
 
       await saveTabGroup(testGroup);
-      
+
       const groups = await getTabGroups();
       expect(groups[0].tabs).toEqual([]);
     });

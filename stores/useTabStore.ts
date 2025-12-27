@@ -1,19 +1,15 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { TabGroup } from '~/types/TabGroup';
-import { 
-  getTabGroups, 
+import {
+  getTabGroups,
   saveTabGroup as saveTabGroupToStorage,
   updateTabGroup as updateTabGroupInStorage,
   deleteTabGroup as deleteTabGroupFromStorage,
   deleteTabFromGroup as deleteTabFromGroupInStorage,
-  StorageQuotaExceededError
+  StorageQuotaExceededError,
 } from '~/utils/storage';
-import { 
-  captureCurrentWindow,
-  TabPermissionDeniedError,
-  InvalidUrlError
-} from '~/utils/tabManager';
+import { captureCurrentWindow, TabPermissionDeniedError, InvalidUrlError } from '~/utils/tabManager';
 
 /**
  * Error handler that can be set from the Vue app
@@ -32,14 +28,14 @@ export function setStoreErrorHandler(handler: (error: Error) => void) {
  */
 function handleError(error: unknown, defaultMessage: string): never {
   const err = error instanceof Error ? error : new Error(String(error));
-  
+
   // Use error handler if available
   if (errorHandler) {
     errorHandler(err);
   } else {
     console.error(defaultMessage, err);
   }
-  
+
   throw err;
 }
 
@@ -52,17 +48,11 @@ export const useTabStore = defineStore('tabs', () => {
   const selectedGroupId = ref<string | null>(null);
 
   // Computed properties
-  const historyGroups = computed(() => 
-    tabGroups.value.filter(g => g.isHistory)
-  );
+  const historyGroups = computed(() => tabGroups.value.filter((g) => g.isHistory));
 
-  const namedGroups = computed(() => 
-    tabGroups.value.filter(g => !g.isHistory)
-  );
+  const namedGroups = computed(() => tabGroups.value.filter((g) => !g.isHistory));
 
-  const selectedGroup = computed(() => 
-    tabGroups.value.find(g => g.id === selectedGroupId.value) || null
-  );
+  const selectedGroup = computed(() => tabGroups.value.find((g) => g.id === selectedGroupId.value) || null);
 
   // Actions
   /**
@@ -85,11 +75,11 @@ export const useTabStore = defineStore('tabs', () => {
     try {
       // Capture current window tabs
       const tabs = await captureCurrentWindow();
-      
+
       if (tabs.length === 0) {
         throw new Error('No tabs to save');
       }
-      
+
       // Create new tab group
       const newGroup: TabGroup = {
         id: crypto.randomUUID(),
@@ -98,13 +88,13 @@ export const useTabStore = defineStore('tabs', () => {
         tabs,
         isHistory,
       };
-      
+
       // Save to storage
       await saveTabGroupToStorage(newGroup);
-      
+
       // Update local state
       await loadGroups();
-      
+
       return newGroup;
     } catch (error) {
       if (error instanceof StorageQuotaExceededError) {
@@ -144,7 +134,7 @@ export const useTabStore = defineStore('tabs', () => {
     try {
       await deleteTabGroupFromStorage(id);
       await loadGroups();
-      
+
       // Clear selection if deleted group was selected
       if (selectedGroupId.value === id) {
         selectedGroupId.value = null;
@@ -178,7 +168,7 @@ export const useTabStore = defineStore('tabs', () => {
       if (!name || name.trim().length === 0) {
         throw new Error('Group name cannot be empty');
       }
-      
+
       await updateTabGroupInStorage(groupId, {
         name: name.trim(),
         isHistory: false,

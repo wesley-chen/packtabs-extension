@@ -2,8 +2,8 @@
  * Property-Based Test: Name Modification Persistence
  * Feature: tab-group-manager, Property 8: Name Modification Persistence
  * Validates: Requirements 3.3
- * 
- * Property: For any tab group name change, the modification should be immediately 
+ *
+ * Property: For any tab group name change, the modification should be immediately
  * persisted and reflected in the UI.
  */
 
@@ -23,11 +23,11 @@ const tabGroupArbitrary = fc.record({
       id: fc.uuid(),
       url: fc.webUrl({ validSchemes: ['http', 'https'] }),
       title: fc.string({ minLength: 1, maxLength: 100 }),
-      faviconUrl: fc.option(fc.webUrl(), { nil: undefined })
+      faviconUrl: fc.option(fc.webUrl(), { nil: undefined }),
     }),
     { minLength: 1, maxLength: 10 }
   ),
-  isHistory: fc.boolean()
+  isHistory: fc.boolean(),
 });
 
 describe('Property 8: Name Modification Persistence', () => {
@@ -46,7 +46,7 @@ describe('Property 8: Name Modification Persistence', () => {
           const groups = await tabGroupsStorage.getValue();
           groups[originalGroup.id] = {
             ...originalGroup,
-            createdAt: originalGroup.createdAt.toISOString()
+            createdAt: originalGroup.createdAt.toISOString(),
           } as any;
           await tabGroupsStorage.setValue(groups);
 
@@ -55,7 +55,7 @@ describe('Property 8: Name Modification Persistence', () => {
 
           // Retrieve the group from storage
           const updatedGroups = await getTabGroups();
-          const updatedGroup = updatedGroups.find(g => g.id === originalGroup.id);
+          const updatedGroup = updatedGroups.find((g) => g.id === originalGroup.id);
 
           // Verify the name was persisted
           if (!updatedGroup) {
@@ -63,9 +63,7 @@ describe('Property 8: Name Modification Persistence', () => {
           }
 
           if (updatedGroup.name !== newName) {
-            throw new Error(
-              `Name not persisted: expected "${newName}", got "${updatedGroup.name}"`
-            );
+            throw new Error(`Name not persisted: expected "${newName}", got "${updatedGroup.name}"`);
           }
 
           return true;
@@ -85,7 +83,7 @@ describe('Property 8: Name Modification Persistence', () => {
           const groups = await tabGroupsStorage.getValue();
           groups[originalGroup.id] = {
             ...originalGroup,
-            createdAt: originalGroup.createdAt.toISOString()
+            createdAt: originalGroup.createdAt.toISOString(),
           } as any;
           await tabGroupsStorage.setValue(groups);
 
@@ -94,7 +92,7 @@ describe('Property 8: Name Modification Persistence', () => {
 
           // Retrieve the group from storage
           const updatedGroups = await getTabGroups();
-          const updatedGroup = updatedGroups.find(g => g.id === originalGroup.id);
+          const updatedGroup = updatedGroups.find((g) => g.id === originalGroup.id);
 
           if (!updatedGroup) {
             throw new Error('Group not found after update');
@@ -140,39 +138,34 @@ describe('Property 8: Name Modification Persistence', () => {
 
   it('should handle empty name updates correctly', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        tabGroupArbitrary,
-        async (originalGroup: TabGroup) => {
-          // Save the original group with a non-empty name
-          const groupWithName = { ...originalGroup, name: 'Original Name' };
-          const groups = await tabGroupsStorage.getValue();
-          groups[groupWithName.id] = {
-            ...groupWithName,
-            createdAt: groupWithName.createdAt.toISOString()
-          } as any;
-          await tabGroupsStorage.setValue(groups);
+      fc.asyncProperty(tabGroupArbitrary, async (originalGroup: TabGroup) => {
+        // Save the original group with a non-empty name
+        const groupWithName = { ...originalGroup, name: 'Original Name' };
+        const groups = await tabGroupsStorage.getValue();
+        groups[groupWithName.id] = {
+          ...groupWithName,
+          createdAt: groupWithName.createdAt.toISOString(),
+        } as any;
+        await tabGroupsStorage.setValue(groups);
 
-          // Try to update with empty name (should be handled by validation)
-          await updateTabGroup(groupWithName.id, { name: '' });
+        // Try to update with empty name (should be handled by validation)
+        await updateTabGroup(groupWithName.id, { name: '' });
 
-          // Retrieve the group from storage
-          const updatedGroups = await getTabGroups();
-          const updatedGroup = updatedGroups.find(g => g.id === groupWithName.id);
+        // Retrieve the group from storage
+        const updatedGroups = await getTabGroups();
+        const updatedGroup = updatedGroups.find((g) => g.id === groupWithName.id);
 
-          if (!updatedGroup) {
-            throw new Error('Group not found after update');
-          }
-
-          // The empty name should be stored (validation happens at UI level)
-          if (updatedGroup.name !== '') {
-            throw new Error(
-              `Name not updated: expected "", got "${updatedGroup.name}"`
-            );
-          }
-
-          return true;
+        if (!updatedGroup) {
+          throw new Error('Group not found after update');
         }
-      ),
+
+        // The empty name should be stored (validation happens at UI level)
+        if (updatedGroup.name !== '') {
+          throw new Error(`Name not updated: expected "", got "${updatedGroup.name}"`);
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
@@ -187,7 +180,7 @@ describe('Property 8: Name Modification Persistence', () => {
           const groups = await tabGroupsStorage.getValue();
           groups[originalGroup.id] = {
             ...originalGroup,
-            createdAt: originalGroup.createdAt.toISOString()
+            createdAt: originalGroup.createdAt.toISOString(),
           } as any;
           await tabGroupsStorage.setValue(groups);
 
@@ -198,7 +191,7 @@ describe('Property 8: Name Modification Persistence', () => {
 
           // Retrieve the group from storage
           const updatedGroups = await getTabGroups();
-          const updatedGroup = updatedGroups.find(g => g.id === originalGroup.id);
+          const updatedGroup = updatedGroups.find((g) => g.id === originalGroup.id);
 
           if (!updatedGroup) {
             throw new Error('Group not found after updates');
@@ -207,9 +200,7 @@ describe('Property 8: Name Modification Persistence', () => {
           // Verify the final name matches the last update
           const expectedName = nameSequence[nameSequence.length - 1];
           if (updatedGroup.name !== expectedName) {
-            throw new Error(
-              `Final name incorrect: expected "${expectedName}", got "${updatedGroup.name}"`
-            );
+            throw new Error(`Final name incorrect: expected "${expectedName}", got "${updatedGroup.name}"`);
           }
 
           return true;

@@ -1,19 +1,15 @@
 import { describe, it, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
 import type { TabGroup, TabItem } from '../../types/TabGroup';
-import {
-  saveTabGroup,
-  getTabGroups,
-  deleteTabFromGroup,
-} from '../../utils/storage';
+import { saveTabGroup, getTabGroups, deleteTabFromGroup } from '../../utils/storage';
 import { tabGroupsStorage } from '../../types/Storage';
 
 /**
  * Feature: tab-group-manager, Property 19: Individual Tab Deletion Precision
- * 
+ *
  * For any tab deletion within a group, only that specific tab should be removed
  * while all other tabs in the group remain unchanged.
- * 
+ *
  * Validates: Requirements 8.1
  */
 
@@ -25,16 +21,19 @@ const tabItemArbitrary = fc.record({
   faviconUrl: fc.option(fc.webUrl(), { nil: undefined }),
 });
 
-const validDateArbitrary = fc.date({ min: new Date('1970-01-01'), max: new Date('2100-01-01') })
-  .filter(date => !isNaN(date.getTime()));
+const validDateArbitrary = fc
+  .date({ min: new Date('1970-01-01'), max: new Date('2100-01-01') })
+  .filter((date) => !isNaN(date.getTime()));
 
-const tabGroupArbitrary = fc.record({
-  id: fc.uuid(),
-  name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
-  createdAt: validDateArbitrary,
-  tabs: fc.array(tabItemArbitrary, { minLength: 3, maxLength: 20 }), // At least 3 tabs for meaningful testing
-  isHistory: fc.boolean(),
-}).filter(group => !isNaN(group.createdAt.getTime()));
+const tabGroupArbitrary = fc
+  .record({
+    id: fc.uuid(),
+    name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
+    createdAt: validDateArbitrary,
+    tabs: fc.array(tabItemArbitrary, { minLength: 3, maxLength: 20 }), // At least 3 tabs for meaningful testing
+    isHistory: fc.boolean(),
+  })
+  .filter((group) => !isNaN(group.createdAt.getTime()));
 
 describe('Individual Tab Deletion Precision Property Tests', () => {
   beforeEach(async () => {
@@ -54,21 +53,21 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
           // Select a tab to delete (use modulo to ensure valid index)
           const tabIndexToDelete = indexSelector % group.tabs.length;
           const tabToDelete = group.tabs[tabIndexToDelete];
-          const expectedRemainingTabs = group.tabs.filter(t => t.id !== tabToDelete.id);
+          const expectedRemainingTabs = group.tabs.filter((t) => t.id !== tabToDelete.id);
 
           // Delete the specific tab
           await deleteTabFromGroup(group.id, tabToDelete.id);
 
           // Retrieve the group after deletion
           const retrieved = await getTabGroups();
-          const updatedGroup = retrieved.find(g => g.id === group.id);
+          const updatedGroup = retrieved.find((g) => g.id === group.id);
 
           if (!updatedGroup) {
             throw new Error(`Group ${group.id} not found after tab deletion`);
           }
 
           // Verify the deleted tab is gone
-          const deletedTabStillExists = updatedGroup.tabs.some(t => t.id === tabToDelete.id);
+          const deletedTabStillExists = updatedGroup.tabs.some((t) => t.id === tabToDelete.id);
           if (deletedTabStillExists) {
             throw new Error(`Deleted tab ${tabToDelete.id} still exists in group`);
           }
@@ -82,17 +81,15 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
 
           // Verify all remaining tabs are present and unchanged
           for (const expectedTab of expectedRemainingTabs) {
-            const foundTab = updatedGroup.tabs.find(t => t.id === expectedTab.id);
-            
+            const foundTab = updatedGroup.tabs.find((t) => t.id === expectedTab.id);
+
             if (!foundTab) {
               throw new Error(`Expected tab ${expectedTab.id} not found after deletion`);
             }
 
             // Verify tab data is completely unchanged
             if (foundTab.url !== expectedTab.url) {
-              throw new Error(
-                `Tab ${expectedTab.id} URL changed: expected ${expectedTab.url}, got ${foundTab.url}`
-              );
+              throw new Error(`Tab ${expectedTab.id} URL changed: expected ${expectedTab.url}, got ${foundTab.url}`);
             }
             if (foundTab.title !== expectedTab.title) {
               throw new Error(
@@ -135,22 +132,20 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
 
         // Retrieve and verify
         const retrieved = await getTabGroups();
-        const updatedGroup = retrieved.find(g => g.id === group.id);
+        const updatedGroup = retrieved.find((g) => g.id === group.id);
 
         if (!updatedGroup) {
           throw new Error(`Group ${group.id} not found after deletion`);
         }
 
         // Verify first tab is gone
-        if (updatedGroup.tabs.some(t => t.id === firstTab.id)) {
+        if (updatedGroup.tabs.some((t) => t.id === firstTab.id)) {
           throw new Error(`First tab ${firstTab.id} still exists`);
         }
 
         // Verify all other tabs remain in correct order
         if (updatedGroup.tabs.length !== expectedRemainingTabs.length) {
-          throw new Error(
-            `Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`
-          );
+          throw new Error(`Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`);
         }
 
         for (let i = 0; i < expectedRemainingTabs.length; i++) {
@@ -188,22 +183,20 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
 
         // Retrieve and verify
         const retrieved = await getTabGroups();
-        const updatedGroup = retrieved.find(g => g.id === group.id);
+        const updatedGroup = retrieved.find((g) => g.id === group.id);
 
         if (!updatedGroup) {
           throw new Error(`Group ${group.id} not found after deletion`);
         }
 
         // Verify last tab is gone
-        if (updatedGroup.tabs.some(t => t.id === lastTab.id)) {
+        if (updatedGroup.tabs.some((t) => t.id === lastTab.id)) {
           throw new Error(`Last tab ${lastTab.id} still exists`);
         }
 
         // Verify all other tabs remain in correct order
         if (updatedGroup.tabs.length !== expectedRemainingTabs.length) {
-          throw new Error(
-            `Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`
-          );
+          throw new Error(`Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`);
         }
 
         for (let i = 0; i < expectedRemainingTabs.length; i++) {
@@ -230,13 +223,15 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
   it('Property 19.4: Deleting middle tab preserves order of remaining tabs', async () => {
     await fc.assert(
       fc.asyncProperty(
-        fc.record({
-          id: fc.uuid(),
-          name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
-          createdAt: validDateArbitrary,
-          tabs: fc.array(tabItemArbitrary, { minLength: 5, maxLength: 20 }), // At least 5 for meaningful middle
-          isHistory: fc.boolean(),
-        }).filter(group => !isNaN(group.createdAt.getTime())),
+        fc
+          .record({
+            id: fc.uuid(),
+            name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
+            createdAt: validDateArbitrary,
+            tabs: fc.array(tabItemArbitrary, { minLength: 5, maxLength: 20 }), // At least 5 for meaningful middle
+            isHistory: fc.boolean(),
+          })
+          .filter((group) => !isNaN(group.createdAt.getTime())),
         async (group) => {
           // Save the group
           await saveTabGroup(group);
@@ -244,28 +239,26 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
           // Delete a middle tab (not first or last)
           const middleIndex = Math.floor(group.tabs.length / 2);
           const middleTab = group.tabs[middleIndex];
-          const expectedRemainingTabs = group.tabs.filter(t => t.id !== middleTab.id);
+          const expectedRemainingTabs = group.tabs.filter((t) => t.id !== middleTab.id);
 
           await deleteTabFromGroup(group.id, middleTab.id);
 
           // Retrieve and verify
           const retrieved = await getTabGroups();
-          const updatedGroup = retrieved.find(g => g.id === group.id);
+          const updatedGroup = retrieved.find((g) => g.id === group.id);
 
           if (!updatedGroup) {
             throw new Error(`Group ${group.id} not found after deletion`);
           }
 
           // Verify middle tab is gone
-          if (updatedGroup.tabs.some(t => t.id === middleTab.id)) {
+          if (updatedGroup.tabs.some((t) => t.id === middleTab.id)) {
             throw new Error(`Middle tab ${middleTab.id} still exists`);
           }
 
           // Verify remaining tabs maintain their relative order
           if (updatedGroup.tabs.length !== expectedRemainingTabs.length) {
-            throw new Error(
-              `Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`
-            );
+            throw new Error(`Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`);
           }
 
           for (let i = 0; i < expectedRemainingTabs.length; i++) {
@@ -273,9 +266,7 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
             const actual = updatedGroup.tabs[i];
 
             if (actual.id !== expected.id) {
-              throw new Error(
-                `Tab order changed: position ${i} expected ${expected.id}, got ${actual.id}`
-              );
+              throw new Error(`Tab order changed: position ${i} expected ${expected.id}, got ${actual.id}`);
             }
             if (actual.url !== expected.url || actual.title !== expected.title) {
               throw new Error(`Tab ${expected.id} data changed`);
@@ -292,13 +283,15 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
   it('Property 19.5: Multiple sequential deletions maintain precision', async () => {
     await fc.assert(
       fc.asyncProperty(
-        fc.record({
-          id: fc.uuid(),
-          name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
-          createdAt: validDateArbitrary,
-          tabs: fc.array(tabItemArbitrary, { minLength: 5, maxLength: 10 }), // Enough tabs for multiple deletions
-          isHistory: fc.boolean(),
-        }).filter(group => !isNaN(group.createdAt.getTime())),
+        fc
+          .record({
+            id: fc.uuid(),
+            name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
+            createdAt: validDateArbitrary,
+            tabs: fc.array(tabItemArbitrary, { minLength: 5, maxLength: 10 }), // Enough tabs for multiple deletions
+            isHistory: fc.boolean(),
+          })
+          .filter((group) => !isNaN(group.createdAt.getTime())),
         fc.integer({ min: 2, max: 3 }), // Number of tabs to delete
         async (group, numToDelete) => {
           // Save the group
@@ -306,7 +299,7 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
 
           // Ensure we don't try to delete more tabs than exist
           const actualNumToDelete = Math.min(numToDelete, group.tabs.length - 1);
-          
+
           // Track which tabs we're deleting
           const tabsToDelete = group.tabs.slice(0, actualNumToDelete);
           const expectedRemainingTabs = group.tabs.slice(actualNumToDelete);
@@ -318,7 +311,7 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
 
           // Retrieve and verify final state
           const retrieved = await getTabGroups();
-          const updatedGroup = retrieved.find(g => g.id === group.id);
+          const updatedGroup = retrieved.find((g) => g.id === group.id);
 
           if (!updatedGroup) {
             throw new Error(`Group ${group.id} not found after deletions`);
@@ -326,16 +319,14 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
 
           // Verify all deleted tabs are gone
           for (const deletedTab of tabsToDelete) {
-            if (updatedGroup.tabs.some(t => t.id === deletedTab.id)) {
+            if (updatedGroup.tabs.some((t) => t.id === deletedTab.id)) {
               throw new Error(`Deleted tab ${deletedTab.id} still exists`);
             }
           }
 
           // Verify correct number of tabs remain
           if (updatedGroup.tabs.length !== expectedRemainingTabs.length) {
-            throw new Error(
-              `Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`
-            );
+            throw new Error(`Expected ${expectedRemainingTabs.length} tabs, got ${updatedGroup.tabs.length}`);
           }
 
           // Verify all remaining tabs are intact and in order

@@ -12,7 +12,7 @@ import ToastService from 'primevue/toastservice';
  * Unit tests for TabGroupList component
  * Tests rendering multiple cards and empty state display
  * Requirements: 5.3
- * 
+ *
  * @vitest-environment jsdom
  */
 
@@ -36,10 +36,10 @@ describe('TabGroupList Component', () => {
             id: 'tab-1',
             url: 'https://example.com',
             title: 'Example Site',
-            faviconUrl: 'https://example.com/favicon.ico'
-          }
+            faviconUrl: 'https://example.com/favicon.ico',
+          },
         ],
-        isHistory: false
+        isHistory: false,
       },
       {
         id: 'group-2',
@@ -50,10 +50,10 @@ describe('TabGroupList Component', () => {
             id: 'tab-2',
             url: 'https://test.com',
             title: 'Test Site',
-            faviconUrl: undefined
-          }
+            faviconUrl: undefined,
+          },
         ],
-        isHistory: true
+        isHistory: true,
       },
       {
         id: 'group-3',
@@ -64,11 +64,11 @@ describe('TabGroupList Component', () => {
             id: 'tab-3',
             url: 'https://personal.com',
             title: 'Personal Site',
-            faviconUrl: 'https://personal.com/favicon.ico'
-          }
+            faviconUrl: 'https://personal.com/favicon.ico',
+          },
         ],
-        isHistory: false
-      }
+        isHistory: false,
+      },
     ];
   });
 
@@ -78,8 +78,8 @@ describe('TabGroupList Component', () => {
       global: {
         plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
-          TabGroupCard: false // Don't stub, render actual component
-        }
+          TabGroupCard: false, // Don't stub, render actual component
+        },
       },
     });
 
@@ -94,13 +94,13 @@ describe('TabGroupList Component', () => {
       global: {
         plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
-          TabGroupCard: false
-        }
+          TabGroupCard: false,
+        },
       },
     });
 
     const cards = wrapper.findAllComponents(TabGroupCard);
-    
+
     // Check that each card receives the correct group
     expect(cards[0].props('group')).toEqual(mockGroups[0]);
     expect(cards[1].props('group')).toEqual(mockGroups[1]);
@@ -113,8 +113,8 @@ describe('TabGroupList Component', () => {
       global: {
         plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
-          TabGroupCard: false
-        }
+          TabGroupCard: false,
+        },
       },
     });
 
@@ -168,8 +168,8 @@ describe('TabGroupList Component', () => {
       global: {
         plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
-          TabGroupCard: false
-        }
+          TabGroupCard: false,
+        },
       },
     });
 
@@ -192,8 +192,8 @@ describe('TabGroupList Component', () => {
       global: {
         plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
-          TabGroupCard: false
-        }
+          TabGroupCard: false,
+        },
       },
     });
 

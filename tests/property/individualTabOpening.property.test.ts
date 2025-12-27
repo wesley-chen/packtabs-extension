@@ -2,7 +2,7 @@
  * Property-Based Test: Individual Tab Opening
  * Feature: tab-group-manager, Property 12: Individual Tab Opening
  * Validates: Requirements 4.3, 8.3
- * 
+ *
  * Property: For any individual tab title click, that specific URL should open in a new browser tab.
  */
 
@@ -16,7 +16,7 @@ const tabItemArbitrary = fc.record({
   id: fc.uuid(),
   url: fc.webUrl({ validSchemes: ['http', 'https'] }),
   title: fc.string({ minLength: 1, maxLength: 100 }),
-  faviconUrl: fc.option(fc.webUrl(), { nil: undefined })
+  faviconUrl: fc.option(fc.webUrl(), { nil: undefined }),
 });
 
 describe('Property 12: Individual Tab Opening', () => {
@@ -27,100 +27,90 @@ describe('Property 12: Individual Tab Opening', () => {
 
   it('should open the specific URL in a new browser tab for any individual tab', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        tabItemArbitrary,
-        async (tab: TabItem) => {
-          // Track created tab
-          let createdTab: { url: string; windowId: number; active: boolean } | null = null;
+      fc.asyncProperty(tabItemArbitrary, async (tab: TabItem) => {
+        // Track created tab
+        let createdTab: { url: string; windowId: number; active: boolean } | null = null;
 
-          // Set up browser API mocks
-          const windowId = Math.floor(Math.random() * 1000);
-          
-          // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
-          (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
-          
-          // Mock browser.tabs.create to track created tab
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
-          (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
-            createdTab = {
-              url: createProperties.url,
-              windowId: createProperties.windowId,
-              active: createProperties.active,
-            };
-            return { id: Math.floor(Math.random() * 10000) };
-          });
+        // Set up browser API mocks
+        const windowId = Math.floor(Math.random() * 1000);
 
-          // Call openSingleTab
-          await openSingleTab(tab);
+        // Mock browser.windows.getCurrent
+        (global as any).browser = (global as any).browser || {};
+        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
-          // Verify tab was created
-          if (!createdTab) {
-            throw new Error('No tab was created');
-          }
+        // Mock browser.tabs.create to track created tab
+        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
+          createdTab = {
+            url: createProperties.url,
+            windowId: createProperties.windowId,
+            active: createProperties.active,
+          };
+          return { id: Math.floor(Math.random() * 10000) };
+        });
 
-          // Verify URL matches
-          if (createdTab.url !== tab.url) {
-            throw new Error(
-              `URL mismatch: expected ${tab.url}, got ${createdTab.url}`
-            );
-          }
+        // Call openSingleTab
+        await openSingleTab(tab);
 
-          // Verify it was opened in the correct window
-          if (createdTab.windowId !== windowId) {
-            throw new Error(
-              `Window mismatch: expected ${windowId}, got ${createdTab.windowId}`
-            );
-          }
-
-          return true;
+        // Verify tab was created
+        if (!createdTab) {
+          throw new Error('No tab was created');
         }
-      ),
+
+        // Verify URL matches
+        if (createdTab.url !== tab.url) {
+          throw new Error(`URL mismatch: expected ${tab.url}, got ${createdTab.url}`);
+        }
+
+        // Verify it was opened in the correct window
+        if (createdTab.windowId !== windowId) {
+          throw new Error(`Window mismatch: expected ${windowId}, got ${createdTab.windowId}`);
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
 
   it('should open tabs with the active flag set to true', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        tabItemArbitrary,
-        async (tab: TabItem) => {
-          // Track created tab
-          let createdTab: { url: string; windowId: number; active: boolean } | null = null;
+      fc.asyncProperty(tabItemArbitrary, async (tab: TabItem) => {
+        // Track created tab
+        let createdTab: { url: string; windowId: number; active: boolean } | null = null;
 
-          const windowId = Math.floor(Math.random() * 1000);
-          
-          // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
-          (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
-          
-          // Mock browser.tabs.create
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
-          (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
-            createdTab = {
-              url: createProperties.url,
-              windowId: createProperties.windowId,
-              active: createProperties.active,
-            };
-            return { id: Math.floor(Math.random() * 10000) };
-          });
+        const windowId = Math.floor(Math.random() * 1000);
 
-          await openSingleTab(tab);
+        // Mock browser.windows.getCurrent
+        (global as any).browser = (global as any).browser || {};
+        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
-          // Verify the tab is opened with active: true (switches to the tab)
-          if (!createdTab) {
-            throw new Error('No tab was created');
-          }
+        // Mock browser.tabs.create
+        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
+          createdTab = {
+            url: createProperties.url,
+            windowId: createProperties.windowId,
+            active: createProperties.active,
+          };
+          return { id: Math.floor(Math.random() * 10000) };
+        });
 
-          if (!createdTab.active) {
-            throw new Error('Single tab should be opened as active');
-          }
+        await openSingleTab(tab);
 
-          return true;
+        // Verify the tab is opened with active: true (switches to the tab)
+        if (!createdTab) {
+          throw new Error('No tab was created');
         }
-      ),
+
+        if (!createdTab.active) {
+          throw new Error('Single tab should be opened as active');
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
@@ -141,7 +131,7 @@ describe('Property 12: Individual Tab Opening', () => {
             id: crypto.randomUUID(),
             url: invalidUrl,
             title: 'Test Tab',
-            faviconUrl: undefined
+            faviconUrl: undefined,
           };
 
           // Should throw InvalidUrlError for restricted/invalid URLs

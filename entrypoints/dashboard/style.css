@@ -32,7 +32,7 @@ body {
   .p-toolbar {
     flex-wrap: wrap;
   }
-  
+
   .p-toolbar .p-toolbar-group-start,
   .p-toolbar .p-toolbar-group-end {
     width: 100%;
@@ -96,12 +96,12 @@ body {
   .p-card-content {
     padding: 0.5rem;
   }
-  
+
   .p-card-footer {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .p-card-footer .p-button {
     width: 100%;
     margin-right: 0;

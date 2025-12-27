@@ -32,12 +32,14 @@ bun run test:coverage
 ## Testing Approach
 
 ### Unit Tests
+
 - Focus on specific examples and edge cases
 - Test integration between components
 - Test error conditions
 - Located in `tests/unit/`
 
 ### Property-Based Tests
+
 - Verify universal properties across all inputs
 - Use fast-check library for random data generation
 - Run minimum 100 iterations per property
@@ -47,6 +49,7 @@ bun run test:coverage
 ## Chrome API Mocks
 
 The test setup provides mocks for:
+
 - `chrome.storage.sync` and `chrome.storage.local`
 - `chrome.tabs` API
 - `chrome.runtime` messaging

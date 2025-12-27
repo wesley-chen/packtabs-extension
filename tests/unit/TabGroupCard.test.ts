@@ -12,7 +12,7 @@ import { useTabStore } from '../../stores/useTabStore';
  * Unit tests for TabGroupCard component
  * Tests button click handlers, inline editing, and conditional rendering
  * Requirements: 3.2, 4.1, 4.3, 6.5
- * 
+ *
  * @vitest-environment jsdom
  */
 
@@ -35,16 +35,16 @@ describe('TabGroupCard Component', () => {
           id: 'tab-1',
           url: 'https://example.com',
           title: 'Example Site',
-          faviconUrl: 'https://example.com/favicon.ico'
+          faviconUrl: 'https://example.com/favicon.ico',
         },
         {
           id: 'tab-2',
           url: 'https://test.com',
           title: 'Test Site',
-          faviconUrl: undefined
-        }
+          faviconUrl: undefined,
+        },
       ],
-      isHistory: false
+      isHistory: false,
     };
   });
 
@@ -131,18 +131,18 @@ describe('TabGroupCard Component', () => {
     });
 
     // Find and click Save button
-    const saveButton = wrapper.findAll('button').find(btn => btn.text().includes('Save'));
+    const saveButton = wrapper.findAll('button').find((btn) => btn.text().includes('Save'));
     expect(saveButton).toBeDefined();
-    
+
     if (saveButton) {
       await saveButton.trigger('click');
       await wrapper.vm.$nextTick();
-      
+
       // Check that the dialog is visible
       const dialog = wrapper.findComponent({ name: 'Dialog' });
       expect(dialog.exists()).toBe(true);
       expect(dialog.props('visible')).toBe(true);
-      
+
       // Check that the dialog has the correct header
       expect(dialog.props('header')).toBe('Name Tab Group');
     }

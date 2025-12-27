@@ -5,7 +5,9 @@ import { storage } from 'wxt/utils/storage';
  */
 export interface StorageSchema {
   // WXT storage key: 'sync:tabGroups'
-  tabGroups: Record<string, {
+  tabGroups: Record<
+    string,
+    {
       id: string;
       name: string | null;
       createdAt: string; // ISO date string for serialization
@@ -16,7 +18,8 @@ export interface StorageSchema {
         faviconUrl?: string;
       }[];
       isHistory: boolean;
-    }>;
+    }
+  >;
 
   // WXT storage key: 'sync:settings'
   settings: {
@@ -28,20 +31,14 @@ export interface StorageSchema {
 /**
  * WXT storage item for tab groups
  */
-export const tabGroupsStorage = storage.defineItem<StorageSchema['tabGroups']>(
-  'sync:tabGroups',
-  { defaultValue: {} }
-);
+export const tabGroupsStorage = storage.defineItem<StorageSchema['tabGroups']>('sync:tabGroups', { defaultValue: {} });
 
 /**
  * WXT storage item for settings
  */
-export const settingsStorage = storage.defineItem<StorageSchema['settings']>(
-  'sync:settings',
-  {
-    defaultValue: {
-      autoCloseAfterSave: true,
-      maxHistoryGroups: 10,
-    },
-  }
-);
+export const settingsStorage = storage.defineItem<StorageSchema['settings']>('sync:settings', {
+  defaultValue: {
+    autoCloseAfterSave: true,
+    maxHistoryGroups: 10,
+  },
+});

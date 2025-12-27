@@ -1,22 +1,16 @@
 import { describe, it, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
 import type { TabGroup, TabItem } from '../../types/TabGroup';
-import {
-  saveTabGroup,
-  getTabGroups,
-  updateTabGroup,
-  deleteTabGroup,
-  deleteTabFromGroup,
-} from '../../utils/storage';
+import { saveTabGroup, getTabGroups, updateTabGroup, deleteTabGroup, deleteTabFromGroup } from '../../utils/storage';
 import { tabGroupsStorage } from '../../types/Storage';
 
 /**
  * Feature: tab-group-manager, Property 2: Tab Group Data Persistence
- * 
+ *
  * For any tab group operation (save, update, delete, individual tab modification),
  * the changes should be persisted using Chrome Storage Sync and be retrievable
  * in subsequent operations.
- * 
+ *
  * Validates: Requirements 1.5, 2.4, 7.1, 8.4
  */
 
@@ -29,16 +23,19 @@ const tabItemArbitrary = fc.record({
 });
 
 // Generate valid dates only (not NaN)
-const validDateArbitrary = fc.date({ min: new Date('1970-01-01'), max: new Date('2100-01-01') })
-  .filter(date => !isNaN(date.getTime()));
+const validDateArbitrary = fc
+  .date({ min: new Date('1970-01-01'), max: new Date('2100-01-01') })
+  .filter((date) => !isNaN(date.getTime()));
 
-const tabGroupArbitrary = fc.record({
-  id: fc.uuid(),
-  name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
-  createdAt: validDateArbitrary,
-  tabs: fc.array(tabItemArbitrary, { minLength: 1, maxLength: 20 }),
-  isHistory: fc.boolean(),
-}).filter(group => !isNaN(group.createdAt.getTime())); // Extra safety check
+const tabGroupArbitrary = fc
+  .record({
+    id: fc.uuid(),
+    name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
+    createdAt: validDateArbitrary,
+    tabs: fc.array(tabItemArbitrary, { minLength: 1, maxLength: 20 }),
+    isHistory: fc.boolean(),
+  })
+  .filter((group) => !isNaN(group.createdAt.getTime())); // Extra safety check
 
 describe('Storage Persistence Property Tests', () => {
   beforeEach(async () => {
@@ -80,7 +77,9 @@ describe('Storage Persistence Property Tests', () => {
         // Verify createdAt is preserved (allowing for millisecond precision)
         const timeDiff = Math.abs(found.createdAt.getTime() - group.createdAt.getTime());
         if (timeDiff > 1) {
-          throw new Error(`CreatedAt mismatch: expected ${group.createdAt.toISOString()}, got ${found.createdAt.toISOString()}`);
+          throw new Error(
+            `CreatedAt mismatch: expected ${group.createdAt.toISOString()}, got ${found.createdAt.toISOString()}`
+          );
         }
 
         // Verify each tab
@@ -110,42 +109,38 @@ describe('Storage Persistence Property Tests', () => {
 
   it('Property 2.2: Update operation persists changes', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        tabGroupArbitrary,
-        fc.string({ minLength: 1, maxLength: 50 }),
-        async (group, newName) => {
-          // Save initial group
-          await saveTabGroup(group);
+      fc.asyncProperty(tabGroupArbitrary, fc.string({ minLength: 1, maxLength: 50 }), async (group, newName) => {
+        // Save initial group
+        await saveTabGroup(group);
 
-          // Update the group name
-          await updateTabGroup(group.id, { name: newName });
+        // Update the group name
+        await updateTabGroup(group.id, { name: newName });
 
-          // Retrieve and verify
-          const retrieved = await getTabGroups();
-          const found = retrieved.find((g) => g.id === group.id);
+        // Retrieve and verify
+        const retrieved = await getTabGroups();
+        const found = retrieved.find((g) => g.id === group.id);
 
-          if (!found) {
-            throw new Error(`Group ${group.id} not found after update`);
-          }
-
-          if (found.name !== newName) {
-            throw new Error(`Name not updated: expected ${newName}, got ${found.name}`);
-          }
-
-          // Verify other fields remain unchanged
-          if (found.id !== group.id) {
-            throw new Error(`ID changed after update`);
-          }
-          if (found.isHistory !== group.isHistory) {
-            throw new Error(`isHistory changed after update`);
-          }
-          if (found.tabs.length !== group.tabs.length) {
-            throw new Error(`Tabs changed after name update`);
-          }
-
-          return true;
+        if (!found) {
+          throw new Error(`Group ${group.id} not found after update`);
         }
-      ),
+
+        if (found.name !== newName) {
+          throw new Error(`Name not updated: expected ${newName}, got ${found.name}`);
+        }
+
+        // Verify other fields remain unchanged
+        if (found.id !== group.id) {
+          throw new Error(`ID changed after update`);
+        }
+        if (found.isHistory !== group.isHistory) {
+          throw new Error(`isHistory changed after update`);
+        }
+        if (found.tabs.length !== group.tabs.length) {
+          throw new Error(`Tabs changed after name update`);
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
@@ -210,9 +205,7 @@ describe('Storage Persistence Property Tests', () => {
 
           // Verify the tab was removed
           if (found.tabs.length !== remainingTabs.length) {
-            throw new Error(
-              `Tab count mismatch: expected ${remainingTabs.length}, got ${found.tabs.length}`
-            );
+            throw new Error(`Tab count mismatch: expected ${remainingTabs.length}, got ${found.tabs.length}`);
           }
 
           // Verify the deleted tab is not present
@@ -242,19 +235,18 @@ describe('Storage Persistence Property Tests', () => {
   it('Property 2.5: Multiple save operations maintain data integrity', async () => {
     await fc.assert(
       fc.asyncProperty(
-        fc.array(tabGroupArbitrary, { minLength: 2, maxLength: 10 })
-          .chain(groups => {
-            // Ensure all groups have unique IDs
-            const uniqueGroups = groups.map((group, index) => ({
-              ...group,
-              id: `${group.id}-${index}` // Make IDs unique
-            }));
-            return fc.constant(uniqueGroups);
-          }),
+        fc.array(tabGroupArbitrary, { minLength: 2, maxLength: 10 }).chain((groups) => {
+          // Ensure all groups have unique IDs
+          const uniqueGroups = groups.map((group, index) => ({
+            ...group,
+            id: `${group.id}-${index}`, // Make IDs unique
+          }));
+          return fc.constant(uniqueGroups);
+        }),
         async (groups) => {
           // Clear storage at the start of this test
           await tabGroupsStorage.setValue({});
-          
+
           // Save all groups
           for (const group of groups) {
             await saveTabGroup(group);
@@ -265,9 +257,7 @@ describe('Storage Persistence Property Tests', () => {
 
           // Verify all groups are present
           if (retrieved.length !== groups.length) {
-            throw new Error(
-              `Group count mismatch: expected ${groups.length}, got ${retrieved.length}`
-            );
+            throw new Error(`Group count mismatch: expected ${groups.length}, got ${retrieved.length}`);
           }
 
           // Verify each group

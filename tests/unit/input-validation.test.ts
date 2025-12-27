@@ -12,18 +12,18 @@ describe('User Input Validation', () => {
   beforeEach(async () => {
     // Set up Pinia
     setActivePinia(createPinia());
-    
+
     // Clear storage
     await tabGroupsStorage.setValue({});
-    
+
     // Reset error capture
     capturedErrors = [];
-    
+
     // Set up error handler to capture errors
     setStoreErrorHandler((error: Error) => {
       capturedErrors.push(error);
     });
-    
+
     // Create fresh store instance
     store = useTabStore();
     await store.loadGroups();
@@ -37,19 +37,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Try to convert with empty name - should not throw but capture error
@@ -70,19 +70,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Try to convert with whitespace-only name
@@ -103,19 +103,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Convert with valid name
@@ -123,10 +123,10 @@ describe('User Input Validation', () => {
 
       // Should not have captured any errors
       expect(capturedErrors.length).toBe(0);
-      
+
       // Verify the group was converted
       await store.loadGroups();
-      const group = store.tabGroups.find(g => g.id === 'history-1');
+      const group = store.tabGroups.find((g) => g.id === 'history-1');
       expect(group?.name).toBe('My Group');
       expect(group?.isHistory).toBe(false);
     });
@@ -137,19 +137,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Convert with name that has leading/trailing whitespace
@@ -157,10 +157,10 @@ describe('User Input Validation', () => {
 
       // Should not have captured any errors
       expect(capturedErrors.length).toBe(0);
-      
+
       // Verify the group name was trimmed
       await store.loadGroups();
-      const group = store.tabGroups.find(g => g.id === 'history-1');
+      const group = store.tabGroups.find((g) => g.id === 'history-1');
       expect(group?.name).toBe('My Group');
     });
 
@@ -170,19 +170,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Convert with name containing special characters
@@ -190,10 +190,10 @@ describe('User Input Validation', () => {
 
       // Should not have captured any errors
       expect(capturedErrors.length).toBe(0);
-      
+
       // Verify the group was converted with special characters
       await store.loadGroups();
-      const group = store.tabGroups.find(g => g.id === 'history-1');
+      const group = store.tabGroups.find((g) => g.id === 'history-1');
       expect(group?.name).toBe('Work <Project> & Tasks #1');
     });
 
@@ -204,19 +204,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Convert with very long name
@@ -224,10 +224,10 @@ describe('User Input Validation', () => {
 
       // Should not have captured any errors
       expect(capturedErrors.length).toBe(0);
-      
+
       // Verify the group was converted
       await store.loadGroups();
-      const group = store.tabGroups.find(g => g.id === 'history-1');
+      const group = store.tabGroups.find((g) => g.id === 'history-1');
       expect(group?.name).toBe(longName);
     });
   });
@@ -239,19 +239,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       try {
@@ -283,19 +283,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Try to convert with null name (TypeScript would prevent this, but test runtime behavior)
@@ -315,19 +315,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Try to convert with undefined name
@@ -347,19 +347,19 @@ describe('User Input Validation', () => {
         name: null,
         createdAt: new Date(),
         tabs: [{ id: 'tab-1', url: 'https://example.com', title: 'Example' }],
-        isHistory: true
+        isHistory: true,
       };
-      
+
       await tabGroupsStorage.setValue({
         'history-1': {
           id: 'history-1',
           name: null,
           createdAt: historyGroup.createdAt.toISOString(),
           tabs: historyGroup.tabs,
-          isHistory: true
-        }
+          isHistory: true,
+        },
       });
-      
+
       await store.loadGroups();
 
       // Convert with numeric name - need to convert to string first
@@ -367,10 +367,10 @@ describe('User Input Validation', () => {
 
       // Should not have captured any errors
       expect(capturedErrors.length).toBe(0);
-      
+
       // Verify the group was converted
       await store.loadGroups();
-      const group = store.tabGroups.find(g => g.id === 'history-1');
+      const group = store.tabGroups.find((g) => g.id === 'history-1');
       expect(group?.name).toBe('123');
     });
   });

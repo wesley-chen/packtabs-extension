@@ -34,6 +34,7 @@
 ## WXT Features
 
 ### Extension APIs
+
 - Use `browser` variable (not `chrome`) for cross-browser compatibility
 - WXT merges Chrome's `chrome` and Firefox's `browser` into unified API
 - All APIs return promises (works in MV2 and MV3)
@@ -42,6 +43,7 @@
 - WXT polyfills with `@webext-core/fake-browser` during build, but not all APIs implemented
 
 ### Entrypoints
+
 - Files in `entrypoints/` directory are inputs for bundling
 - Entrypoint name dictates type (e.g., `background.ts`, `popup.html`, `content.ts`)
 - Can be single file or directory with `index` file
@@ -53,6 +55,7 @@
 - HTML entrypoints use `<meta>` tags for options
 
 ### Entrypoint Types
+
 - **Background**: `background.ts` → Service worker (MV3) or background page (MV2)
 - **Content Scripts**: `{name}.content.ts` → Injected into web pages, requires `matches`
 - **HTML Pages**: `popup.html`, `options.html`, `newtab.html`, `sidepanel.html`, etc.
@@ -61,6 +64,7 @@
 - **Unlisted CSS**: `{name}.css` → Must be manually imported/loaded
 
 ### Entrypoint Loaders
+
 - WXT imports entrypoints into NodeJS environment during build to extract options
 - Pre-processing steps: polyfill globals, fake browser APIs, tree-shake unused code
 - **CRITICAL**: Keep all runtime code inside main function (background, content scripts, unlisted scripts)
@@ -69,6 +73,7 @@
 - If you see "API not implemented" errors, move code into main function
 
 ### Auto-imports
+
 - WXT uses `unimport` (same as Nuxt) for automatic imports
 - Auto-imported by default:
   - All WXT APIs (e.g., `defineBackground`, `storage`, `browser`)
@@ -78,6 +83,7 @@
 - To disable: set `imports: false` in `wxt.config.ts`
 
 ### TypeScript Configuration
+
 - WXT generates base TSConfig at `.wxt/tsconfig.json` when running `wxt prepare`
 - Project's `tsconfig.json` extends WXT's base config
 - Custom compiler options go in root `tsconfig.json`
@@ -88,6 +94,7 @@
 - Custom aliases are added to both TypeScript and bundler
 
 ### Vite Configuration
+
 - WXT uses Vite under the hood for bundling
 - Customize via `vite: () => ({ ... })` in `wxt.config.ts`
 - Add Vite plugins in the `plugins` array
@@ -96,6 +103,7 @@
 - WXT provides sensible defaults - avoid changing build settings unless necessary
 
 ### Unit Testing with Vitest
+
 - WXT provides `WxtVitest()` plugin for first-class Vitest support
 - Plugin handles:
   - Auto-imports in tests (no manual mocking needed)
@@ -127,6 +135,9 @@ bun run lint
 
 # Auto-fix fixable issues
 bun run lint:fix
+
+# Format all files
+bun run format
 
 # Testing
 bun run test             # Run all tests once

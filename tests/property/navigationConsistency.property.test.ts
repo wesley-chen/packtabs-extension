@@ -7,17 +7,17 @@ import type { TabGroup } from '~/types/TabGroup';
 
 /**
  * Feature: tab-group-manager, Property 15: Navigation Consistency
- * 
- * For any sidebar item click, the content area should display the corresponding 
+ *
+ * For any sidebar item click, the content area should display the corresponding
  * tab group data accurately.
- * 
+ *
  * Validates: Requirements 5.4
  */
 describe('Property 15: Navigation Consistency', () => {
   beforeEach(async () => {
     // Clear storage before each test
     await tabGroupsStorage.setValue({});
-    
+
     // Create fresh Pinia instance
     const pinia = createPinia();
     setActivePinia(pinia);
@@ -37,18 +37,18 @@ describe('Property 15: Navigation Consistency', () => {
                 id: fc.uuid(),
                 url: fc.webUrl(),
                 title: fc.string({ minLength: 1, maxLength: 100 }),
-                faviconUrl: fc.option(fc.webUrl(), { nil: undefined })
+                faviconUrl: fc.option(fc.webUrl(), { nil: undefined }),
               }),
               { minLength: 1, maxLength: 10 }
             ),
-            isHistory: fc.boolean()
+            isHistory: fc.boolean(),
           }),
           { minLength: 1, maxLength: 20 }
         ),
         async (groups: TabGroup[]) => {
           // Save groups to storage
           const groupsMap: Record<string, TabGroup> = {};
-          groups.forEach(group => {
+          groups.forEach((group) => {
             groupsMap[group.id] = group;
           });
           await tabGroupsStorage.setValue(groupsMap);

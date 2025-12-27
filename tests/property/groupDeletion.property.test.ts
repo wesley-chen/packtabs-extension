@@ -1,19 +1,15 @@
 import { describe, it, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
 import type { TabGroup } from '../../types/TabGroup';
-import {
-  saveTabGroup,
-  getTabGroups,
-  deleteTabGroup,
-} from '../../utils/storage';
+import { saveTabGroup, getTabGroups, deleteTabGroup } from '../../utils/storage';
 import { tabGroupsStorage } from '../../types/Storage';
 
 /**
  * Feature: tab-group-manager, Property 9: Complete Group Deletion
- * 
+ *
  * For any tab group deletion operation, all associated data should be completely
  * removed from storage and the group should no longer appear in any UI lists.
- * 
+ *
  * Validates: Requirements 3.4
  */
 
@@ -25,16 +21,19 @@ const tabItemArbitrary = fc.record({
   faviconUrl: fc.option(fc.webUrl(), { nil: undefined }),
 });
 
-const validDateArbitrary = fc.date({ min: new Date('1970-01-01'), max: new Date('2100-01-01') })
-  .filter(date => !isNaN(date.getTime()));
+const validDateArbitrary = fc
+  .date({ min: new Date('1970-01-01'), max: new Date('2100-01-01') })
+  .filter((date) => !isNaN(date.getTime()));
 
-const tabGroupArbitrary = fc.record({
-  id: fc.uuid(),
-  name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
-  createdAt: validDateArbitrary,
-  tabs: fc.array(tabItemArbitrary, { minLength: 1, maxLength: 10 }),
-  isHistory: fc.boolean(),
-}).filter(group => !isNaN(group.createdAt.getTime()));
+const tabGroupArbitrary = fc
+  .record({
+    id: fc.uuid(),
+    name: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: null }),
+    createdAt: validDateArbitrary,
+    tabs: fc.array(tabItemArbitrary, { minLength: 1, maxLength: 10 }),
+    isHistory: fc.boolean(),
+  })
+  .filter((group) => !isNaN(group.createdAt.getTime()));
 
 describe('Complete Group Deletion Property Tests', () => {
   beforeEach(async () => {
@@ -44,71 +43,65 @@ describe('Complete Group Deletion Property Tests', () => {
 
   it('Property 9.1: Deleted group is completely removed from storage', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        tabGroupArbitrary,
-        async (group) => {
-          // Save the group
-          await saveTabGroup(group);
+      fc.asyncProperty(tabGroupArbitrary, async (group) => {
+        // Save the group
+        await saveTabGroup(group);
 
-          // Verify it exists
-          const beforeDelete = await getTabGroups();
-          const existsBefore = beforeDelete.some(g => g.id === group.id);
-          if (!existsBefore) {
-            throw new Error(`Group ${group.id} not found after saving`);
-          }
-
-          // Delete the group
-          await deleteTabGroup(group.id);
-
-          // Verify it no longer exists
-          const afterDelete = await getTabGroups();
-          const existsAfter = afterDelete.some(g => g.id === group.id);
-          
-          if (existsAfter) {
-            throw new Error(`Group ${group.id} still exists after deletion`);
-          }
-
-          return true;
+        // Verify it exists
+        const beforeDelete = await getTabGroups();
+        const existsBefore = beforeDelete.some((g) => g.id === group.id);
+        if (!existsBefore) {
+          throw new Error(`Group ${group.id} not found after saving`);
         }
-      ),
+
+        // Delete the group
+        await deleteTabGroup(group.id);
+
+        // Verify it no longer exists
+        const afterDelete = await getTabGroups();
+        const existsAfter = afterDelete.some((g) => g.id === group.id);
+
+        if (existsAfter) {
+          throw new Error(`Group ${group.id} still exists after deletion`);
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
 
   it('Property 9.2: Deleting a group removes all associated data', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        tabGroupArbitrary,
-        async (group) => {
-          // Save the group
-          await saveTabGroup(group);
+      fc.asyncProperty(tabGroupArbitrary, async (group) => {
+        // Save the group
+        await saveTabGroup(group);
 
-          // Delete the group
-          await deleteTabGroup(group.id);
+        // Delete the group
+        await deleteTabGroup(group.id);
 
-          // Verify no data remains
-          const allGroups = await getTabGroups();
-          
-          // Check that no group with this ID exists
-          const deletedGroup = allGroups.find(g => g.id === group.id);
-          if (deletedGroup) {
-            throw new Error(`Deleted group ${group.id} still has data in storage`);
-          }
+        // Verify no data remains
+        const allGroups = await getTabGroups();
 
-          // Check that none of the tabs from the deleted group exist in any other group
-          // (This ensures we didn't accidentally move tabs to another group)
-          const allTabIds = allGroups.flatMap(g => g.tabs.map(t => t.id));
-          const deletedTabIds = group.tabs.map(t => t.id);
-          
-          for (const deletedTabId of deletedTabIds) {
-            if (allTabIds.includes(deletedTabId)) {
-              throw new Error(`Tab ${deletedTabId} from deleted group still exists in storage`);
-            }
-          }
-
-          return true;
+        // Check that no group with this ID exists
+        const deletedGroup = allGroups.find((g) => g.id === group.id);
+        if (deletedGroup) {
+          throw new Error(`Deleted group ${group.id} still has data in storage`);
         }
-      ),
+
+        // Check that none of the tabs from the deleted group exist in any other group
+        // (This ensures we didn't accidentally move tabs to another group)
+        const allTabIds = allGroups.flatMap((g) => g.tabs.map((t) => t.id));
+        const deletedTabIds = group.tabs.map((t) => t.id);
+
+        for (const deletedTabId of deletedTabIds) {
+          if (allTabIds.includes(deletedTabId)) {
+            throw new Error(`Tab ${deletedTabId} from deleted group still exists in storage`);
+          }
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
@@ -116,15 +109,14 @@ describe('Complete Group Deletion Property Tests', () => {
   it('Property 9.3: Deleting one group does not affect other groups', async () => {
     await fc.assert(
       fc.asyncProperty(
-        fc.array(tabGroupArbitrary, { minLength: 3, maxLength: 5 })
-          .chain(groups => {
-            // Ensure all groups have unique IDs
-            const uniqueGroups = groups.map((group, index) => ({
-              ...group,
-              id: `group-${index}-${group.id}`,
-            }));
-            return fc.constant(uniqueGroups);
-          }),
+        fc.array(tabGroupArbitrary, { minLength: 3, maxLength: 5 }).chain((groups) => {
+          // Ensure all groups have unique IDs
+          const uniqueGroups = groups.map((group, index) => ({
+            ...group,
+            id: `group-${index}-${group.id}`,
+          }));
+          return fc.constant(uniqueGroups);
+        }),
         async (groups) => {
           // Save all groups
           for (const group of groups) {
@@ -133,7 +125,7 @@ describe('Complete Group Deletion Property Tests', () => {
 
           // Take a snapshot of all groups before deletion
           const beforeDelete = await getTabGroups();
-          
+
           // Pick the first group to delete
           const targetGroup = groups[0];
           const otherGroups = groups.slice(1);
@@ -145,15 +137,15 @@ describe('Complete Group Deletion Property Tests', () => {
           const afterDelete = await getTabGroups();
 
           // Verify the target group is gone
-          const deletedGroupExists = afterDelete.some(g => g.id === targetGroup.id);
+          const deletedGroupExists = afterDelete.some((g) => g.id === targetGroup.id);
           if (deletedGroupExists) {
             throw new Error(`Deleted group ${targetGroup.id} still exists`);
           }
 
           // Verify all other groups remain unchanged
           for (const otherGroup of otherGroups) {
-            const beforeGroup = beforeDelete.find(g => g.id === otherGroup.id);
-            const afterGroup = afterDelete.find(g => g.id === otherGroup.id);
+            const beforeGroup = beforeDelete.find((g) => g.id === otherGroup.id);
+            const afterGroup = afterDelete.find((g) => g.id === otherGroup.id);
 
             if (!beforeGroup || !afterGroup) {
               throw new Error(`Group ${otherGroup.id} missing before or after deletion`);
@@ -196,31 +188,28 @@ describe('Complete Group Deletion Property Tests', () => {
 
   it('Property 9.4: Deletion is idempotent - deleting non-existent group throws error', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        fc.uuid(),
-        async (nonExistentId) => {
-          // Ensure the ID doesn't exist by using a unique prefix
-          const uniqueId = `nonexistent-${nonExistentId}`;
-          
-          // Attempt to delete non-existent group should throw error
-          let errorThrown = false;
-          try {
-            await deleteTabGroup(uniqueId);
-          } catch (error) {
-            errorThrown = true;
-            // Verify it's the expected error
-            if (error instanceof Error && !error.message.includes('not found')) {
-              throw new Error(`Unexpected error message: ${error.message}`);
-            }
-          }
+      fc.asyncProperty(fc.uuid(), async (nonExistentId) => {
+        // Ensure the ID doesn't exist by using a unique prefix
+        const uniqueId = `nonexistent-${nonExistentId}`;
 
-          if (!errorThrown) {
-            throw new Error('Deleting non-existent group should throw an error');
+        // Attempt to delete non-existent group should throw error
+        let errorThrown = false;
+        try {
+          await deleteTabGroup(uniqueId);
+        } catch (error) {
+          errorThrown = true;
+          // Verify it's the expected error
+          if (error instanceof Error && !error.message.includes('not found')) {
+            throw new Error(`Unexpected error message: ${error.message}`);
           }
-
-          return true;
         }
-      ),
+
+        if (!errorThrown) {
+          throw new Error('Deleting non-existent group should throw an error');
+        }
+
+        return true;
+      }),
       { numRuns: 20 } // Reduced runs since each failure triggers retry logic
     );
   }, 30000); // 30 second timeout for this test due to retry logic
@@ -228,15 +217,14 @@ describe('Complete Group Deletion Property Tests', () => {
   it('Property 9.5: Multiple sequential deletions work correctly', async () => {
     await fc.assert(
       fc.asyncProperty(
-        fc.array(tabGroupArbitrary, { minLength: 3, maxLength: 5 })
-          .chain(groups => {
-            // Ensure all groups have unique IDs
-            const uniqueGroups = groups.map((group, index) => ({
-              ...group,
-              id: `group-${index}-${group.id}`,
-            }));
-            return fc.constant(uniqueGroups);
-          }),
+        fc.array(tabGroupArbitrary, { minLength: 3, maxLength: 5 }).chain((groups) => {
+          // Ensure all groups have unique IDs
+          const uniqueGroups = groups.map((group, index) => ({
+            ...group,
+            id: `group-${index}-${group.id}`,
+          }));
+          return fc.constant(uniqueGroups);
+        }),
         async (groups) => {
           // Save all groups
           for (const group of groups) {
@@ -252,28 +240,30 @@ describe('Complete Group Deletion Property Tests', () => {
           // Delete groups one by one
           for (let i = 0; i < groups.length; i++) {
             const groupToDelete = groups[i];
-            
+
             // Delete the group
             await deleteTabGroup(groupToDelete.id);
 
             // Verify the count decreased by 1
             currentGroups = await getTabGroups();
             const expectedCount = groups.length - (i + 1);
-            
+
             if (currentGroups.length !== expectedCount) {
-              throw new Error(`After deleting ${i + 1} groups, expected ${expectedCount} remaining, found ${currentGroups.length}`);
+              throw new Error(
+                `After deleting ${i + 1} groups, expected ${expectedCount} remaining, found ${currentGroups.length}`
+              );
             }
 
             // Verify the deleted group is gone
-            const stillExists = currentGroups.some(g => g.id === groupToDelete.id);
+            const stillExists = currentGroups.some((g) => g.id === groupToDelete.id);
             if (stillExists) {
               throw new Error(`Group ${groupToDelete.id} still exists after deletion`);
             }
 
             // Verify remaining groups are the ones we haven't deleted yet
-            const remainingIds = groups.slice(i + 1).map(g => g.id);
+            const remainingIds = groups.slice(i + 1).map((g) => g.id);
             for (const remainingId of remainingIds) {
-              const exists = currentGroups.some(g => g.id === remainingId);
+              const exists = currentGroups.some((g) => g.id === remainingId);
               if (!exists) {
                 throw new Error(`Group ${remainingId} was unexpectedly deleted`);
               }

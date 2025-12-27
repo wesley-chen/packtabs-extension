@@ -4,10 +4,10 @@ import { captureCurrentWindow, openTabs } from '../../utils/tabManager';
 
 /**
  * Feature: tab-group-manager, Property 13: Tab Data Round-Trip Integrity
- * 
+ *
  * For any tab group, saving then restoring should preserve all original
  * page titles and URLs exactly.
- * 
+ *
  * Validates: Requirements 4.4
  */
 
@@ -33,194 +33,171 @@ describe('Round-Trip Integrity Property Tests', () => {
 
   it('Property 13.1: Capture then restore preserves URLs', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        fc.array(browserTabArbitrary, { minLength: 1, maxLength: 20 }),
-        async (originalBrowserTabs) => {
-          const windowId = 1;
-          
-          // Track tabs created during restoration
-          const restoredTabs: { url: string; windowId: number }[] = [];
+      fc.asyncProperty(fc.array(browserTabArbitrary, { minLength: 1, maxLength: 20 }), async (originalBrowserTabs) => {
+        const windowId = 1;
 
-          // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
-          (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
-          
-          // Mock browser.tabs.query for capture
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
-          (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
+        // Track tabs created during restoration
+        const restoredTabs: { url: string; windowId: number }[] = [];
 
-          // Capture tabs
-          const capturedTabs = await captureCurrentWindow();
+        // Mock browser.windows.getCurrent
+        (global as any).browser = (global as any).browser || {};
+        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
-          // Mock browser.tabs.create for restoration
-          (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
-            restoredTabs.push({
-              url: createProperties.url,
-              windowId: createProperties.windowId,
-            });
-            return { id: restoredTabs.length };
+        // Mock browser.tabs.query for capture
+        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
+
+        // Capture tabs
+        const capturedTabs = await captureCurrentWindow();
+
+        // Mock browser.tabs.create for restoration
+        (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
+          restoredTabs.push({
+            url: createProperties.url,
+            windowId: createProperties.windowId,
           });
+          return { id: restoredTabs.length };
+        });
 
-          // Restore tabs
-          await openTabs(capturedTabs);
+        // Restore tabs
+        await openTabs(capturedTabs);
 
-          // Verify all URLs are preserved
-          if (restoredTabs.length !== originalBrowserTabs.length) {
-            throw new Error(
-              `Tab count mismatch: expected ${originalBrowserTabs.length}, got ${restoredTabs.length}`
-            );
-          }
-
-          for (let i = 0; i < originalBrowserTabs.length; i++) {
-            const originalUrl = originalBrowserTabs[i].url || '';
-            const restoredUrl = restoredTabs[i].url;
-
-            if (restoredUrl !== originalUrl) {
-              throw new Error(
-                `URL mismatch at position ${i}: expected ${originalUrl}, got ${restoredUrl}`
-              );
-            }
-          }
-
-          return true;
+        // Verify all URLs are preserved
+        if (restoredTabs.length !== originalBrowserTabs.length) {
+          throw new Error(`Tab count mismatch: expected ${originalBrowserTabs.length}, got ${restoredTabs.length}`);
         }
-      ),
+
+        for (let i = 0; i < originalBrowserTabs.length; i++) {
+          const originalUrl = originalBrowserTabs[i].url || '';
+          const restoredUrl = restoredTabs[i].url;
+
+          if (restoredUrl !== originalUrl) {
+            throw new Error(`URL mismatch at position ${i}: expected ${originalUrl}, got ${restoredUrl}`);
+          }
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
 
   it('Property 13.2: Capture then restore preserves titles', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        fc.array(browserTabArbitrary, { minLength: 1, maxLength: 20 }),
-        async (originalBrowserTabs) => {
-          const windowId = 1;
+      fc.asyncProperty(fc.array(browserTabArbitrary, { minLength: 1, maxLength: 20 }), async (originalBrowserTabs) => {
+        const windowId = 1;
 
-          // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
-          (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
-          
-          // Mock browser.tabs.query for capture
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
-          (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
+        // Mock browser.windows.getCurrent
+        (global as any).browser = (global as any).browser || {};
+        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
-          // Capture tabs
-          const capturedTabs = await captureCurrentWindow();
+        // Mock browser.tabs.query for capture
+        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
-          // Verify titles are preserved in captured data
-          for (let i = 0; i < originalBrowserTabs.length; i++) {
-            const originalTitle = originalBrowserTabs[i].title || 'Untitled';
-            const capturedTitle = capturedTabs[i].title;
+        // Capture tabs
+        const capturedTabs = await captureCurrentWindow();
 
-            if (capturedTitle !== originalTitle) {
-              throw new Error(
-                `Title mismatch at position ${i}: expected ${originalTitle}, got ${capturedTitle}`
-              );
-            }
+        // Verify titles are preserved in captured data
+        for (let i = 0; i < originalBrowserTabs.length; i++) {
+          const originalTitle = originalBrowserTabs[i].title || 'Untitled';
+          const capturedTitle = capturedTabs[i].title;
+
+          if (capturedTitle !== originalTitle) {
+            throw new Error(`Title mismatch at position ${i}: expected ${originalTitle}, got ${capturedTitle}`);
           }
-
-          return true;
         }
-      ),
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
 
   it('Property 13.3: Round-trip maintains data integrity for all fields', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        fc.array(browserTabArbitrary, { minLength: 1, maxLength: 20 }),
-        async (originalBrowserTabs) => {
-          const windowId = 1;
-          
-          // Track tabs created during restoration
-          const restoredTabs: { url: string; windowId: number }[] = [];
+      fc.asyncProperty(fc.array(browserTabArbitrary, { minLength: 1, maxLength: 20 }), async (originalBrowserTabs) => {
+        const windowId = 1;
 
-          // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
-          (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
-          
-          // Mock browser.tabs.query for capture
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
-          (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
+        // Track tabs created during restoration
+        const restoredTabs: { url: string; windowId: number }[] = [];
 
-          // Capture tabs
-          const capturedTabs = await captureCurrentWindow();
+        // Mock browser.windows.getCurrent
+        (global as any).browser = (global as any).browser || {};
+        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
-          // Verify captured data integrity
-          if (capturedTabs.length !== originalBrowserTabs.length) {
-            throw new Error(
-              `Capture count mismatch: expected ${originalBrowserTabs.length}, got ${capturedTabs.length}`
-            );
-          }
+        // Mock browser.tabs.query for capture
+        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
-          // Verify each captured tab has correct data
-          for (let i = 0; i < originalBrowserTabs.length; i++) {
-            const original = originalBrowserTabs[i];
-            const captured = capturedTabs[i];
+        // Capture tabs
+        const capturedTabs = await captureCurrentWindow();
 
-            // Verify URL
-            const expectedUrl = original.url || '';
-            if (captured.url !== expectedUrl) {
-              throw new Error(
-                `Captured URL mismatch at ${i}: expected ${expectedUrl}, got ${captured.url}`
-              );
-            }
-
-            // Verify title
-            const expectedTitle = original.title || 'Untitled';
-            if (captured.title !== expectedTitle) {
-              throw new Error(
-                `Captured title mismatch at ${i}: expected ${expectedTitle}, got ${captured.title}`
-              );
-            }
-
-            // Verify favicon
-            if (captured.faviconUrl !== original.favIconUrl) {
-              throw new Error(
-                `Captured favicon mismatch at ${i}: expected ${original.favIconUrl}, got ${captured.faviconUrl}`
-              );
-            }
-
-            // Verify each captured tab has a unique ID
-            if (!captured.id || typeof captured.id !== 'string') {
-              throw new Error(`Captured tab ${i} missing valid ID`);
-            }
-          }
-
-          // Mock browser.tabs.create for restoration
-          (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
-            restoredTabs.push({
-              url: createProperties.url,
-              windowId: createProperties.windowId,
-            });
-            return { id: restoredTabs.length };
-          });
-
-          // Restore tabs
-          await openTabs(capturedTabs);
-
-          // Verify restoration preserves URLs
-          if (restoredTabs.length !== capturedTabs.length) {
-            throw new Error(
-              `Restoration count mismatch: expected ${capturedTabs.length}, got ${restoredTabs.length}`
-            );
-          }
-
-          for (let i = 0; i < capturedTabs.length; i++) {
-            if (restoredTabs[i].url !== capturedTabs[i].url) {
-              throw new Error(
-                `Restored URL mismatch at ${i}: expected ${capturedTabs[i].url}, got ${restoredTabs[i].url}`
-              );
-            }
-          }
-
-          return true;
+        // Verify captured data integrity
+        if (capturedTabs.length !== originalBrowserTabs.length) {
+          throw new Error(`Capture count mismatch: expected ${originalBrowserTabs.length}, got ${capturedTabs.length}`);
         }
-      ),
+
+        // Verify each captured tab has correct data
+        for (let i = 0; i < originalBrowserTabs.length; i++) {
+          const original = originalBrowserTabs[i];
+          const captured = capturedTabs[i];
+
+          // Verify URL
+          const expectedUrl = original.url || '';
+          if (captured.url !== expectedUrl) {
+            throw new Error(`Captured URL mismatch at ${i}: expected ${expectedUrl}, got ${captured.url}`);
+          }
+
+          // Verify title
+          const expectedTitle = original.title || 'Untitled';
+          if (captured.title !== expectedTitle) {
+            throw new Error(`Captured title mismatch at ${i}: expected ${expectedTitle}, got ${captured.title}`);
+          }
+
+          // Verify favicon
+          if (captured.faviconUrl !== original.favIconUrl) {
+            throw new Error(
+              `Captured favicon mismatch at ${i}: expected ${original.favIconUrl}, got ${captured.faviconUrl}`
+            );
+          }
+
+          // Verify each captured tab has a unique ID
+          if (!captured.id || typeof captured.id !== 'string') {
+            throw new Error(`Captured tab ${i} missing valid ID`);
+          }
+        }
+
+        // Mock browser.tabs.create for restoration
+        (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
+          restoredTabs.push({
+            url: createProperties.url,
+            windowId: createProperties.windowId,
+          });
+          return { id: restoredTabs.length };
+        });
+
+        // Restore tabs
+        await openTabs(capturedTabs);
+
+        // Verify restoration preserves URLs
+        if (restoredTabs.length !== capturedTabs.length) {
+          throw new Error(`Restoration count mismatch: expected ${capturedTabs.length}, got ${restoredTabs.length}`);
+        }
+
+        for (let i = 0; i < capturedTabs.length; i++) {
+          if (restoredTabs[i].url !== capturedTabs[i].url) {
+            throw new Error(
+              `Restored URL mismatch at ${i}: expected ${capturedTabs[i].url}, got ${restoredTabs[i].url}`
+            );
+          }
+        }
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
@@ -240,7 +217,7 @@ describe('Round-Trip Integrity Property Tests', () => {
         ),
         async (originalBrowserTabs) => {
           const windowId = 1;
-          
+
           // Track tabs created during restoration
           const restoredTabs: { url: string }[] = [];
 
@@ -248,7 +225,7 @@ describe('Round-Trip Integrity Property Tests', () => {
           (global as any).browser = (global as any).browser || {};
           (global as any).browser.windows = (global as any).browser.windows || {};
           (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
-          
+
           // Mock browser.tabs.query for capture
           (global as any).browser.tabs = (global as any).browser.tabs || {};
           (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
@@ -257,12 +234,12 @@ describe('Round-Trip Integrity Property Tests', () => {
           const capturedTabs = await captureCurrentWindow();
 
           // Filter out tabs that should be excluded (no URL or restricted protocols)
-          const validTabs = originalBrowserTabs.filter(tab => {
+          const validTabs = originalBrowserTabs.filter((tab) => {
             if (!tab.url) return false;
             try {
               const urlObj = new URL(tab.url);
               const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
-              return !restrictedProtocols.some(protocol => urlObj.protocol.startsWith(protocol));
+              return !restrictedProtocols.some((protocol) => urlObj.protocol.startsWith(protocol));
             } catch {
               return false;
             }
@@ -281,9 +258,7 @@ describe('Round-Trip Integrity Property Tests', () => {
 
           // Verify URLs are preserved (only valid tabs should be restored)
           if (restoredTabs.length !== validTabs.length) {
-            throw new Error(
-              `Tab count mismatch: expected ${validTabs.length}, got ${restoredTabs.length}`
-            );
+            throw new Error(`Tab count mismatch: expected ${validTabs.length}, got ${restoredTabs.length}`);
           }
 
           for (let i = 0; i < validTabs.length; i++) {
@@ -291,9 +266,7 @@ describe('Round-Trip Integrity Property Tests', () => {
             const restoredUrl = restoredTabs[i].url;
 
             if (restoredUrl !== expectedUrl) {
-              throw new Error(
-                `URL mismatch at ${i}: expected ${expectedUrl}, got ${restoredUrl}`
-              );
+              throw new Error(`URL mismatch at ${i}: expected ${expectedUrl}, got ${restoredUrl}`);
             }
           }
 
@@ -303,9 +276,7 @@ describe('Round-Trip Integrity Property Tests', () => {
             const capturedTitle = capturedTabs[i].title;
 
             if (capturedTitle !== expectedTitle) {
-              throw new Error(
-                `Title default not applied at ${i}: expected ${expectedTitle}, got ${capturedTitle}`
-              );
+              throw new Error(`Title default not applied at ${i}: expected ${expectedTitle}, got ${capturedTitle}`);
             }
           }
 
@@ -318,50 +289,45 @@ describe('Round-Trip Integrity Property Tests', () => {
 
   it('Property 13.5: Round-trip maintains tab order', async () => {
     await fc.assert(
-      fc.asyncProperty(
-        fc.array(browserTabArbitrary, { minLength: 2, maxLength: 20 }),
-        async (originalBrowserTabs) => {
-          const windowId = 1;
-          
-          // Track tabs created during restoration in order
-          const restoredUrls: string[] = [];
+      fc.asyncProperty(fc.array(browserTabArbitrary, { minLength: 2, maxLength: 20 }), async (originalBrowserTabs) => {
+        const windowId = 1;
 
-          // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
-          (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
-          
-          // Mock browser.tabs.query for capture
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
-          (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
+        // Track tabs created during restoration in order
+        const restoredUrls: string[] = [];
 
-          // Capture tabs
-          const capturedTabs = await captureCurrentWindow();
+        // Mock browser.windows.getCurrent
+        (global as any).browser = (global as any).browser || {};
+        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
-          // Mock browser.tabs.create for restoration
-          (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
-            restoredUrls.push(createProperties.url);
-            return { id: restoredUrls.length };
-          });
+        // Mock browser.tabs.query for capture
+        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
-          // Restore tabs
-          await openTabs(capturedTabs);
+        // Capture tabs
+        const capturedTabs = await captureCurrentWindow();
 
-          // Verify order is maintained
-          for (let i = 0; i < originalBrowserTabs.length; i++) {
-            const originalUrl = originalBrowserTabs[i].url || '';
-            const restoredUrl = restoredUrls[i];
+        // Mock browser.tabs.create for restoration
+        (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
+          restoredUrls.push(createProperties.url);
+          return { id: restoredUrls.length };
+        });
 
-            if (restoredUrl !== originalUrl) {
-              throw new Error(
-                `Order not maintained at position ${i}: expected ${originalUrl}, got ${restoredUrl}`
-              );
-            }
+        // Restore tabs
+        await openTabs(capturedTabs);
+
+        // Verify order is maintained
+        for (let i = 0; i < originalBrowserTabs.length; i++) {
+          const originalUrl = originalBrowserTabs[i].url || '';
+          const restoredUrl = restoredUrls[i];
+
+          if (restoredUrl !== originalUrl) {
+            throw new Error(`Order not maintained at position ${i}: expected ${originalUrl}, got ${restoredUrl}`);
           }
-
-          return true;
         }
-      ),
+
+        return true;
+      }),
       { numRuns: 100 }
     );
   });
