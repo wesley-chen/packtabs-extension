@@ -1,6 +1,7 @@
-import { describe, it, beforeEach, afterEach, vi } from 'vitest';
 import * as fc from 'fast-check';
-import { tabGroupsStorage, settingsStorage } from '../../types/Storage';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
+
+import { settingsStorage,tabGroupsStorage } from '../../types/Storage';
 import { closeCurrentTabs } from '../../utils/tabManager';
 
 /**
@@ -56,13 +57,16 @@ describe('Automatic Tab Cleanup Property Tests', () => {
 
         // Mock tabs.remove to track which tabs were closed
         const removedTabIds: number[] = [];
+
         (global as any).browser.tabs.remove = vi.fn().mockImplementation((tabIds: number[]) => {
           removedTabIds.push(...tabIds);
+
           return Promise.resolve();
         });
 
         // Verify settings have autoCloseAfterSave enabled
         const settings = await settingsStorage.getValue();
+
         if (!settings.autoCloseAfterSave) {
           throw new Error('autoCloseAfterSave should be enabled for this test');
         }
@@ -110,6 +114,7 @@ describe('Automatic Tab Cleanup Property Tests', () => {
     (global as any).browser.tabs.query = vi.fn().mockResolvedValue([]);
 
     const removeSpy = vi.fn().mockResolvedValue(undefined);
+
     (global as any).browser.tabs.remove = removeSpy;
 
     // Execute: Close tabs when there are none
@@ -118,6 +123,7 @@ describe('Automatic Tab Cleanup Property Tests', () => {
     // Verify: tabs.remove should not be called with empty array
     if (removeSpy.mock.calls.length > 0) {
       const callArgs = removeSpy.mock.calls[0][0];
+
       if (Array.isArray(callArgs) && callArgs.length > 0) {
         throw new Error(`tabs.remove should not be called with tab IDs when there are no tabs`);
       }
@@ -138,12 +144,15 @@ describe('Automatic Tab Cleanup Property Tests', () => {
 
         // First call returns tabs, subsequent calls return empty (tabs already closed)
         let callCount = 0;
+
         (global as any).browser.tabs.query = vi.fn().mockImplementation(() => {
           callCount++;
+
           return Promise.resolve(callCount === 1 ? browserTabs : []);
         });
 
         const removeSpy = vi.fn().mockResolvedValue(undefined);
+
         (global as any).browser.tabs.remove = removeSpy;
 
         // Execute: Close tabs multiple times
@@ -176,8 +185,10 @@ describe('Automatic Tab Cleanup Property Tests', () => {
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(browserTabs);
 
         let removedTabIds: number[] = [];
+
         (global as any).browser.tabs.remove = vi.fn().mockImplementation((tabIds: number[]) => {
           removedTabIds = tabIds;
+
           return Promise.resolve();
         });
 
@@ -236,12 +247,15 @@ describe('Automatic Tab Cleanup Property Tests', () => {
             if (query.windowId === currentWindowId) {
               return Promise.resolve(currentWindowTabs);
             }
+
             return Promise.resolve([]);
           });
 
           let removedTabIds: number[] = [];
+
           (global as any).browser.tabs.remove = vi.fn().mockImplementation((tabIds: number[]) => {
             removedTabIds = tabIds;
+
             return Promise.resolve();
           });
 

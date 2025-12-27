@@ -1,8 +1,9 @@
-import { describe, it, beforeEach, afterEach } from 'vitest';
 import * as fc from 'fast-check';
+import { afterEach,beforeEach, describe, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
-import { saveTabGroup, getTabGroups } from '../../utils/storage';
 import type { TabGroup } from '../../types/TabGroup';
+import { getTabGroups,saveTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 4: Timestamp Assignment
@@ -228,6 +229,7 @@ describe('Timestamp Assignment Property Tests', () => {
 
           // Should be convertible to timestamp number
           const timestamp = group.createdAt.getTime();
+
           if (typeof timestamp !== 'number' || isNaN(timestamp)) {
             throw new Error(`Group ${group.id} timestamp is not a valid number: ${timestamp}`);
           }

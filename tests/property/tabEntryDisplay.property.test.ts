@@ -1,5 +1,6 @@
-import { describe, it } from 'vitest';
 import * as fc from 'fast-check';
+import { describe, it } from 'vitest';
+
 import type { TabItem } from '../../types/TabGroup';
 
 /**

@@ -1,5 +1,6 @@
-import { describe, it, beforeEach, vi } from 'vitest';
 import * as fc from 'fast-check';
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { captureCurrentWindow } from '../../utils/tabManager';
 
 /**
@@ -139,10 +140,12 @@ describe('Tab Capture Property Tests', () => {
 
           // Filter out tabs that should be excluded (no URL or restricted protocols)
           const validTabs = browserTabs.filter((tab) => {
-            if (tab.url == null) return false;
+            if (tab.url == null) {return false;}
+
             try {
               const urlObj = new URL(tab.url);
               const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
+
               return !restrictedProtocols.some((protocol) => urlObj.protocol.startsWith(protocol));
             } catch {
               return false;
@@ -166,6 +169,7 @@ describe('Tab Capture Property Tests', () => {
 
             // Title should default to 'Untitled' if missing
             const expectedTitle = originalTab.title ?? 'Untitled';
+
             if (capturedTab.title !== expectedTitle) {
               throw new Error(`Tab ${i} title mismatch: expected ${expectedTitle}, got ${capturedTab.title}`);
             }

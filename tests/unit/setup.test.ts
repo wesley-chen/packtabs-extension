@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect,it } from 'vitest';
 
 describe('Project Setup', () => {
   it('should have Chrome API mocks available', () => {
@@ -10,6 +10,7 @@ describe('Project Setup', () => {
 
   it('should support TypeScript strict mode', () => {
     const testValue = 'test';
+
     expect(testValue).toBe('test');
   });
 });

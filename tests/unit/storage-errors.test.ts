@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { saveTabGroup, getTabGroups, updateTabGroup, deleteTabGroup, deleteTabFromGroup } from '../../utils/storage';
-import type { TabGroup } from '../../types/TabGroup';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup } from '../../types/TabGroup';
+import { deleteTabFromGroup,deleteTabGroup, getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 
 describe('Storage Error Handling', () => {
   beforeEach(async () => {
@@ -44,6 +45,7 @@ describe('Storage Error Handling', () => {
 
       // Mock setValue to fail once, then succeed
       const setValueSpy = vi.spyOn(tabGroupsStorage, 'setValue');
+
       setValueSpy.mockRejectedValueOnce(new Error('Transient failure')).mockResolvedValueOnce(undefined);
 
       // First call should fail
@@ -54,6 +56,7 @@ describe('Storage Error Handling', () => {
       await expect(saveTabGroup(testGroup)).resolves.not.toThrow();
 
       const groups = await getTabGroups();
+
       expect(groups).toHaveLength(1);
       expect(groups[0].id).toBe('test-1');
     });
@@ -110,6 +113,7 @@ describe('Storage Error Handling', () => {
       });
 
       const groups = await getTabGroups();
+
       expect(groups).toHaveLength(1);
       // Invalid date string creates Invalid Date object
       expect(groups[0].createdAt.toString()).toBe('Invalid Date');
@@ -128,6 +132,7 @@ describe('Storage Error Handling', () => {
       });
 
       const groups = await getTabGroups();
+
       expect(groups).toHaveLength(1);
       // Should still deserialize, but createdAt will be Invalid Date
       expect(groups[0].id).toBe('incomplete-1');
@@ -148,6 +153,7 @@ describe('Storage Error Handling', () => {
       // Storage returns the corrupted data as-is
       // In a real implementation, we might want validation
       const groups = await getTabGroups();
+
       expect(groups).toHaveLength(1);
       expect(groups[0].tabs).toBeNull();
     });
@@ -156,6 +162,7 @@ describe('Storage Error Handling', () => {
       await tabGroupsStorage.setValue({});
 
       const groups = await getTabGroups();
+
       expect(groups).toEqual([]);
     });
 
@@ -165,6 +172,7 @@ describe('Storage Error Handling', () => {
 
       // WXT storage returns default value ({}) when null is stored
       const groups = await getTabGroups();
+
       expect(groups).toEqual([]);
     });
 
@@ -193,6 +201,7 @@ describe('Storage Error Handling', () => {
       // In a production system, we'd want to implement proper transaction handling
       // or deep cloning to prevent this.
       const groups = await getTabGroups();
+
       expect(groups[0].name).toBe('Updated'); // Data was mutated despite setValue failure
     });
 
@@ -217,10 +226,12 @@ describe('Storage Error Handling', () => {
       await Promise.all([saveTabGroup(group1), saveTabGroup(group2)]);
 
       const groups = await getTabGroups();
+
       expect(groups).toHaveLength(2);
 
       // Both groups should be present
       const ids = groups.map((g) => g.id).sort();
+
       expect(ids).toEqual(['group-1', 'group-2']);
     });
   });
@@ -239,6 +250,7 @@ describe('Storage Error Handling', () => {
       await saveTabGroup(testGroup);
 
       const groups = await getTabGroups();
+
       expect(groups[0].name).toBe(longName);
     });
 
@@ -261,6 +273,7 @@ describe('Storage Error Handling', () => {
       await saveTabGroup(testGroup);
 
       const groups = await getTabGroups();
+
       expect(groups[0].tabs[0].url).toBe('https://example.com/path?query=value&foo=bar#fragment');
       expect(groups[0].tabs[0].title).toBe('Special <>&" Characters');
     });
@@ -277,6 +290,7 @@ describe('Storage Error Handling', () => {
       await saveTabGroup(testGroup);
 
       const groups = await getTabGroups();
+
       expect(groups[0].tabs).toEqual([]);
     });
   });

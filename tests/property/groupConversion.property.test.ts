@@ -1,8 +1,9 @@
-import { describe, it, beforeEach, afterEach } from 'vitest';
 import * as fc from 'fast-check';
+import { afterEach, beforeEach, describe, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
-import { getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 import type { TabGroup } from '../../types/TabGroup';
+import { getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 7: Group Conversion
@@ -53,14 +54,17 @@ describe('Group Conversion Property Tests', () => {
 
         // Verify initial state
         let groups = await getTabGroups();
+
         if (groups.length !== 1) {
           throw new Error(`Expected 1 group initially, got ${groups.length}`);
         }
 
         const initialGroup = groups[0];
-        if (initialGroup.name !== null) {
+
+        if (initialGroup.name != null) {
           throw new Error(`Initial group should have null name, got ${initialGroup.name}`);
         }
+
         if (!initialGroup.isHistory) {
           throw new Error(`Initial group should have isHistory=true, got ${initialGroup.isHistory}`);
         }
@@ -73,6 +77,7 @@ describe('Group Conversion Property Tests', () => {
 
         // Verify: Group is now a named group
         groups = await getTabGroups();
+
         if (groups.length !== 1) {
           throw new Error(`Expected 1 group after conversion, got ${groups.length}`);
         }
@@ -166,18 +171,21 @@ describe('Group Conversion Property Tests', () => {
 
           // Setup: Clear storage and save multiple history groups
           await tabGroupsStorage.setValue({});
+
           for (const group of testGroups) {
             await saveTabGroup(group);
           }
 
           // Verify initial state
           let groups = await getTabGroups();
+
           if (groups.length !== testGroups.length) {
             throw new Error(`Expected ${testGroups.length} groups initially, got ${groups.length}`);
           }
 
           // All should be history groups
-          const allHistory = groups.every((g) => g.isHistory && g.name === null);
+          const allHistory = groups.every((g) => g.isHistory && g.name == null);
+
           if (!allHistory) {
             throw new Error('Not all initial groups are history groups');
           }
@@ -190,11 +198,13 @@ describe('Group Conversion Property Tests', () => {
 
           // Verify: Only first group was converted
           groups = await getTabGroups();
+
           if (groups.length !== testGroups.length) {
             throw new Error(`Expected ${testGroups.length} groups after conversion, got ${groups.length}`);
           }
 
           const convertedGroup = groups.find((g) => g.id === testGroups[0].id);
+
           if (!convertedGroup) {
             throw new Error('Converted group not found');
           }
@@ -210,11 +220,12 @@ describe('Group Conversion Property Tests', () => {
           // Verify other groups remain as history groups
           for (let i = 1; i < testGroups.length; i++) {
             const otherGroup = groups.find((g) => g.id === testGroups[i].id);
+
             if (!otherGroup) {
               throw new Error(`Group ${i} not found`);
             }
 
-            if (otherGroup.name !== null) {
+            if (otherGroup.name != null) {
               throw new Error(`Group ${i} should still have null name, got "${otherGroup.name}"`);
             }
 

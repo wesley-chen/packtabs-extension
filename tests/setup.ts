@@ -1,5 +1,5 @@
+import { TextDecoder,TextEncoder } from 'util';
 import { beforeEach, vi } from 'vitest';
-import { TextEncoder, TextDecoder } from 'util';
 
 // Fix for jsdom TextEncoder issue with esbuild
 if (typeof global.TextEncoder === 'undefined') {

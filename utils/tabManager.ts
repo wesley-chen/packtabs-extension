@@ -42,6 +42,7 @@ function validateUrl(url: string): boolean {
     const urlObj = new URL(url);
     // Check for restricted protocols
     const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:', 'data:', 'javascript:'];
+
     return !restrictedProtocols.some((protocol) => urlObj.protocol.startsWith(protocol));
   } catch {
     return false;
@@ -64,11 +65,12 @@ export async function captureCurrentWindow(): Promise<TabItem[]> {
     const tabItems: TabItem[] = tabs
       .filter((tab) => {
         // Skip tabs without URLs or with restricted URLs
-        if (!tab.url) return false;
+        if (!tab.url) {return false;}
 
         try {
           const urlObj = new URL(tab.url);
           const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
+
           return !restrictedProtocols.some((protocol) => urlObj.protocol.startsWith(protocol));
         } catch {
           return false;
@@ -116,6 +118,7 @@ export async function openTabs(tabs: TabItem[]): Promise<void> {
       } catch (error) {
         // Log individual tab errors but continue with others
         console.error(`Failed to open tab ${tab.url}:`, error);
+
         if (error instanceof Error && error.message.includes('permission')) {
           throw new TabPermissionDeniedError(tab.url);
         }

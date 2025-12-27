@@ -1,9 +1,12 @@
 {
     "cSpell.words": [
+        "inputtext",
         "packtabs",
         "primeicons",
         "primeuix",
-        "primevue"
+        "primevue",
+        "useconfirm",
+        "usetoast"
     ],
     "eslint.enable": true,
     "eslint.validate": [

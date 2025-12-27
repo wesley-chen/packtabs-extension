@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { computed,ref } from 'vue';
+
 import type { TabGroup } from '~/types/TabGroup';
 import {
+  deleteTabFromGroup as deleteTabFromGroupInStorage,
+  deleteTabGroup as deleteTabGroupFromStorage,
   getTabGroups,
   saveTabGroup as saveTabGroupToStorage,
-  updateTabGroup as updateTabGroupInStorage,
-  deleteTabGroup as deleteTabGroupFromStorage,
-  deleteTabFromGroup as deleteTabFromGroupInStorage,
   StorageQuotaExceededError,
+  updateTabGroup as updateTabGroupInStorage,
 } from '~/utils/storage';
 import { captureCurrentWindow, TabPermissionDeniedError } from '~/utils/tabManager';
 

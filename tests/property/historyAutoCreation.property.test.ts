@@ -1,5 +1,6 @@
-import { describe, it, beforeEach, vi, afterEach } from 'vitest';
 import * as fc from 'fast-check';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
 import { getTabGroups } from '../../utils/storage';
 
@@ -89,7 +90,7 @@ describe('History Group Auto-Creation Property Tests', () => {
         const historyGroup = groups[0];
 
         // Verify it's a history group (name is null, isHistory is true)
-        if (historyGroup.name !== null) {
+        if (historyGroup.name != null) {
           throw new Error(`Expected history group to have null name, got ${historyGroup.name}`);
         }
 
@@ -158,7 +159,7 @@ describe('History Group Auto-Creation Property Tests', () => {
         const savedGroup = groups[0];
 
         // Verify name is null (no user input)
-        if (savedGroup.name !== null) {
+        if (savedGroup.name != null) {
           throw new Error(`History group should have null name (no user input), got ${savedGroup.name}`);
         }
 

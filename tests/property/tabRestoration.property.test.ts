@@ -1,7 +1,8 @@
-import { describe, it, beforeEach, vi } from 'vitest';
 import * as fc from 'fast-check';
-import { openTabs, openSingleTab } from '../../utils/tabManager';
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import type { TabItem } from '../../types/TabGroup';
+import { openSingleTab,openTabs } from '../../utils/tabManager';
 
 /**
  * Feature: tab-group-manager, Property 11: Tab Restoration Completeness
@@ -47,6 +48,7 @@ describe('Tab Restoration Property Tests', () => {
             url: createProperties.url,
             windowId: createProperties.windowId,
           });
+
           return { id: createdTabs.length };
         });
 
@@ -85,6 +87,7 @@ describe('Tab Restoration Property Tests', () => {
             url: createProperties.url,
             windowId: createProperties.windowId,
           });
+
           return { id: createdTabs.length };
         });
 
@@ -127,6 +130,7 @@ describe('Tab Restoration Property Tests', () => {
             url: createProperties.url,
             windowId: createProperties.windowId,
           });
+
           return { id: createdTabs.length };
         });
 
@@ -167,6 +171,7 @@ describe('Tab Restoration Property Tests', () => {
         (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdUrls.push(createProperties.url);
+
           return { id: createdUrls.length };
         });
 
@@ -208,6 +213,7 @@ describe('Tab Restoration Property Tests', () => {
             windowId: createProperties.windowId,
             active: createProperties.active,
           };
+
           return { id: 1 };
         });
 

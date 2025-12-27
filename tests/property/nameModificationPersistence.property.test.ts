@@ -7,11 +7,12 @@
  * persisted and reflected in the UI.
  */
 
-import { describe, it, beforeEach, vi } from 'vitest';
 import * as fc from 'fast-check';
-import type { TabGroup } from '~/types/TabGroup';
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { tabGroupsStorage } from '~/types/Storage';
-import { updateTabGroup, getTabGroups } from '~/utils/storage';
+import type { TabGroup } from '~/types/TabGroup';
+import { getTabGroups,updateTabGroup } from '~/utils/storage';
 
 // Arbitrary for generating random TabGroup objects
 const tabGroupArbitrary = fc.record({
@@ -44,6 +45,7 @@ describe('Property 8: Name Modification Persistence', () => {
         async (originalGroup: TabGroup, newName: string) => {
           // Save the original group
           const groups = await tabGroupsStorage.getValue();
+
           groups[originalGroup.id] = {
             ...originalGroup,
             createdAt: originalGroup.createdAt.toISOString(),
@@ -81,6 +83,7 @@ describe('Property 8: Name Modification Persistence', () => {
         async (originalGroup: TabGroup, newName: string) => {
           // Save the original group
           const groups = await tabGroupsStorage.getValue();
+
           groups[originalGroup.id] = {
             ...originalGroup,
             createdAt: originalGroup.createdAt.toISOString(),
@@ -142,6 +145,7 @@ describe('Property 8: Name Modification Persistence', () => {
         // Save the original group with a non-empty name
         const groupWithName = { ...originalGroup, name: 'Original Name' };
         const groups = await tabGroupsStorage.getValue();
+
         groups[groupWithName.id] = {
           ...groupWithName,
           createdAt: groupWithName.createdAt.toISOString(),
@@ -178,6 +182,7 @@ describe('Property 8: Name Modification Persistence', () => {
         async (originalGroup: TabGroup, nameSequence: string[]) => {
           // Save the original group
           const groups = await tabGroupsStorage.getValue();
+
           groups[originalGroup.id] = {
             ...originalGroup,
             createdAt: originalGroup.createdAt.toISOString(),
@@ -199,6 +204,7 @@ describe('Property 8: Name Modification Persistence', () => {
 
           // Verify the final name matches the last update
           const expectedName = nameSequence[nameSequence.length - 1];
+
           if (updatedGroup.name !== expectedName) {
             throw new Error(`Final name incorrect: expected "${expectedName}", got "${updatedGroup.name}"`);
           }

@@ -1,8 +1,9 @@
-import { describe, it, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
-import type { TabGroup } from '../../types/TabGroup';
-import { saveTabGroup, getTabGroups, updateTabGroup, deleteTabFromGroup } from '../../utils/storage';
+import { beforeEach,describe, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup } from '../../types/TabGroup';
+import { deleteTabFromGroup,getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 10: Group Operation Isolation
@@ -50,6 +51,7 @@ describe('Group Operation Isolation Property Tests', () => {
             ...group,
             id: `group-${index}-${group.id}`,
           }));
+
           return fc.constant(uniqueGroups);
         }),
         fc.string({ minLength: 1, maxLength: 50 }),
@@ -74,9 +76,11 @@ describe('Group Operation Isolation Property Tests', () => {
 
           // Verify the target group was updated
           const updatedTarget = afterUpdate.find((g) => g.id === targetGroup.id);
+
           if (!updatedTarget) {
             throw new Error(`Target group ${targetGroup.id} not found after update`);
           }
+
           if (updatedTarget.name !== newName) {
             throw new Error(`Target group name not updated: expected ${newName}, got ${updatedTarget.name}`);
           }
@@ -94,9 +98,11 @@ describe('Group Operation Isolation Property Tests', () => {
             if (afterGroup.name !== beforeGroup.name) {
               throw new Error(`Group ${otherGroup.id} name changed unexpectedly`);
             }
+
             if (afterGroup.isHistory !== beforeGroup.isHistory) {
               throw new Error(`Group ${otherGroup.id} isHistory changed unexpectedly`);
             }
+
             if (afterGroup.tabs.length !== beforeGroup.tabs.length) {
               throw new Error(`Group ${otherGroup.id} tabs count changed unexpectedly`);
             }
@@ -109,9 +115,11 @@ describe('Group Operation Isolation Property Tests', () => {
               if (afterTab.id !== beforeTab.id) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} ID changed`);
               }
+
               if (afterTab.url !== beforeTab.url) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} URL changed`);
               }
+
               if (afterTab.title !== beforeTab.title) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} title changed`);
               }
@@ -134,6 +142,7 @@ describe('Group Operation Isolation Property Tests', () => {
             ...group,
             id: `group-${index}-${group.id}`,
           }));
+
           return fc.constant(uniqueGroups);
         }),
         async (groups) => {
@@ -158,12 +167,15 @@ describe('Group Operation Isolation Property Tests', () => {
 
           // Verify the target group had the tab removed
           const updatedTarget = afterDelete.find((g) => g.id === targetGroup.id);
+
           if (!updatedTarget) {
             throw new Error(`Target group ${targetGroup.id} not found after tab deletion`);
           }
+
           if (updatedTarget.tabs.length !== targetGroup.tabs.length - 1) {
             throw new Error(`Target group tab count incorrect after deletion`);
           }
+
           if (updatedTarget.tabs.some((t) => t.id === tabToDelete.id)) {
             throw new Error(`Deleted tab ${tabToDelete.id} still exists in target group`);
           }
@@ -181,9 +193,11 @@ describe('Group Operation Isolation Property Tests', () => {
             if (afterGroup.name !== beforeGroup.name) {
               throw new Error(`Group ${otherGroup.id} name changed unexpectedly`);
             }
+
             if (afterGroup.isHistory !== beforeGroup.isHistory) {
               throw new Error(`Group ${otherGroup.id} isHistory changed unexpectedly`);
             }
+
             if (afterGroup.tabs.length !== beforeGroup.tabs.length) {
               throw new Error(
                 `Group ${otherGroup.id} tabs count changed from ${beforeGroup.tabs.length} to ${afterGroup.tabs.length}`
@@ -198,12 +212,15 @@ describe('Group Operation Isolation Property Tests', () => {
               if (afterTab.id !== beforeTab.id) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} ID changed`);
               }
+
               if (afterTab.url !== beforeTab.url) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} URL changed`);
               }
+
               if (afterTab.title !== beforeTab.title) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} title changed`);
               }
+
               if (afterTab.faviconUrl !== beforeTab.faviconUrl) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} faviconUrl changed`);
               }
@@ -237,6 +254,7 @@ describe('Group Operation Isolation Property Tests', () => {
               ...group,
               id: `group-${index}-${group.id}`,
             }));
+
             return fc.constant(uniqueGroups);
           }),
         fc.string({ minLength: 1, maxLength: 50 }),
@@ -261,12 +279,15 @@ describe('Group Operation Isolation Property Tests', () => {
 
           // Verify the target group was converted
           const convertedTarget = afterConversion.find((g) => g.id === targetGroup.id);
+
           if (!convertedTarget) {
             throw new Error(`Target group ${targetGroup.id} not found after conversion`);
           }
+
           if (convertedTarget.name !== newName) {
             throw new Error(`Target group name not updated: expected ${newName}, got ${convertedTarget.name}`);
           }
+
           if (convertedTarget.isHistory) {
             throw new Error(`Target group isHistory not updated to false`);
           }
@@ -286,11 +307,13 @@ describe('Group Operation Isolation Property Tests', () => {
                 `Group ${otherGroup.id} name changed unexpectedly from ${beforeGroup.name} to ${afterGroup.name}`
               );
             }
+
             if (afterGroup.isHistory !== beforeGroup.isHistory) {
               throw new Error(
                 `Group ${otherGroup.id} isHistory changed unexpectedly from ${beforeGroup.isHistory} to ${afterGroup.isHistory}`
               );
             }
+
             if (afterGroup.tabs.length !== beforeGroup.tabs.length) {
               throw new Error(`Group ${otherGroup.id} tabs count changed unexpectedly`);
             }
@@ -303,9 +326,11 @@ describe('Group Operation Isolation Property Tests', () => {
               if (afterTab.id !== beforeTab.id) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} ID changed`);
               }
+
               if (afterTab.url !== beforeTab.url) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} URL changed`);
               }
+
               if (afterTab.title !== beforeTab.title) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} title changed`);
               }

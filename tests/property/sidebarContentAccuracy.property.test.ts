@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createPinia, setActivePinia } from 'pinia';
 import * as fc from 'fast-check';
+import { createPinia, setActivePinia } from 'pinia';
+import { beforeEach,describe, expect, it } from 'vitest';
+
 import { useTabStore } from '~/stores/useTabStore';
 import { tabGroupsStorage } from '~/types/Storage';
 import type { TabGroup } from '~/types/TabGroup';
@@ -20,6 +21,7 @@ describe('Property 14: Sidebar Content Accuracy', () => {
 
     // Create fresh Pinia instance
     const pinia = createPinia();
+
     setActivePinia(pinia);
   });
 
@@ -48,6 +50,7 @@ describe('Property 14: Sidebar Content Accuracy', () => {
         async (groups: TabGroup[]) => {
           // Save groups to storage
           const groupsMap: Record<string, TabGroup> = {};
+
           groups.forEach((group) => {
             groupsMap[group.id] = group;
           });
@@ -55,8 +58,10 @@ describe('Property 14: Sidebar Content Accuracy', () => {
 
           // Create Pinia instance and load store
           const pinia = createPinia();
+
           setActivePinia(pinia);
           const store = useTabStore();
+
           await store.loadGroups();
 
           // Count history and named groups
@@ -70,6 +75,7 @@ describe('Property 14: Sidebar Content Accuracy', () => {
           // Verify all history groups are accessible
           historyGroups.forEach((group) => {
             const foundGroup = store.historyGroups.find((g) => g.id === group.id);
+
             expect(foundGroup).toBeDefined();
             expect(foundGroup?.name).toBe(group.name);
             expect(foundGroup?.isHistory).toBe(true);
@@ -78,6 +84,7 @@ describe('Property 14: Sidebar Content Accuracy', () => {
           // Verify all named groups are accessible
           namedGroups.forEach((group) => {
             const foundGroup = store.namedGroups.find((g) => g.id === group.id);
+
             expect(foundGroup).toBeDefined();
             expect(foundGroup?.name).toBe(group.name);
             expect(foundGroup?.isHistory).toBe(false);

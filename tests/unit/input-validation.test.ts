@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import { useTabStore } from '../../stores/useTabStore';
-import { setStoreErrorHandler } from '../../stores/useTabStore';
+import { beforeEach,describe, expect, it } from 'vitest';
+
+import { setStoreErrorHandler,useTabStore  } from '../../stores/useTabStore';
 import { tabGroupsStorage } from '../../types/Storage';
 import type { TabGroup } from '../../types/TabGroup';
 
@@ -127,6 +127,7 @@ describe('User Input Validation', () => {
       // Verify the group was converted
       await store.loadGroups();
       const group = store.tabGroups.find((g) => g.id === 'history-1');
+
       expect(group?.name).toBe('My Group');
       expect(group?.isHistory).toBe(false);
     });
@@ -161,6 +162,7 @@ describe('User Input Validation', () => {
       // Verify the group name was trimmed
       await store.loadGroups();
       const group = store.tabGroups.find((g) => g.id === 'history-1');
+
       expect(group?.name).toBe('My Group');
     });
 
@@ -194,6 +196,7 @@ describe('User Input Validation', () => {
       // Verify the group was converted with special characters
       await store.loadGroups();
       const group = store.tabGroups.find((g) => g.id === 'history-1');
+
       expect(group?.name).toBe('Work <Project> & Tasks #1');
     });
 
@@ -228,6 +231,7 @@ describe('User Input Validation', () => {
       // Verify the group was converted
       await store.loadGroups();
       const group = store.tabGroups.find((g) => g.id === 'history-1');
+
       expect(group?.name).toBe(longName);
     });
   });
@@ -371,6 +375,7 @@ describe('User Input Validation', () => {
       // Verify the group was converted
       await store.loadGroups();
       const group = store.tabGroups.find((g) => g.id === 'history-1');
+
       expect(group?.name).toBe('123');
     });
   });

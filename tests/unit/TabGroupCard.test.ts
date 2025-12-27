@@ -1,12 +1,13 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
-import TabGroupCard from '../../components/TabGroupCard.vue';
-import type { TabGroup } from '../../types/TabGroup';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import TabGroupCard from '../../components/TabGroupCard.vue';
 import { useTabStore } from '../../stores/useTabStore';
+import type { TabGroup } from '../../types/TabGroup';
 
 /**
  * Unit tests for TabGroupCard component
@@ -92,6 +93,7 @@ describe('TabGroupCard Component', () => {
 
     // Check for date components (format may vary by locale)
     const text = wrapper.text();
+
     expect(text).toMatch(/2024/);
     expect(text).toMatch(/Jan/);
   });
@@ -132,6 +134,7 @@ describe('TabGroupCard Component', () => {
 
     // Find and click Save button
     const saveButton = wrapper.findAll('button').find((btn) => btn.text().includes('Save'));
+
     expect(saveButton).toBeDefined();
 
     if (saveButton) {
@@ -140,6 +143,7 @@ describe('TabGroupCard Component', () => {
 
       // Check that the dialog is visible
       const dialog = wrapper.findComponent({ name: 'Dialog' });
+
       expect(dialog.exists()).toBe(true);
       expect(dialog.props('visible')).toBe(true);
 
@@ -158,6 +162,7 @@ describe('TabGroupCard Component', () => {
 
     // Find edit button
     const editButton = wrapper.find('[aria-label="Edit group name"]');
+
     expect(editButton.exists()).toBe(true);
 
     // Click edit button
@@ -165,6 +170,7 @@ describe('TabGroupCard Component', () => {
 
     // Check that input field appears
     const input = wrapper.find('input[type="text"]');
+
     expect(input.exists()).toBe(true);
   });
 

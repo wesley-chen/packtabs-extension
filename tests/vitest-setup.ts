@@ -2,12 +2,13 @@
 // Fix for jsdom TextEncoder issue with esbuild
 
 // Import from util module
-import { TextEncoder as NodeTextEncoder, TextDecoder as NodeTextDecoder } from 'util';
+import { TextDecoder as NodeTextDecoder,TextEncoder as NodeTextEncoder } from 'util';
 
 // Create proper Uint8Array-based TextEncoder for jsdom
 class FixedTextEncoder extends NodeTextEncoder {
   encode(input?: string): Uint8Array {
     const result = super.encode(input);
+
     // Ensure it's a proper Uint8Array instance
     return new Uint8Array(result);
   }

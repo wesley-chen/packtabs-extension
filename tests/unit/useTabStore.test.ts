@@ -1,8 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { createPinia,setActivePinia } from 'pinia';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { useTabStore } from '../../stores/useTabStore';
-import type { TabGroup, TabItem } from '../../types/TabGroup';
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup, TabItem } from '../../types/TabGroup';
 
 describe('useTabStore', () => {
   beforeEach(async () => {
@@ -408,6 +409,7 @@ describe('useTabStore', () => {
 
       // Verify updates
       const updatedGroup = store.tabGroups[0];
+
       expect(updatedGroup.name).toBe('New Name');
       expect(updatedGroup.tabs).toHaveLength(1);
     });
@@ -590,10 +592,12 @@ describe('useTabStore', () => {
 
       // Verify group 1 affected
       const updatedGroup1 = store.tabGroups.find((g) => g.id === 'group-1');
+
       expect(updatedGroup1?.tabs).toHaveLength(1);
 
       // Verify group 2 unaffected
       const updatedGroup2 = store.tabGroups.find((g) => g.id === 'group-2');
+
       expect(updatedGroup2?.tabs).toHaveLength(1);
       expect(updatedGroup2?.tabs[0].id).toBe('tab-3');
     });
@@ -660,6 +664,7 @@ describe('useTabStore', () => {
 
       // Verify tabs preserved
       const convertedGroup = store.namedGroups[0];
+
       expect(convertedGroup.tabs).toHaveLength(2);
       expect(convertedGroup.tabs[0].url).toBe('https://example1.com');
       expect(convertedGroup.tabs[1].url).toBe('https://example2.com');
@@ -691,6 +696,7 @@ describe('useTabStore', () => {
 
       // Verify timestamp preserved
       const convertedGroup = store.namedGroups[0];
+
       expect(convertedGroup.createdAt.toISOString()).toBe(originalDate.toISOString());
     });
   });

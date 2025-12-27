@@ -6,8 +6,9 @@
  * Property: For any individual tab title click, that specific URL should open in a new browser tab.
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import * as fc from 'fast-check';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import type { TabItem } from '~/types/TabGroup';
 import { openSingleTab } from '~/utils/tabManager';
 
@@ -47,6 +48,7 @@ describe('Property 12: Individual Tab Opening', () => {
             windowId: createProperties.windowId,
             active: createProperties.active,
           };
+
           return { id: Math.floor(Math.random() * 10000) };
         });
 
@@ -93,6 +95,7 @@ describe('Property 12: Individual Tab Opening', () => {
             windowId: createProperties.windowId,
             active: createProperties.active,
           };
+
           return { id: Math.floor(Math.random() * 10000) };
         });
 

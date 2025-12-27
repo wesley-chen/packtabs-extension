@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createPinia, setActivePinia } from 'pinia';
 import * as fc from 'fast-check';
+import { createPinia, setActivePinia } from 'pinia';
+import { beforeEach,describe, expect, it } from 'vitest';
+
 import { useTabStore } from '~/stores/useTabStore';
 import { tabGroupsStorage } from '~/types/Storage';
 import type { TabGroup } from '~/types/TabGroup';
@@ -20,6 +21,7 @@ describe('Property 15: Navigation Consistency', () => {
 
     // Create fresh Pinia instance
     const pinia = createPinia();
+
     setActivePinia(pinia);
   });
 
@@ -48,6 +50,7 @@ describe('Property 15: Navigation Consistency', () => {
         async (groups: TabGroup[]) => {
           // Save groups to storage
           const groupsMap: Record<string, TabGroup> = {};
+
           groups.forEach((group) => {
             groupsMap[group.id] = group;
           });
@@ -55,8 +58,10 @@ describe('Property 15: Navigation Consistency', () => {
 
           // Create Pinia instance and load store
           const pinia = createPinia();
+
           setActivePinia(pinia);
           const store = useTabStore();
+
           await store.loadGroups();
 
           // Test selecting each group
@@ -74,6 +79,7 @@ describe('Property 15: Navigation Consistency', () => {
             // Verify all tabs are present
             group.tabs.forEach((tab, index) => {
               const selectedTab = store.selectedGroup?.tabs[index];
+
               expect(selectedTab?.id).toBe(tab.id);
               expect(selectedTab?.url).toBe(tab.url);
               expect(selectedTab?.title).toBe(tab.title);

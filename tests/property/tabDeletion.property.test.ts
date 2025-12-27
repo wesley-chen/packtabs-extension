@@ -1,8 +1,9 @@
-import { describe, it, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
-import type { TabGroup, TabItem } from '../../types/TabGroup';
-import { saveTabGroup, getTabGroups, deleteTabFromGroup } from '../../utils/storage';
+import { beforeEach,describe, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup, TabItem } from '../../types/TabGroup';
+import { deleteTabFromGroup,getTabGroups, saveTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 19: Individual Tab Deletion Precision
@@ -68,6 +69,7 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
 
           // Verify the deleted tab is gone
           const deletedTabStillExists = updatedGroup.tabs.some((t) => t.id === tabToDelete.id);
+
           if (deletedTabStillExists) {
             throw new Error(`Deleted tab ${tabToDelete.id} still exists in group`);
           }
@@ -91,11 +93,13 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
             if (foundTab.url !== expectedTab.url) {
               throw new Error(`Tab ${expectedTab.id} URL changed: expected ${expectedTab.url}, got ${foundTab.url}`);
             }
+
             if (foundTab.title !== expectedTab.title) {
               throw new Error(
                 `Tab ${expectedTab.id} title changed: expected ${expectedTab.title}, got ${foundTab.title}`
               );
             }
+
             if (foundTab.faviconUrl !== expectedTab.faviconUrl) {
               throw new Error(
                 `Tab ${expectedTab.id} faviconUrl changed: expected ${expectedTab.faviconUrl}, got ${foundTab.faviconUrl}`
@@ -107,6 +111,7 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
           if (updatedGroup.name !== group.name) {
             throw new Error(`Group name changed after tab deletion`);
           }
+
           if (updatedGroup.isHistory !== group.isHistory) {
             throw new Error(`Group isHistory changed after tab deletion`);
           }
@@ -155,9 +160,11 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
           if (actual.id !== expected.id) {
             throw new Error(`Tab at position ${i} has wrong ID: expected ${expected.id}, got ${actual.id}`);
           }
+
           if (actual.url !== expected.url) {
             throw new Error(`Tab ${expected.id} URL changed`);
           }
+
           if (actual.title !== expected.title) {
             throw new Error(`Tab ${expected.id} title changed`);
           }
@@ -206,9 +213,11 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
           if (actual.id !== expected.id) {
             throw new Error(`Tab at position ${i} has wrong ID`);
           }
+
           if (actual.url !== expected.url) {
             throw new Error(`Tab ${expected.id} URL changed`);
           }
+
           if (actual.title !== expected.title) {
             throw new Error(`Tab ${expected.id} title changed`);
           }
@@ -268,6 +277,7 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
             if (actual.id !== expected.id) {
               throw new Error(`Tab order changed: position ${i} expected ${expected.id}, got ${actual.id}`);
             }
+
             if (actual.url !== expected.url || actual.title !== expected.title) {
               throw new Error(`Tab ${expected.id} data changed`);
             }
@@ -337,6 +347,7 @@ describe('Individual Tab Deletion Precision Property Tests', () => {
             if (actual.id !== expected.id) {
               throw new Error(`Tab order changed at position ${i}`);
             }
+
             if (actual.url !== expected.url || actual.title !== expected.title) {
               throw new Error(`Tab ${expected.id} data changed after deletions`);
             }

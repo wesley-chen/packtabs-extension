@@ -1,12 +1,13 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
-import TabGroupList from '../../components/TabGroupList.vue';
-import TabGroupCard from '../../components/TabGroupCard.vue';
-import type { TabGroup } from '../../types/TabGroup';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
+import { beforeEach,describe, expect, it } from 'vitest';
+
+import TabGroupCard from '../../components/TabGroupCard.vue';
+import TabGroupList from '../../components/TabGroupList.vue';
+import type { TabGroup } from '../../types/TabGroup';
 
 /**
  * Unit tests for TabGroupList component
@@ -85,6 +86,7 @@ describe('TabGroupList Component', () => {
 
     // Find all TabGroupCard components
     const cards = wrapper.findAllComponents(TabGroupCard);
+
     expect(cards).toHaveLength(3);
   });
 
@@ -119,6 +121,7 @@ describe('TabGroupList Component', () => {
     });
 
     const text = wrapper.text();
+
     expect(text).toContain('Work Tabs');
     expect(text).toContain('History Tab Group'); // For unnamed group
     expect(text).toContain('Personal Tabs');
@@ -146,6 +149,7 @@ describe('TabGroupList Component', () => {
     });
 
     const cards = wrapper.findAllComponents(TabGroupCard);
+
     expect(cards).toHaveLength(0);
   });
 
@@ -159,6 +163,7 @@ describe('TabGroupList Component', () => {
 
     // Check for inbox icon in empty state
     const icon = wrapper.find('.pi-inbox');
+
     expect(icon.exists()).toBe(true);
   });
 
@@ -198,6 +203,7 @@ describe('TabGroupList Component', () => {
     });
 
     const cards = wrapper.findAllComponents(TabGroupCard);
+
     expect(cards).toHaveLength(1);
     expect(wrapper.text()).toContain('Work Tabs');
   });

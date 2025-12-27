@@ -1,8 +1,9 @@
-import { describe, it, beforeEach, afterEach } from 'vitest';
 import * as fc from 'fast-check';
+import { afterEach, beforeEach, describe, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
-import { saveTabGroup, getTabGroups } from '../../utils/storage';
 import type { TabGroup } from '../../types/TabGroup';
+import { getTabGroups, saveTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 6: History Group Preservation
@@ -84,7 +85,7 @@ describe('History Group Preservation Property Tests', () => {
             throw new Error(`Group ${found.id} should be a history group (isHistory=true)`);
           }
 
-          if (found.name !== null) {
+          if (found.name != null) {
             throw new Error(`History group ${found.id} should have null name, got ${found.name}`);
           }
         }
@@ -227,6 +228,7 @@ describe('History Group Preservation Property Tests', () => {
           // Verify all group IDs are present
           for (const groupId of groupIds) {
             const found = retrievedGroups.find((g) => g.id === groupId);
+
             if (!found) {
               throw new Error(`After read ${i + 1}: Group ${groupId} not found`);
             }

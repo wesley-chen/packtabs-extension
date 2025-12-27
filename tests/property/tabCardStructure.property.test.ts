@@ -1,5 +1,6 @@
-import { describe, it } from 'vitest';
 import * as fc from 'fast-check';
+import { describe, it } from 'vitest';
+
 import type { TabGroup } from '../../types/TabGroup';
 
 /**
@@ -43,6 +44,7 @@ describe('Tab Card Structure Property Tests', () => {
 
         // Header requirements: title (name or default) and creation date
         const displayTitle = group.name ?? 'History Tab Group';
+
         if (typeof displayTitle !== 'string' || displayTitle.length === 0) {
           throw new Error('Display title must be a non-empty string');
         }
@@ -65,9 +67,11 @@ describe('Tab Card Structure Property Tests', () => {
           if (typeof tab.id !== 'string' || tab.id.length === 0) {
             throw new Error('Tab ID must be a non-empty string');
           }
+
           if (typeof tab.url !== 'string' || tab.url.length === 0) {
             throw new Error('Tab URL must be a non-empty string');
           }
+
           if (typeof tab.title !== 'string' || tab.title.length === 0) {
             throw new Error('Tab title must be a non-empty string');
           }

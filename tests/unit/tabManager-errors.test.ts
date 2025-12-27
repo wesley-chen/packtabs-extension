@@ -1,14 +1,15 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import type { TabItem } from '../../types/TabGroup';
 import {
   captureCurrentWindow,
-  openTabs,
-  openSingleTab,
   closeCurrentTabs,
-  TabPermissionDeniedError,
   InvalidUrlError,
+  openSingleTab,
+  openTabs,
   TabNotFoundError,
+  TabPermissionDeniedError,
 } from '../../utils/tabManager';
-import type { TabItem } from '../../types/TabGroup';
 
 describe('Tab Manager Error Handling', () => {
   beforeEach(() => {
@@ -311,7 +312,7 @@ describe('Tab Manager Error Handling', () => {
     });
 
     it('should handle very long URLs', async () => {
-      const longUrl = 'https://example.com/' + 'a'.repeat(10000);
+      const longUrl = `https://example.com/${  'a'.repeat(10000)}`;
       const tab: TabItem = {
         id: '1',
         url: longUrl,

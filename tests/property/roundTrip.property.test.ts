@@ -1,5 +1,6 @@
-import { describe, it, beforeEach, vi } from 'vitest';
 import * as fc from 'fast-check';
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { captureCurrentWindow, openTabs } from '../../utils/tabManager';
 
 /**
@@ -57,6 +58,7 @@ describe('Round-Trip Integrity Property Tests', () => {
             url: createProperties.url,
             windowId: createProperties.windowId,
           });
+
           return { id: restoredTabs.length };
         });
 
@@ -148,12 +150,14 @@ describe('Round-Trip Integrity Property Tests', () => {
 
           // Verify URL
           const expectedUrl = original.url;
+
           if (captured.url !== expectedUrl) {
             throw new Error(`Captured URL mismatch at ${i}: expected ${expectedUrl}, got ${captured.url}`);
           }
 
           // Verify title
           const expectedTitle = original.title;
+
           if (captured.title !== expectedTitle) {
             throw new Error(`Captured title mismatch at ${i}: expected ${expectedTitle}, got ${captured.title}`);
           }
@@ -177,6 +181,7 @@ describe('Round-Trip Integrity Property Tests', () => {
             url: createProperties.url,
             windowId: createProperties.windowId,
           });
+
           return { id: restoredTabs.length };
         });
 
@@ -235,10 +240,12 @@ describe('Round-Trip Integrity Property Tests', () => {
 
           // Filter out tabs that should be excluded (no URL or restricted protocols)
           const validTabs = originalBrowserTabs.filter((tab) => {
-            if (tab.url == null) return false;
+            if (tab.url == null) {return false;}
+
             try {
               const urlObj = new URL(tab.url);
               const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
+
               return !restrictedProtocols.some((protocol) => urlObj.protocol.startsWith(protocol));
             } catch {
               return false;
@@ -250,6 +257,7 @@ describe('Round-Trip Integrity Property Tests', () => {
             restoredTabs.push({
               url: createProperties.url,
             });
+
             return { id: restoredTabs.length };
           });
 
@@ -310,6 +318,7 @@ describe('Round-Trip Integrity Property Tests', () => {
         // Mock browser.tabs.create for restoration
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           restoredUrls.push(createProperties.url);
+
           return { id: restoredUrls.length };
         });
 

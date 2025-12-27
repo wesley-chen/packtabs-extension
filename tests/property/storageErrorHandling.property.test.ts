@@ -1,8 +1,9 @@
-import { describe, it, beforeEach, vi } from 'vitest';
 import * as fc from 'fast-check';
-import type { TabGroup } from '../../types/TabGroup';
-import { saveTabGroup, getTabGroups, updateTabGroup, StorageQuotaExceededError } from '../../utils/storage';
+import { beforeEach, describe, it, vi } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup } from '../../types/TabGroup';
+import { getTabGroups, saveTabGroup, StorageQuotaExceededError,updateTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 18: Storage Error Handling
@@ -81,6 +82,7 @@ describe('Storage Error Handling Property Tests', () => {
             ...group,
             id: `${group.id}-${index}`,
           }));
+
           return fc.constant(uniqueGroups);
         }),
         async (groups) => {
@@ -102,17 +104,21 @@ describe('Storage Error Handling Property Tests', () => {
 
           // Mock only setValue to fail once
           let callCount = 0;
+
           vi.spyOn(tabGroupsStorage, 'setValue').mockImplementation(async () => {
             callCount++;
+
             if (callCount === 1) {
               throw new Error('Network failure');
             }
             // For subsequent calls, use the real implementation
             vi.restoreAllMocks();
+
             return tabGroupsStorage.setValue({});
           });
 
           let updateFailed = false;
+
           try {
             await updateTabGroup(groupToUpdate.id, { name: 'New Name' });
           } catch {
@@ -134,6 +140,7 @@ describe('Storage Error Handling Property Tests', () => {
           // Verify all original groups still exist with correct data
           for (const originalGroup of groups) {
             const found = afterFailureGroups.find((g) => g.id === originalGroup.id);
+
             if (!found) {
               throw new Error(`Data corruption: group ${originalGroup.id} lost after failed operation`);
             }
@@ -180,6 +187,7 @@ describe('Storage Error Handling Property Tests', () => {
 
           // The newer version should be preserved
           const timeDiffResult = Math.abs(found.createdAt.getTime() - group.createdAt.getTime());
+
           if (timeDiffResult > 1) {
             throw new Error('Conflict resolution did not preserve newer version');
           }

@@ -1,8 +1,9 @@
-import { describe, it, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
-import type { TabGroup, TabItem } from '../../types/TabGroup';
-import { saveTabGroup, getTabGroups, updateTabGroup, deleteTabGroup, deleteTabFromGroup } from '../../utils/storage';
+import { beforeEach,describe, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup, TabItem } from '../../types/TabGroup';
+import { deleteTabFromGroup,deleteTabGroup, getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 2: Tab Group Data Persistence
@@ -64,18 +65,22 @@ describe('Storage Persistence Property Tests', () => {
         if (found.id !== group.id) {
           throw new Error(`ID mismatch: expected ${group.id}, got ${found.id}`);
         }
+
         if (found.name !== group.name) {
           throw new Error(`Name mismatch: expected ${group.name}, got ${found.name}`);
         }
+
         if (found.isHistory !== group.isHistory) {
           throw new Error(`isHistory mismatch: expected ${group.isHistory}, got ${found.isHistory}`);
         }
+
         if (found.tabs.length !== group.tabs.length) {
           throw new Error(`Tabs length mismatch: expected ${group.tabs.length}, got ${found.tabs.length}`);
         }
 
         // Verify createdAt is preserved (allowing for millisecond precision)
         const timeDiff = Math.abs(found.createdAt.getTime() - group.createdAt.getTime());
+
         if (timeDiff > 1) {
           throw new Error(
             `CreatedAt mismatch: expected ${group.createdAt.toISOString()}, got ${found.createdAt.toISOString()}`
@@ -90,12 +95,15 @@ describe('Storage Persistence Property Tests', () => {
           if (retrievedTab.id !== originalTab.id) {
             throw new Error(`Tab ${i} ID mismatch`);
           }
+
           if (retrievedTab.url !== originalTab.url) {
             throw new Error(`Tab ${i} URL mismatch`);
           }
+
           if (retrievedTab.title !== originalTab.title) {
             throw new Error(`Tab ${i} title mismatch`);
           }
+
           if (retrievedTab.faviconUrl !== originalTab.faviconUrl) {
             throw new Error(`Tab ${i} faviconUrl mismatch`);
           }
@@ -132,9 +140,11 @@ describe('Storage Persistence Property Tests', () => {
         if (found.id !== group.id) {
           throw new Error(`ID changed after update`);
         }
+
         if (found.isHistory !== group.isHistory) {
           throw new Error(`isHistory changed after update`);
         }
+
         if (found.tabs.length !== group.tabs.length) {
           throw new Error(`Tabs changed after name update`);
         }
@@ -154,6 +164,7 @@ describe('Storage Persistence Property Tests', () => {
         // Verify it exists
         let retrieved = await getTabGroups();
         let found = retrieved.find((g) => g.id === group.id);
+
         if (!found) {
           throw new Error(`Group ${group.id} not found after save`);
         }
@@ -164,6 +175,7 @@ describe('Storage Persistence Property Tests', () => {
         // Verify it's gone
         retrieved = await getTabGroups();
         found = retrieved.find((g) => g.id === group.id);
+
         if (found) {
           throw new Error(`Group ${group.id} still exists after delete`);
         }
@@ -210,6 +222,7 @@ describe('Storage Persistence Property Tests', () => {
 
           // Verify the deleted tab is not present
           const deletedTabStillExists = found.tabs.some((t) => t.id === tabToDelete.id);
+
           if (deletedTabStillExists) {
             throw new Error(`Deleted tab ${tabToDelete.id} still exists in group`);
           }
@@ -217,9 +230,11 @@ describe('Storage Persistence Property Tests', () => {
           // Verify remaining tabs are intact
           for (const remainingTab of remainingTabs) {
             const foundTab = found.tabs.find((t) => t.id === remainingTab.id);
+
             if (!foundTab) {
               throw new Error(`Remaining tab ${remainingTab.id} not found after deletion`);
             }
+
             if (foundTab.url !== remainingTab.url || foundTab.title !== remainingTab.title) {
               throw new Error(`Remaining tab ${remainingTab.id} data corrupted`);
             }
@@ -241,6 +256,7 @@ describe('Storage Persistence Property Tests', () => {
             ...group,
             id: `${group.id}-${index}`, // Make IDs unique
           }));
+
           return fc.constant(uniqueGroups);
         }),
         async (groups) => {
@@ -263,6 +279,7 @@ describe('Storage Persistence Property Tests', () => {
           // Verify each group
           for (const originalGroup of groups) {
             const found = retrieved.find((g) => g.id === originalGroup.id);
+
             if (!found) {
               throw new Error(`Group ${originalGroup.id} not found`);
             }
@@ -271,6 +288,7 @@ describe('Storage Persistence Property Tests', () => {
             if (found.name !== originalGroup.name) {
               throw new Error(`Group ${originalGroup.id} name mismatch`);
             }
+
             if (found.tabs.length !== originalGroup.tabs.length) {
               throw new Error(`Group ${originalGroup.id} tabs count mismatch`);
             }

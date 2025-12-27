@@ -1,6 +1,6 @@
-import type { TabGroup } from '../types/TabGroup';
-import { tabGroupsStorage } from '../types/Storage';
 import type { StorageSchema } from '../types/Storage';
+import { tabGroupsStorage } from '../types/Storage';
+import type { TabGroup } from '../types/TabGroup';
 
 /**
  * Storage service interface for tab group operations
@@ -127,6 +127,7 @@ export async function saveTabGroup(group: TabGroup): Promise<void> {
     // Check for sync conflicts if group already exists
     if (group.id in allGroups) {
       const resolved = resolveSyncConflict(group, allGroups[group.id]);
+
       allGroups[group.id] = resolved;
     } else {
       allGroups[group.id] = serialized;
@@ -184,8 +185,9 @@ export async function deleteTabGroup(id: string): Promise<void> {
       throw new Error(`Tab group with id ${id} not found`);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     const { [id]: _removed, ...remainingGroups } = allGroups;
+
     await tabGroupsStorage.setValue(remainingGroups);
   });
 }

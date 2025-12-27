@@ -1,10 +1,11 @@
-import { describe, it, beforeEach, afterEach } from 'vitest';
 import * as fc from 'fast-check';
-import { setActivePinia, createPinia } from 'pinia';
-import { tabGroupsStorage } from '../../types/Storage';
-import { saveTabGroup } from '../../utils/storage';
+import { createPinia, setActivePinia } from 'pinia';
+import { afterEach, beforeEach, describe, it } from 'vitest';
+
 import { useTabStore } from '../../stores/useTabStore';
+import { tabGroupsStorage } from '../../types/Storage';
 import type { TabGroup } from '../../types/TabGroup';
+import { saveTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 20: UI State Consistency After Conversion
@@ -57,6 +58,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
         // Create store and load groups
         const store = useTabStore();
+
         await store.loadGroups();
 
         // Verify initial state: group is in historyGroups
@@ -64,6 +66,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
         expect(store.namedGroups.length).toBe(0);
 
         const initialHistoryGroup = store.historyGroups[0];
+
         if (initialHistoryGroup.id !== historyGroup.id) {
           throw new Error(`History group ID mismatch: expected ${historyGroup.id}, got ${initialHistoryGroup.id}`);
         }
@@ -84,6 +87,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
         // Name should be trimmed
         const expectedName = newName.trim();
+
         if (convertedGroup.name !== expectedName) {
           throw new Error(`Converted group name mismatch: expected "${expectedName}", got "${convertedGroup.name}"`);
         }
@@ -107,6 +111,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
         // Create store and load groups
         const store = useTabStore();
+
         await store.loadGroups();
 
         const initialTotalCount = store.tabGroups.length;
@@ -140,12 +145,14 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
           // Setup: Clear storage and save multiple history groups
           await tabGroupsStorage.setValue({});
+
           for (const group of testGroups) {
             await saveTabGroup(group);
           }
 
           // Create store and load groups
           const store = useTabStore();
+
           await store.loadGroups();
 
           // Verify initial state: all groups are history groups
@@ -161,6 +168,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
           // Action: Convert first two groups
           const numToConvert = Math.min(2, testGroups.length);
+
           for (let i = 0; i < numToConvert; i++) {
             await store.convertToNamed(testGroups[i].id, testNames[i]);
           }
@@ -184,12 +192,14 @@ describe('UI State Consistency After Conversion Property Tests', () => {
           // Verify: Converted groups are in namedGroups
           for (let i = 0; i < numToConvert; i++) {
             const convertedGroup = store.namedGroups.find((g) => g.id === testGroups[i].id);
+
             if (!convertedGroup) {
               throw new Error(`Converted group ${i} (ID: ${testGroups[i].id}) not found in namedGroups`);
             }
 
             // Name should be trimmed
             const expectedName = testNames[i].trim();
+
             if (convertedGroup.name !== expectedName) {
               throw new Error(
                 `Converted group ${i} name mismatch: expected "${expectedName}", got "${convertedGroup.name}"`
@@ -204,11 +214,12 @@ describe('UI State Consistency After Conversion Property Tests', () => {
           // Verify: Remaining groups are still in historyGroups
           for (let i = numToConvert; i < testGroups.length; i++) {
             const historyGroup = store.historyGroups.find((g) => g.id === testGroups[i].id);
+
             if (!historyGroup) {
               throw new Error(`History group ${i} (ID: ${testGroups[i].id}) not found in historyGroups`);
             }
 
-            if (historyGroup.name !== null) {
+            if (historyGroup.name != null) {
               throw new Error(`History group ${i} should have null name, got "${historyGroup.name}"`);
             }
 
@@ -233,6 +244,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
         // Create store and load groups
         const store = useTabStore();
+
         await store.loadGroups();
 
         // Select the history group
@@ -240,6 +252,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
         // Verify initial selection
         const initialSelectedGroup = store.selectedGroup;
+
         if (!initialSelectedGroup) {
           throw new Error('Selected group should not be null');
         }
@@ -257,6 +270,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
         // Verify: selectedGroup still points to the same group (by ID)
         const finalSelectedGroup = store.selectedGroup;
+
         expect(finalSelectedGroup).toBeTruthy();
 
         if (finalSelectedGroup.id !== historyGroup.id) {
@@ -266,6 +280,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
         // Verify: selectedGroup now reflects the converted state
         // Name should be trimmed
         const expectedName = newName.trim();
+
         if (finalSelectedGroup.name !== expectedName) {
           throw new Error(`Selected group name mismatch: expected "${expectedName}", got "${finalSelectedGroup.name}"`);
         }

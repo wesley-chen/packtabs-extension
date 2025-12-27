@@ -1,7 +1,7 @@
+import { settingsStorage } from '~/types/Storage';
 import type { TabGroup, TabItem } from '~/types/TabGroup';
 import { saveTabGroup } from '~/utils/storage';
-import { captureCurrentWindow, closeCurrentTabs, openTabs, openSingleTab } from '~/utils/tabManager';
-import { settingsStorage } from '~/types/Storage';
+import { captureCurrentWindow, closeCurrentTabs, openSingleTab,openTabs } from '~/utils/tabManager';
 
 export default defineBackground(() => {
   console.log('PackTabs background script initialized', { id: browser.runtime.id });
@@ -9,6 +9,7 @@ export default defineBackground(() => {
   // Handle extension icon click - open dashboard
   browser.action.onClicked.addListener(() => {
     const dashboardUrl = browser.runtime.getURL('/dashboard.html');
+
     void browser.tabs.create({
       url: dashboardUrl,
       active: true,
@@ -93,6 +94,7 @@ export default defineBackground(() => {
 
               // Check if we should auto-close tabs
               const settings = await settingsStorage.getValue();
+
               if (settings.autoCloseAfterSave) {
                 await closeCurrentTabs();
               }

@@ -1,8 +1,9 @@
-import { describe, it, beforeEach } from 'vitest';
 import * as fc from 'fast-check';
-import type { TabGroup } from '../../types/TabGroup';
-import { saveTabGroup, getTabGroups, deleteTabGroup } from '../../utils/storage';
+import { beforeEach,describe, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup } from '../../types/TabGroup';
+import { deleteTabGroup,getTabGroups, saveTabGroup } from '../../utils/storage';
 
 /**
  * Feature: tab-group-manager, Property 9: Complete Group Deletion
@@ -50,6 +51,7 @@ describe('Complete Group Deletion Property Tests', () => {
         // Verify it exists
         const beforeDelete = await getTabGroups();
         const existsBefore = beforeDelete.some((g) => g.id === group.id);
+
         if (!existsBefore) {
           throw new Error(`Group ${group.id} not found after saving`);
         }
@@ -85,6 +87,7 @@ describe('Complete Group Deletion Property Tests', () => {
 
         // Check that no group with this ID exists
         const deletedGroup = allGroups.find((g) => g.id === group.id);
+
         if (deletedGroup) {
           throw new Error(`Deleted group ${group.id} still has data in storage`);
         }
@@ -115,6 +118,7 @@ describe('Complete Group Deletion Property Tests', () => {
             ...group,
             id: `group-${index}-${group.id}`,
           }));
+
           return fc.constant(uniqueGroups);
         }),
         async (groups) => {
@@ -138,6 +142,7 @@ describe('Complete Group Deletion Property Tests', () => {
 
           // Verify the target group is gone
           const deletedGroupExists = afterDelete.some((g) => g.id === targetGroup.id);
+
           if (deletedGroupExists) {
             throw new Error(`Deleted group ${targetGroup.id} still exists`);
           }
@@ -155,9 +160,11 @@ describe('Complete Group Deletion Property Tests', () => {
             if (afterGroup.name !== beforeGroup.name) {
               throw new Error(`Group ${otherGroup.id} name changed unexpectedly`);
             }
+
             if (afterGroup.isHistory !== beforeGroup.isHistory) {
               throw new Error(`Group ${otherGroup.id} isHistory changed unexpectedly`);
             }
+
             if (afterGroup.tabs.length !== beforeGroup.tabs.length) {
               throw new Error(`Group ${otherGroup.id} tabs count changed unexpectedly`);
             }
@@ -170,9 +177,11 @@ describe('Complete Group Deletion Property Tests', () => {
               if (afterTab.id !== beforeTab.id) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} ID changed`);
               }
+
               if (afterTab.url !== beforeTab.url) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} URL changed`);
               }
+
               if (afterTab.title !== beforeTab.title) {
                 throw new Error(`Group ${otherGroup.id} tab ${i} title changed`);
               }
@@ -194,10 +203,12 @@ describe('Complete Group Deletion Property Tests', () => {
 
         // Attempt to delete non-existent group should throw error
         let errorThrown = false;
+
         try {
           await deleteTabGroup(uniqueId);
         } catch (error) {
           errorThrown = true;
+
           // Verify it's the expected error
           if (error instanceof Error && !error.message.includes('not found')) {
             throw new Error(`Unexpected error message: ${error.message}`);
@@ -223,6 +234,7 @@ describe('Complete Group Deletion Property Tests', () => {
             ...group,
             id: `group-${index}-${group.id}`,
           }));
+
           return fc.constant(uniqueGroups);
         }),
         async (groups) => {
@@ -233,6 +245,7 @@ describe('Complete Group Deletion Property Tests', () => {
 
           // Verify all groups exist
           let currentGroups = await getTabGroups();
+
           if (currentGroups.length !== groups.length) {
             throw new Error(`Expected ${groups.length} groups, found ${currentGroups.length}`);
           }
@@ -256,14 +269,17 @@ describe('Complete Group Deletion Property Tests', () => {
 
             // Verify the deleted group is gone
             const stillExists = currentGroups.some((g) => g.id === groupToDelete.id);
+
             if (stillExists) {
               throw new Error(`Group ${groupToDelete.id} still exists after deletion`);
             }
 
             // Verify remaining groups are the ones we haven't deleted yet
             const remainingIds = groups.slice(i + 1).map((g) => g.id);
+
             for (const remainingId of remainingIds) {
               const exists = currentGroups.some((g) => g.id === remainingId);
+
               if (!exists) {
                 throw new Error(`Group ${remainingId} was unexpectedly deleted`);
               }
@@ -272,6 +288,7 @@ describe('Complete Group Deletion Property Tests', () => {
 
           // Verify storage is empty
           const finalGroups = await getTabGroups();
+
           if (finalGroups.length !== 0) {
             throw new Error(`Expected empty storage, found ${finalGroups.length} groups`);
           }

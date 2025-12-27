@@ -1,11 +1,13 @@
 // utils/init-app.ts
-import { createApp, type Component } from 'vue';
+import 'primeicons/primeicons.css';
+
+import Material from '@primeuix/themes/material';
 import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
-import Material from '@primeuix/themes/material';
-import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
-import 'primeicons/primeicons.css';
+import ToastService from 'primevue/toastservice';
+import type {Component} from 'vue';
+import { createApp  } from 'vue';
 
 export function bootstrap(RootComponent: Component) {
   const app = createApp(RootComponent);

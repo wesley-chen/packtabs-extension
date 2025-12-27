@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { saveTabGroup, getTabGroups, updateTabGroup, deleteTabGroup, deleteTabFromGroup } from '../../utils/storage';
-import type { TabGroup } from '../../types/TabGroup';
+import { beforeEach,describe, expect, it } from 'vitest';
+
 import { tabGroupsStorage } from '../../types/Storage';
+import type { TabGroup } from '../../types/TabGroup';
+import { deleteTabFromGroup,deleteTabGroup, getTabGroups, saveTabGroup, updateTabGroup } from '../../utils/storage';
 
 describe('Storage Service', () => {
   beforeEach(async () => {
@@ -29,6 +30,7 @@ describe('Storage Service', () => {
       await saveTabGroup(testGroup);
 
       const groups = await getTabGroups();
+
       expect(groups).toHaveLength(1);
       expect(groups[0].id).toBe('test-1');
       expect(groups[0].name).toBe('Test Group');
@@ -48,6 +50,7 @@ describe('Storage Service', () => {
       await saveTabGroup(testGroup);
 
       const groups = await getTabGroups();
+
       expect(groups[0].createdAt).toBeInstanceOf(Date);
       expect(groups[0].createdAt.toISOString()).toBe(testDate.toISOString());
     });
@@ -56,6 +59,7 @@ describe('Storage Service', () => {
   describe('getTabGroups', () => {
     it('should return empty array when no groups exist', async () => {
       const groups = await getTabGroups();
+
       expect(groups).toEqual([]);
     });
 
@@ -80,6 +84,7 @@ describe('Storage Service', () => {
       await saveTabGroup(group2);
 
       const groups = await getTabGroups();
+
       expect(groups).toHaveLength(2);
     });
   });
@@ -102,6 +107,7 @@ describe('Storage Service', () => {
       });
 
       const groups = await getTabGroups();
+
       expect(groups[0].name).toBe('Updated Name');
       expect(groups[0].isHistory).toBe(false);
     });
@@ -129,6 +135,7 @@ describe('Storage Service', () => {
       });
 
       const groups = await getTabGroups();
+
       expect(groups[0].id).toBe('original-id');
     });
   });
@@ -174,6 +181,7 @@ describe('Storage Service', () => {
       await deleteTabFromGroup('group-1', 'tab-2');
 
       const groups = await getTabGroups();
+
       expect(groups[0].tabs).toHaveLength(2);
       expect(groups[0].tabs.find((t) => t.id === 'tab-2')).toBeUndefined();
       expect(groups[0].tabs.find((t) => t.id === 'tab-1')).toBeDefined();
