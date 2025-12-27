@@ -81,7 +81,7 @@ export const useTabStore = defineStore('tabs', () => {
    * @param name Optional name for the group (null for history groups)
    * @param isHistory Whether this is a history group
    */
-  async function saveGroup(name: string | null = null, isHistory: boolean = false): Promise<TabGroup> {
+  async function saveGroup(name: string | null = null, isHistory = false): Promise<TabGroup> {
     try {
       // Capture current window tabs
       const tabs = await captureCurrentWindow();

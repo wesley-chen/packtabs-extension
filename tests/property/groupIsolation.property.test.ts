@@ -267,7 +267,7 @@ describe('Group Operation Isolation Property Tests', () => {
           if (convertedTarget.name !== newName) {
             throw new Error(`Target group name not updated: expected ${newName}, got ${convertedTarget.name}`);
           }
-          if (convertedTarget.isHistory !== false) {
+          if (convertedTarget.isHistory) {
             throw new Error(`Target group isHistory not updated to false`);
           }
 

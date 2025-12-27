@@ -9,7 +9,7 @@ describe('Project Setup', () => {
   });
 
   it('should support TypeScript strict mode', () => {
-    const testValue: string = 'test';
+    const testValue = 'test';
     expect(testValue).toBe('test');
   });
 });

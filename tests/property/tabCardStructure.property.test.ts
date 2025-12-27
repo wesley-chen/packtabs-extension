@@ -142,7 +142,7 @@ describe('Tab Card Structure Property Tests', () => {
         }
         
         // Verify formatted date contains expected components
-        if (!formatted.match(/\d{4}/)) {
+        if (!(/\d{4}/.exec(formatted))) {
           throw new Error('Formatted date must contain year');
         }
         

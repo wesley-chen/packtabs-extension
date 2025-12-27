@@ -32,7 +32,7 @@ describe('Tab Restoration Property Tests', () => {
         fc.array(tabItemArbitrary, { minLength: 1, maxLength: 20 }),
         async (tabs) => {
           // Track created tabs
-          const createdTabs: Array<{ url: string; windowId: number }> = [];
+          const createdTabs: { url: string; windowId: number }[] = [];
 
           // Set up browser API mocks
           const windowId = 1;
@@ -75,7 +75,7 @@ describe('Tab Restoration Property Tests', () => {
         fc.array(tabItemArbitrary, { minLength: 1, maxLength: 20 }),
         async (tabs) => {
           // Track created tabs
-          const createdTabs: Array<{ url: string; windowId: number }> = [];
+          const createdTabs: { url: string; windowId: number }[] = [];
 
           // Set up browser API mocks
           const windowId = 42; // Use a specific window ID to verify
@@ -120,7 +120,7 @@ describe('Tab Restoration Property Tests', () => {
         fc.array(tabItemArbitrary, { minLength: 1, maxLength: 20 }),
         async (tabs) => {
           // Track created tabs
-          const createdTabs: Array<{ url: string; windowId: number }> = [];
+          const createdTabs: { url: string; windowId: number }[] = [];
 
           // Set up browser API mocks
           const windowId = 1;

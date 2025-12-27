@@ -5,8 +5,7 @@ import { storage } from 'wxt/utils/storage';
  */
 export interface StorageSchema {
   // WXT storage key: 'sync:tabGroups'
-  tabGroups: {
-    [groupId: string]: {
+  tabGroups: Record<string, {
       id: string;
       name: string | null;
       createdAt: string; // ISO date string for serialization
@@ -17,8 +16,7 @@ export interface StorageSchema {
         faviconUrl?: string;
       }[];
       isHistory: boolean;
-    };
-  };
+    }>;
 
   // WXT storage key: 'sync:settings'
   settings: {

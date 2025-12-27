@@ -39,7 +39,7 @@ describe('Round-Trip Integrity Property Tests', () => {
           const windowId = 1;
           
           // Track tabs created during restoration
-          const restoredTabs: Array<{ url: string; windowId: number }> = [];
+          const restoredTabs: { url: string; windowId: number }[] = [];
 
           // Mock browser.windows.getCurrent
           (global as any).browser = (global as any).browser || {};
@@ -136,7 +136,7 @@ describe('Round-Trip Integrity Property Tests', () => {
           const windowId = 1;
           
           // Track tabs created during restoration
-          const restoredTabs: Array<{ url: string; windowId: number }> = [];
+          const restoredTabs: { url: string; windowId: number }[] = [];
 
           // Mock browser.windows.getCurrent
           (global as any).browser = (global as any).browser || {};
@@ -242,7 +242,7 @@ describe('Round-Trip Integrity Property Tests', () => {
           const windowId = 1;
           
           // Track tabs created during restoration
-          const restoredTabs: Array<{ url: string }> = [];
+          const restoredTabs: { url: string }[] = [];
 
           // Mock browser.windows.getCurrent
           (global as any).browser = (global as any).browser || {};

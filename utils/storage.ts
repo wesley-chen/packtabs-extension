@@ -17,14 +17,14 @@ export interface StorageService {
  * Custom error types for storage operations
  */
 export class StorageQuotaExceededError extends Error {
-  constructor(message: string = 'Storage quota exceeded') {
+  constructor(message = 'Storage quota exceeded') {
     super(message);
     this.name = 'StorageQuotaExceededError';
   }
 }
 
 export class StorageSyncConflictError extends Error {
-  constructor(message: string = 'Storage sync conflict detected') {
+  constructor(message = 'Storage sync conflict detected') {
     super(message);
     this.name = 'StorageSyncConflictError';
   }
@@ -152,7 +152,7 @@ export async function getTabGroups(): Promise<TabGroup[]> {
     const allGroups = await tabGroupsStorage.getValue();
     
     return Object.values(allGroups).map((stored) => 
-      deserializeTabGroup(stored as StorageSchema['tabGroups'][string])
+      deserializeTabGroup(stored)
     );
   });
 }
