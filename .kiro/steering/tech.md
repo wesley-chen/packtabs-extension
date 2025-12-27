@@ -122,6 +122,12 @@ bun run zip:firefox      # Create distributable zip (Firefox)
 # Type Checking
 bun run compile          # TypeScript type check (no emit)
 
+# Check for linting errors
+bun run lint
+
+# Auto-fix fixable issues
+bun run lint:fix
+
 # Testing
 bun run test             # Run all tests once
 bun run test:watch       # Run tests in watch mode

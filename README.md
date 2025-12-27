@@ -53,6 +53,12 @@ bun run zip:firefox
 
 # Type check without emitting files
 bun run compile
+
+# Check for linting errors
+bun run lint
+
+# Auto-fix fixable issues
+bun run lint:fix
 ```
 
 ### Project Structure
