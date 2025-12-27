@@ -6,11 +6,11 @@
   "tabWidth": 2,
   "useTabs": false,
   "bracketSpacing": true,
-  "bracketSameLine": false,
-  "arrowParens": "avoid",
+  "bracketSameLine": true,
+  "arrowParens": "always",
   "endOfLine": "lf",
   "quoteProps": "as-needed",
-  "vueIndentScriptAndStyle": false,
+  "vueIndentScriptAndStyle": true,
   "htmlWhitespaceSensitivity": "css",
   "embeddedLanguageFormatting": "auto"
 }

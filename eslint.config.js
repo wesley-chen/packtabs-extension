@@ -6,17 +6,17 @@ import prettierConfig from 'eslint-config-prettier';
 export default tseslint.config(
   // Base ESLint recommended rules
   eslint.configs.recommended,
-  
+
   // TypeScript strict rules with type checking (best practice for quality codebases)
   // Includes: recommended + recommended-type-checked + strict + strict-type-checked
   ...tseslint.configs.strictTypeChecked,
-  
+
   // Stylistic rules for consistent, modern TypeScript code
   ...tseslint.configs.stylisticTypeChecked,
-  
+
   // Prettier integration - disables conflicting ESLint rules
   prettierConfig,
-  
+
   {
     languageOptions: {
       parserOptions: {
@@ -48,13 +48,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: [
-      '.wxt/**',
-      '.output/**',
-      'node_modules/**',
-      'dist/**',
-      '*.config.js',
-      '*.config.ts',
-    ],
+    ignores: ['.wxt/**', '.output/**', 'node_modules/**', 'dist/**', '*.config.js', '*.config.ts'],
   }
 );
