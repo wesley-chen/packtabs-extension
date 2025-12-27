@@ -41,9 +41,9 @@ describe('History Group Auto-Creation Property Tests', () => {
         await tabGroupsStorage.setValue({});
 
         // Setup: Mock browser APIs
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
 
         // Mock windows.getAll to return empty array (simulating last window closing)
         (global as any).browser.windows.getAll = vi.fn().mockResolvedValue([]);
@@ -62,8 +62,8 @@ describe('History Group Auto-Creation Property Tests', () => {
         if (allTabs.length > 0) {
           const tabItems = allTabs.map((tab) => ({
             id: crypto.randomUUID(),
-            url: tab.url || '',
-            title: tab.title || 'Untitled',
+            url: tab.url,
+            title: tab.title,
             faviconUrl: tab.favIconUrl,
           }));
 
@@ -107,11 +107,11 @@ describe('History Group Auto-Creation Property Tests', () => {
           const originalTab = browserTabs[i];
           const capturedTab = historyGroup.tabs[i];
 
-          if (capturedTab.url !== (originalTab.url || '')) {
+          if (capturedTab.url !== originalTab.url) {
             throw new Error(`Tab ${i} URL mismatch: expected ${originalTab.url}, got ${capturedTab.url}`);
           }
 
-          if (capturedTab.title !== (originalTab.title || 'Untitled')) {
+          if (capturedTab.title !== originalTab.title) {
             throw new Error(`Tab ${i} title mismatch: expected ${originalTab.title}, got ${capturedTab.title}`);
           }
         }
@@ -133,8 +133,8 @@ describe('History Group Auto-Creation Property Tests', () => {
 
         const tabItems = browserTabs.map((tab) => ({
           id: crypto.randomUUID(),
-          url: tab.url || '',
-          title: tab.title || 'Untitled',
+          url: tab.url,
+          title: tab.title,
           faviconUrl: tab.favIconUrl,
         }));
 
@@ -203,7 +203,7 @@ describe('History Group Auto-Creation Property Tests', () => {
     // Verify: No group should be created when there are no tabs
     const groups = await getTabGroups();
 
-    if (groups.length !== 0) {
+    if (groups.length > 0) {
       throw new Error(`Expected 0 groups when closing with no tabs, got ${groups.length}`);
     }
   });

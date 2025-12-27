@@ -42,9 +42,9 @@ describe('Automatic Tab Cleanup Property Tests', () => {
     await fc.assert(
       fc.asyncProperty(fc.array(browserTabArbitrary, { minLength: 1, maxLength: 20 }), async (browserTabs) => {
         // Setup: Mock browser APIs
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
 
         const windowId = 1;
 
@@ -71,7 +71,7 @@ describe('Automatic Tab Cleanup Property Tests', () => {
         await closeCurrentTabs();
 
         // Verify: All tabs should be closed
-        const expectedTabIds = browserTabs.map((tab) => tab.id).filter((id): id is number => id !== undefined);
+        const expectedTabIds = browserTabs.map((tab) => tab.id);
 
         // Check that tabs.remove was called
         if (removedTabIds.length === 0 && expectedTabIds.length > 0) {
@@ -100,9 +100,9 @@ describe('Automatic Tab Cleanup Property Tests', () => {
     // Edge case: What happens when there are no tabs to close?
 
     // Setup: Mock browser APIs with empty tab list
-    (global as any).browser = (global as any).browser || {};
-    (global as any).browser.windows = (global as any).browser.windows || {};
-    (global as any).browser.tabs = (global as any).browser.tabs || {};
+    (global as any).browser = (global as any).browser ?? {};
+    (global as any).browser.windows = (global as any).browser.windows ?? {};
+    (global as any).browser.tabs = (global as any).browser.tabs ?? {};
 
     const windowId = 1;
 
@@ -128,9 +128,9 @@ describe('Automatic Tab Cleanup Property Tests', () => {
     await fc.assert(
       fc.asyncProperty(fc.array(browserTabArbitrary, { minLength: 1, maxLength: 10 }), async (browserTabs) => {
         // Setup: Mock browser APIs
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
 
         const windowId = 1;
 
@@ -166,9 +166,9 @@ describe('Automatic Tab Cleanup Property Tests', () => {
     await fc.assert(
       fc.asyncProperty(fc.array(browserTabArbitrary, { minLength: 2, maxLength: 10 }), async (browserTabs) => {
         // Setup: Mock browser APIs
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
 
         const windowId = 1;
 
@@ -185,7 +185,7 @@ describe('Automatic Tab Cleanup Property Tests', () => {
         await closeCurrentTabs();
 
         // Verify: Tab IDs should be in the same order as original tabs
-        const expectedTabIds = browserTabs.map((tab) => tab.id).filter((id): id is number => id !== undefined);
+        const expectedTabIds = browserTabs.map((tab) => tab.id);
 
         if (removedTabIds.length !== expectedTabIds.length) {
           throw new Error(`Tab count mismatch: expected ${expectedTabIds.length}, got ${removedTabIds.length}`);
@@ -221,9 +221,9 @@ describe('Automatic Tab Cleanup Property Tests', () => {
         }),
         async ({ currentWindowTabs, otherWindowTabs }) => {
           // Setup: Mock browser APIs with tabs in multiple windows
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
+          (global as any).browser = (global as any).browser ?? {};
+          (global as any).browser.windows = (global as any).browser.windows ?? {};
+          (global as any).browser.tabs = (global as any).browser.tabs ?? {};
 
           const currentWindowId = 1;
 
@@ -249,11 +249,9 @@ describe('Automatic Tab Cleanup Property Tests', () => {
           await closeCurrentTabs();
 
           // Verify: Only current window tabs should be closed
-          const currentWindowTabIds = currentWindowTabs
-            .map((tab) => tab.id)
-            .filter((id): id is number => id !== undefined);
+          const currentWindowTabIds = currentWindowTabs.map((tab) => tab.id);
 
-          const otherWindowTabIds = otherWindowTabs.map((tab) => tab.id).filter((id): id is number => id !== undefined);
+          const otherWindowTabIds = otherWindowTabs.map((tab) => tab.id);
 
           // Check that only current window tabs were removed
           for (const removedId of removedTabIds) {

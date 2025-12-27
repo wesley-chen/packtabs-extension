@@ -39,12 +39,12 @@ describe('Tab Capture Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.query
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(browserTabs);
 
         // Capture tabs
@@ -68,12 +68,12 @@ describe('Tab Capture Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.query
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(browserTabs);
 
         // Capture tabs
@@ -126,12 +126,12 @@ describe('Tab Capture Property Tests', () => {
           const windowId = 1;
 
           // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
+          (global as any).browser = (global as any).browser ?? {};
+          (global as any).browser.windows = (global as any).browser.windows ?? {};
           (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
           // Mock browser.tabs.query
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
+          (global as any).browser.tabs = (global as any).browser.tabs ?? {};
           (global as any).browser.tabs.query = vi.fn().mockResolvedValue(browserTabs);
 
           // Capture tabs
@@ -139,7 +139,7 @@ describe('Tab Capture Property Tests', () => {
 
           // Filter out tabs that should be excluded (no URL or restricted protocols)
           const validTabs = browserTabs.filter((tab) => {
-            if (!tab.url) return false;
+            if (tab.url == null) return false;
             try {
               const urlObj = new URL(tab.url);
               const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
@@ -165,7 +165,7 @@ describe('Tab Capture Property Tests', () => {
             }
 
             // Title should default to 'Untitled' if missing
-            const expectedTitle = originalTab.title || 'Untitled';
+            const expectedTitle = originalTab.title ?? 'Untitled';
             if (capturedTab.title !== expectedTitle) {
               throw new Error(`Tab ${i} title mismatch: expected ${expectedTitle}, got ${capturedTab.title}`);
             }
@@ -190,12 +190,12 @@ describe('Tab Capture Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.query
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(browserTabs);
 
         // Capture tabs

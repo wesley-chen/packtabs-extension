@@ -28,9 +28,11 @@ export function bootstrap(RootComponent: Component) {
     console.error('Global error:', err, info);
 
     // Get the toast service from the app instance
-    const toast = app.config.globalProperties.$toast;
+    const toast = app.config.globalProperties.$toast as
+      | { add: (options: { severity: string; summary: string; detail: string; life: number }) => void }
+      | undefined;
 
-    if (toast) {
+    if (toast !== undefined) {
       // Extract error message
       const errorMessage = err instanceof Error ? err.message : String(err);
 

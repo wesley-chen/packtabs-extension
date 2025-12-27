@@ -36,12 +36,12 @@ describe('Tab Restoration Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.create to track created tabs
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdTabs.push({
             url: createProperties.url,
@@ -74,12 +74,12 @@ describe('Tab Restoration Property Tests', () => {
         const windowId = 42; // Use a specific window ID to verify
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.create to track created tabs
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdTabs.push({
             url: createProperties.url,
@@ -116,12 +116,12 @@ describe('Tab Restoration Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.create to track created tabs
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdTabs.push({
             url: createProperties.url,
@@ -159,12 +159,12 @@ describe('Tab Restoration Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.create to track created tabs
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdUrls.push(createProperties.url);
           return { id: createdUrls.length };
@@ -196,12 +196,12 @@ describe('Tab Restoration Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.create to track created tab
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdTab = {
             url: createProperties.url,
@@ -215,24 +215,10 @@ describe('Tab Restoration Property Tests', () => {
         await openSingleTab(tab);
 
         // Verify tab was created
-        if (!createdTab) {
-          throw new Error('No tab was created');
-        }
-
-        // Verify URL matches
-        if (createdTab.url !== tab.url) {
-          throw new Error(`URL mismatch: expected ${tab.url}, got ${createdTab.url}`);
-        }
-
-        // Verify it was opened in the correct window
-        if (createdTab.windowId !== windowId) {
-          throw new Error(`Window mismatch: expected ${windowId}, got ${createdTab.windowId}`);
-        }
-
-        // Verify it was made active (requirement for single tab opening)
-        if (!createdTab.active) {
-          throw new Error('Single tab should be opened as active');
-        }
+        expect(createdTab).toBeTruthy();
+        expect(createdTab?.url).toBe(tab.url);
+        expect(createdTab?.windowId).toBe(windowId);
+        expect(createdTab?.active).toBe(true);
 
         return true;
       }),

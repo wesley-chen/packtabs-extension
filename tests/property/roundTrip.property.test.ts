@@ -40,12 +40,12 @@ describe('Round-Trip Integrity Property Tests', () => {
         const restoredTabs: { url: string; windowId: number }[] = [];
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.query for capture
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
         // Capture tabs
@@ -69,7 +69,7 @@ describe('Round-Trip Integrity Property Tests', () => {
         }
 
         for (let i = 0; i < originalBrowserTabs.length; i++) {
-          const originalUrl = originalBrowserTabs[i].url || '';
+          const originalUrl = originalBrowserTabs[i].url;
           const restoredUrl = restoredTabs[i].url;
 
           if (restoredUrl !== originalUrl) {
@@ -89,12 +89,12 @@ describe('Round-Trip Integrity Property Tests', () => {
         const windowId = 1;
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.query for capture
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
         // Capture tabs
@@ -102,7 +102,7 @@ describe('Round-Trip Integrity Property Tests', () => {
 
         // Verify titles are preserved in captured data
         for (let i = 0; i < originalBrowserTabs.length; i++) {
-          const originalTitle = originalBrowserTabs[i].title || 'Untitled';
+          const originalTitle = originalBrowserTabs[i].title;
           const capturedTitle = capturedTabs[i].title;
 
           if (capturedTitle !== originalTitle) {
@@ -125,12 +125,12 @@ describe('Round-Trip Integrity Property Tests', () => {
         const restoredTabs: { url: string; windowId: number }[] = [];
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.query for capture
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
         // Capture tabs
@@ -147,13 +147,13 @@ describe('Round-Trip Integrity Property Tests', () => {
           const captured = capturedTabs[i];
 
           // Verify URL
-          const expectedUrl = original.url || '';
+          const expectedUrl = original.url;
           if (captured.url !== expectedUrl) {
             throw new Error(`Captured URL mismatch at ${i}: expected ${expectedUrl}, got ${captured.url}`);
           }
 
           // Verify title
-          const expectedTitle = original.title || 'Untitled';
+          const expectedTitle = original.title;
           if (captured.title !== expectedTitle) {
             throw new Error(`Captured title mismatch at ${i}: expected ${expectedTitle}, got ${captured.title}`);
           }
@@ -222,12 +222,12 @@ describe('Round-Trip Integrity Property Tests', () => {
           const restoredTabs: { url: string }[] = [];
 
           // Mock browser.windows.getCurrent
-          (global as any).browser = (global as any).browser || {};
-          (global as any).browser.windows = (global as any).browser.windows || {};
+          (global as any).browser = (global as any).browser ?? {};
+          (global as any).browser.windows = (global as any).browser.windows ?? {};
           (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
           // Mock browser.tabs.query for capture
-          (global as any).browser.tabs = (global as any).browser.tabs || {};
+          (global as any).browser.tabs = (global as any).browser.tabs ?? {};
           (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
           // Capture tabs
@@ -235,7 +235,7 @@ describe('Round-Trip Integrity Property Tests', () => {
 
           // Filter out tabs that should be excluded (no URL or restricted protocols)
           const validTabs = originalBrowserTabs.filter((tab) => {
-            if (!tab.url) return false;
+            if (tab.url == null) return false;
             try {
               const urlObj = new URL(tab.url);
               const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
@@ -272,7 +272,7 @@ describe('Round-Trip Integrity Property Tests', () => {
 
           // Verify titles have defaults applied during capture
           for (let i = 0; i < originalBrowserTabs.length; i++) {
-            const expectedTitle = originalBrowserTabs[i].title || 'Untitled';
+            const expectedTitle = originalBrowserTabs[i].title ?? 'Untitled';
             const capturedTitle = capturedTabs[i].title;
 
             if (capturedTitle !== expectedTitle) {
@@ -296,12 +296,12 @@ describe('Round-Trip Integrity Property Tests', () => {
         const restoredUrls: string[] = [];
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.query for capture
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.query = vi.fn().mockResolvedValue(originalBrowserTabs);
 
         // Capture tabs
@@ -318,7 +318,7 @@ describe('Round-Trip Integrity Property Tests', () => {
 
         // Verify order is maintained
         for (let i = 0; i < originalBrowserTabs.length; i++) {
-          const originalUrl = originalBrowserTabs[i].url || '';
+          const originalUrl = originalBrowserTabs[i].url;
           const restoredUrl = restoredUrls[i];
 
           if (restoredUrl !== originalUrl) {

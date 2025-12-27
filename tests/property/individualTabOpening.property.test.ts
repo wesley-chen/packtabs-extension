@@ -35,12 +35,12 @@ describe('Property 12: Individual Tab Opening', () => {
         const windowId = Math.floor(Math.random() * 1000);
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.create to track created tab
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdTab = {
             url: createProperties.url,
@@ -54,9 +54,7 @@ describe('Property 12: Individual Tab Opening', () => {
         await openSingleTab(tab);
 
         // Verify tab was created
-        if (!createdTab) {
-          throw new Error('No tab was created');
-        }
+        expect(createdTab).toBeTruthy();
 
         // Verify URL matches
         if (createdTab.url !== tab.url) {
@@ -83,12 +81,12 @@ describe('Property 12: Individual Tab Opening', () => {
         const windowId = Math.floor(Math.random() * 1000);
 
         // Mock browser.windows.getCurrent
-        (global as any).browser = (global as any).browser || {};
-        (global as any).browser.windows = (global as any).browser.windows || {};
+        (global as any).browser = (global as any).browser ?? {};
+        (global as any).browser.windows = (global as any).browser.windows ?? {};
         (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: windowId });
 
         // Mock browser.tabs.create
-        (global as any).browser.tabs = (global as any).browser.tabs || {};
+        (global as any).browser.tabs = (global as any).browser.tabs ?? {};
         (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
           createdTab = {
             url: createProperties.url,
@@ -101,11 +99,9 @@ describe('Property 12: Individual Tab Opening', () => {
         await openSingleTab(tab);
 
         // Verify the tab is opened with active: true (switches to the tab)
-        if (!createdTab) {
-          throw new Error('No tab was created');
-        }
+        expect(createdTab).toBeTruthy();
 
-        if (!createdTab.active) {
+        if (!createdTab?.active) {
           throw new Error('Single tab should be opened as active');
         }
 

@@ -9,7 +9,7 @@ import {
   deleteTabFromGroup as deleteTabFromGroupInStorage,
   StorageQuotaExceededError,
 } from '~/utils/storage';
-import { captureCurrentWindow, TabPermissionDeniedError, InvalidUrlError } from '~/utils/tabManager';
+import { captureCurrentWindow, TabPermissionDeniedError } from '~/utils/tabManager';
 
 /**
  * Error handler that can be set from the Vue app
@@ -52,7 +52,7 @@ export const useTabStore = defineStore('tabs', () => {
 
   const namedGroups = computed(() => tabGroups.value.filter((g) => !g.isHistory));
 
-  const selectedGroup = computed(() => tabGroups.value.find((g) => g.id === selectedGroupId.value) || null);
+  const selectedGroup = computed(() => tabGroups.value.find((g) => g.id === selectedGroupId.value) ?? null);
 
   // Actions
   /**

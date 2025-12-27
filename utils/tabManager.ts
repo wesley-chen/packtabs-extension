@@ -22,7 +22,7 @@ export class TabPermissionDeniedError extends Error {
 
 export class TabNotFoundError extends Error {
   constructor(tabId: string | number) {
-    super(`Tab not found: ${tabId}`);
+    super(`Tab not found: ${String(tabId)}`);
     this.name = 'TabNotFoundError';
   }
 }
@@ -76,8 +76,8 @@ export async function captureCurrentWindow(): Promise<TabItem[]> {
       })
       .map((tab) => ({
         id: crypto.randomUUID(),
-        url: tab.url || '',
-        title: tab.title || 'Untitled',
+        url: tab.url ?? '',
+        title: tab.title ?? 'Untitled',
         faviconUrl: tab.favIconUrl,
       }));
 

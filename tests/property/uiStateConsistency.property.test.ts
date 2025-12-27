@@ -60,13 +60,8 @@ describe('UI State Consistency After Conversion Property Tests', () => {
         await store.loadGroups();
 
         // Verify initial state: group is in historyGroups
-        if (store.historyGroups.length !== 1) {
-          throw new Error(`Expected 1 history group initially, got ${store.historyGroups.length}`);
-        }
-
-        if (store.namedGroups.length !== 0) {
-          throw new Error(`Expected 0 named groups initially, got ${store.namedGroups.length}`);
-        }
+        expect(store.historyGroups.length).toBe(1);
+        expect(store.namedGroups.length).toBe(0);
 
         const initialHistoryGroup = store.historyGroups[0];
         if (initialHistoryGroup.id !== historyGroup.id) {
@@ -77,13 +72,8 @@ describe('UI State Consistency After Conversion Property Tests', () => {
         await store.convertToNamed(historyGroup.id, newName);
 
         // Verify: Group moved from historyGroups to namedGroups
-        if (store.historyGroups.length !== 0) {
-          throw new Error(`Expected 0 history groups after conversion, got ${store.historyGroups.length}`);
-        }
-
-        if (store.namedGroups.length !== 1) {
-          throw new Error(`Expected 1 named group after conversion, got ${store.namedGroups.length}`);
-        }
+        expect(store.historyGroups.length).toBe(0);
+        expect(store.namedGroups.length).toBe(1);
 
         const convertedGroup = store.namedGroups[0];
 
@@ -267,9 +257,7 @@ describe('UI State Consistency After Conversion Property Tests', () => {
 
         // Verify: selectedGroup still points to the same group (by ID)
         const finalSelectedGroup = store.selectedGroup;
-        if (!finalSelectedGroup) {
-          throw new Error('Selected group should not be null after conversion');
-        }
+        expect(finalSelectedGroup).toBeTruthy();
 
         if (finalSelectedGroup.id !== historyGroup.id) {
           throw new Error(`Selected group ID changed: expected ${historyGroup.id}, got ${finalSelectedGroup.id}`);

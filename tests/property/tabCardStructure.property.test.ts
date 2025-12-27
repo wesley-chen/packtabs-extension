@@ -42,7 +42,7 @@ describe('Tab Card Structure Property Tests', () => {
         // Verify group has all required fields for card structure
 
         // Header requirements: title (name or default) and creation date
-        const displayTitle = group.name || 'History Tab Group';
+        const displayTitle = group.name ?? 'History Tab Group';
         if (typeof displayTitle !== 'string' || displayTitle.length === 0) {
           throw new Error('Display title must be a non-empty string');
         }

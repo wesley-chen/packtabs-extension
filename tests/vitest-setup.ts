@@ -20,13 +20,13 @@ class FixedTextDecoder extends NodeTextDecoder {
 }
 
 // Override global TextEncoder/TextDecoder before any other code runs
-// @ts-ignore
+// @ts-expect-error - Overriding global for jsdom compatibility
 global.TextEncoder = FixedTextEncoder;
-// @ts-ignore
+// @ts-expect-error - Overriding global for jsdom compatibility
 global.TextDecoder = FixedTextDecoder;
 
 // Ensure Uint8Array is properly available
 if (typeof global.Uint8Array === 'undefined') {
-  // @ts-ignore
+  // @ts-expect-error - Ensuring Uint8Array is available in jsdom
   global.Uint8Array = Uint8Array;
 }

@@ -64,7 +64,7 @@ async function withRetry<T>(operation: () => Promise<T>, retries: number = RETRY
 
       // Calculate delay with exponential backoff
       const delay = Math.min(
-        RETRY_CONFIG.initialDelay * Math.pow(RETRY_CONFIG.backoffMultiplier, attempt),
+        RETRY_CONFIG.initialDelay * RETRY_CONFIG.backoffMultiplier ** attempt,
         RETRY_CONFIG.maxDelay
       );
 
@@ -73,25 +73,21 @@ async function withRetry<T>(operation: () => Promise<T>, retries: number = RETRY
     }
   }
 
-  throw lastError || new Error('Storage operation failed');
+  throw lastError ?? new Error('Storage operation failed');
 }
 
 /**
  * Resolves sync conflicts using timestamp-based resolution (most recent wins)
  */
-async function resolveSyncConflict(
+function resolveSyncConflict(
   localGroup: TabGroup,
   remoteGroup: StorageSchema['tabGroups'][string]
-): Promise<StorageSchema['tabGroups'][string]> {
+): StorageSchema['tabGroups'][string] {
   const localTimestamp = localGroup.createdAt.getTime();
   const remoteTimestamp = new Date(remoteGroup.createdAt).getTime();
 
   // Keep the most recent version
-  if (localTimestamp >= remoteTimestamp) {
-    return serializeTabGroup(localGroup);
-  } else {
-    return remoteGroup;
-  }
+  return localTimestamp >= remoteTimestamp ? serializeTabGroup(localGroup) : remoteGroup;
 }
 
 /**
@@ -129,8 +125,8 @@ export async function saveTabGroup(group: TabGroup): Promise<void> {
     const serialized = serializeTabGroup(group);
 
     // Check for sync conflicts if group already exists
-    if (allGroups[group.id]) {
-      const resolved = await resolveSyncConflict(group, allGroups[group.id]);
+    if (group.id in allGroups) {
+      const resolved = resolveSyncConflict(group, allGroups[group.id]);
       allGroups[group.id] = resolved;
     } else {
       allGroups[group.id] = serialized;
@@ -159,7 +155,7 @@ export async function updateTabGroup(id: string, updates: Partial<TabGroup>): Pr
     const allGroups = await tabGroupsStorage.getValue();
     const existing = allGroups[id];
 
-    if (!existing) {
+    if (!(id in allGroups)) {
       throw new Error(`Tab group with id ${id} not found`);
     }
 
@@ -184,12 +180,13 @@ export async function deleteTabGroup(id: string): Promise<void> {
   await withRetry(async () => {
     const allGroups = await tabGroupsStorage.getValue();
 
-    if (!allGroups[id]) {
+    if (!(id in allGroups)) {
       throw new Error(`Tab group with id ${id} not found`);
     }
 
-    delete allGroups[id];
-    await tabGroupsStorage.setValue(allGroups);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [id]: _removed, ...remainingGroups } = allGroups;
+    await tabGroupsStorage.setValue(remainingGroups);
   });
 }
 
@@ -201,7 +198,7 @@ export async function deleteTabFromGroup(groupId: string, tabId: string): Promis
     const allGroups = await tabGroupsStorage.getValue();
     const group = allGroups[groupId];
 
-    if (!group) {
+    if (!(groupId in allGroups)) {
       throw new Error(`Tab group with id ${groupId} not found`);
     }
 

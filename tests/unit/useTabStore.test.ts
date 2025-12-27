@@ -231,11 +231,11 @@ describe('useTabStore', () => {
       const store = useTabStore();
 
       // Mock browser APIs using global browser object
-      (global as any).browser = (global as any).browser || {};
-      (global as any).browser.windows = (global as any).browser.windows || {};
+      (global as any).browser = (global as any).browser ?? {};
+      (global as any).browser.windows = (global as any).browser.windows ?? {};
       (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: 1 });
 
-      (global as any).browser.tabs = (global as any).browser.tabs || {};
+      (global as any).browser.tabs = (global as any).browser.tabs ?? {};
       (global as any).browser.tabs.query = vi.fn().mockResolvedValue([
         {
           url: 'https://example1.com',
@@ -266,11 +266,11 @@ describe('useTabStore', () => {
     it('should save as history group when isHistory is true', async () => {
       const store = useTabStore();
 
-      (global as any).browser = (global as any).browser || {};
-      (global as any).browser.windows = (global as any).browser.windows || {};
+      (global as any).browser = (global as any).browser ?? {};
+      (global as any).browser.windows = (global as any).browser.windows ?? {};
       (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: 1 });
 
-      (global as any).browser.tabs = (global as any).browser.tabs || {};
+      (global as any).browser.tabs = (global as any).browser.tabs ?? {};
       (global as any).browser.tabs.query = vi
         .fn()
         .mockResolvedValue([{ url: 'https://example.com', title: 'Example' }]);
@@ -285,11 +285,11 @@ describe('useTabStore', () => {
     it('should generate unique IDs for new groups', async () => {
       const store = useTabStore();
 
-      (global as any).browser = (global as any).browser || {};
-      (global as any).browser.windows = (global as any).browser.windows || {};
+      (global as any).browser = (global as any).browser ?? {};
+      (global as any).browser.windows = (global as any).browser.windows ?? {};
       (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: 1 });
 
-      (global as any).browser.tabs = (global as any).browser.tabs || {};
+      (global as any).browser.tabs = (global as any).browser.tabs ?? {};
       (global as any).browser.tabs.query = vi
         .fn()
         .mockResolvedValue([{ url: 'https://example.com', title: 'Example' }]);
@@ -304,11 +304,11 @@ describe('useTabStore', () => {
     it('should assign current timestamp to new groups', async () => {
       const store = useTabStore();
 
-      (global as any).browser = (global as any).browser || {};
-      (global as any).browser.windows = (global as any).browser.windows || {};
+      (global as any).browser = (global as any).browser ?? {};
+      (global as any).browser.windows = (global as any).browser.windows ?? {};
       (global as any).browser.windows.getCurrent = vi.fn().mockResolvedValue({ id: 1 });
 
-      (global as any).browser.tabs = (global as any).browser.tabs || {};
+      (global as any).browser.tabs = (global as any).browser.tabs ?? {};
       (global as any).browser.tabs.query = vi
         .fn()
         .mockResolvedValue([{ url: 'https://example.com', title: 'Example' }]);
