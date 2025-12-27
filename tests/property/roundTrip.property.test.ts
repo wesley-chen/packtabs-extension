@@ -256,6 +256,18 @@ describe('Round-Trip Integrity Property Tests', () => {
           // Capture tabs
           const capturedTabs = await captureCurrentWindow();
 
+          // Filter out tabs that should be excluded (no URL or restricted protocols)
+          const validTabs = originalBrowserTabs.filter(tab => {
+            if (!tab.url) return false;
+            try {
+              const urlObj = new URL(tab.url);
+              const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
+              return !restrictedProtocols.some(protocol => urlObj.protocol.startsWith(protocol));
+            } catch {
+              return false;
+            }
+          });
+
           // Mock browser.tabs.create for restoration
           (global as any).browser.tabs.create = vi.fn().mockImplementation(async (createProperties) => {
             restoredTabs.push({
@@ -267,9 +279,15 @@ describe('Round-Trip Integrity Property Tests', () => {
           // Restore tabs
           await openTabs(capturedTabs);
 
-          // Verify URLs are preserved with defaults applied
-          for (let i = 0; i < originalBrowserTabs.length; i++) {
-            const expectedUrl = originalBrowserTabs[i].url || '';
+          // Verify URLs are preserved (only valid tabs should be restored)
+          if (restoredTabs.length !== validTabs.length) {
+            throw new Error(
+              `Tab count mismatch: expected ${validTabs.length}, got ${restoredTabs.length}`
+            );
+          }
+
+          for (let i = 0; i < validTabs.length; i++) {
+            const expectedUrl = validTabs[i].url;
             const restoredUrl = restoredTabs[i].url;
 
             if (restoredUrl !== expectedUrl) {

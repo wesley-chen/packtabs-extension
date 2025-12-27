@@ -149,23 +149,34 @@ describe('Tab Capture Property Tests', () => {
           // Capture tabs
           const captured = await captureCurrentWindow();
 
-          // Verify all tabs were captured
-          if (captured.length !== browserTabs.length) {
+          // Filter out tabs that should be excluded (no URL or restricted protocols)
+          const validTabs = browserTabs.filter(tab => {
+            if (!tab.url) return false;
+            try {
+              const urlObj = new URL(tab.url);
+              const restrictedProtocols = ['chrome:', 'chrome-extension:', 'about:'];
+              return !restrictedProtocols.some(protocol => urlObj.protocol.startsWith(protocol));
+            } catch {
+              return false;
+            }
+          });
+
+          // Verify correct number of tabs were captured
+          if (captured.length !== validTabs.length) {
             throw new Error(
-              `Tab count mismatch: expected ${browserTabs.length}, got ${captured.length}`
+              `Tab count mismatch: expected ${validTabs.length}, got ${captured.length}`
             );
           }
 
           // Verify each tab has valid data (with defaults for missing fields)
           for (let i = 0; i < captured.length; i++) {
             const capturedTab = captured[i];
-            const originalTab = browserTabs[i];
+            const originalTab = validTabs[i];
 
-            // URL should default to empty string if missing
-            const expectedUrl = originalTab.url || '';
-            if (capturedTab.url !== expectedUrl) {
+            // URL should be preserved (we already filtered out undefined)
+            if (capturedTab.url !== originalTab.url) {
               throw new Error(
-                `Tab ${i} URL mismatch: expected ${expectedUrl}, got ${capturedTab.url}`
+                `Tab ${i} URL mismatch: expected ${originalTab.url}, got ${capturedTab.url}`
               );
             }
 
@@ -178,6 +189,17 @@ describe('Tab Capture Property Tests', () => {
             }
 
             // Favicon should be preserved as-is (can be undefined)
+            if (capturedTab.faviconUrl !== originalTab.favIconUrl) {
+              throw new Error(
+                `Tab ${i} favicon mismatch: expected ${originalTab.favIconUrl}, got ${capturedTab.faviconUrl}`
+              );
+            }
+          }
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
             if (capturedTab.faviconUrl !== originalTab.favIconUrl) {
               throw new Error(
                 `Tab ${i} favicon mismatch: expected ${originalTab.favIconUrl}, got ${capturedTab.faviconUrl}`

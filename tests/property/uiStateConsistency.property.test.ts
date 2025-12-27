@@ -107,9 +107,11 @@ describe('UI State Consistency After Conversion Property Tests', () => {
             );
           }
 
-          if (convertedGroup.name !== newName) {
+          // Name should be trimmed
+          const expectedName = newName.trim();
+          if (convertedGroup.name !== expectedName) {
             throw new Error(
-              `Converted group name mismatch: expected "${newName}", got "${convertedGroup.name}"`
+              `Converted group name mismatch: expected "${expectedName}", got "${convertedGroup.name}"`
             );
           }
 
@@ -226,9 +228,11 @@ describe('UI State Consistency After Conversion Property Tests', () => {
               );
             }
 
-            if (convertedGroup.name !== testNames[i]) {
+            // Name should be trimmed
+            const expectedName = testNames[i].trim();
+            if (convertedGroup.name !== expectedName) {
               throw new Error(
-                `Converted group ${i} name mismatch: expected "${testNames[i]}", got "${convertedGroup.name}"`
+                `Converted group ${i} name mismatch: expected "${expectedName}", got "${convertedGroup.name}"`
               );
             }
 
@@ -317,9 +321,11 @@ describe('UI State Consistency After Conversion Property Tests', () => {
           }
 
           // Verify: selectedGroup now reflects the converted state
-          if (finalSelectedGroup.name !== newName) {
+          // Name should be trimmed
+          const expectedName = newName.trim();
+          if (finalSelectedGroup.name !== expectedName) {
             throw new Error(
-              `Selected group name mismatch: expected "${newName}", got "${finalSelectedGroup.name}"`
+              `Selected group name mismatch: expected "${expectedName}", got "${finalSelectedGroup.name}"`
             );
           }
 

@@ -6,6 +6,7 @@ import TabGroupCard from '../../components/TabGroupCard.vue';
 import type { TabGroup } from '../../types/TabGroup';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 
 /**
  * Unit tests for TabGroupList component
@@ -75,7 +76,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: mockGroups },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
           TabGroupCard: false // Don't stub, render actual component
         }
@@ -91,7 +92,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: mockGroups },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
           TabGroupCard: false
         }
@@ -110,7 +111,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: mockGroups },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
           TabGroupCard: false
         }
@@ -127,7 +128,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: [] },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -140,7 +141,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: [] },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -152,7 +153,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: [] },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -165,7 +166,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: mockGroups },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
           TabGroupCard: false
         }
@@ -189,7 +190,7 @@ describe('TabGroupList Component', () => {
     const wrapper = mount(TabGroupList, {
       props: { groups: singleGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
         stubs: {
           TabGroupCard: false
         }

@@ -5,6 +5,7 @@ import TabGroupCard from '../../components/TabGroupCard.vue';
 import type { TabGroup } from '../../types/TabGroup';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 import { useTabStore } from '../../stores/useTabStore';
 
 /**
@@ -51,7 +52,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -63,7 +64,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: historyGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -74,7 +75,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -85,7 +86,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -100,7 +101,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: historyGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -112,7 +113,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -125,7 +126,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: historyGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -151,7 +152,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -171,7 +172,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -183,7 +184,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
@@ -194,7 +195,7 @@ describe('TabGroupCard Component', () => {
     const wrapper = mount(TabGroupCard, {
       props: { group: mockGroup },
       global: {
-        plugins: [pinia, PrimeVue, ConfirmationService],
+        plugins: [pinia, PrimeVue, ConfirmationService, ToastService],
       },
     });
 
