@@ -49,10 +49,13 @@ describe('Property 14: Sidebar Content Accuracy', () => {
         ),
         async (groups: TabGroup[]) => {
           // Save groups to storage
-          const groupsMap: Record<string, TabGroup> = {};
+          const groupsMap: Record<string, any> = {};
 
           groups.forEach((group) => {
-            groupsMap[group.id] = group;
+            groupsMap[group.id] = {
+              ...group,
+              createdAt: group.createdAt.toISOString(),
+            };
           });
           await tabGroupsStorage.setValue(groupsMap);
 

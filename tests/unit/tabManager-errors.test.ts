@@ -201,7 +201,7 @@ describe('Tab Manager Error Handling', () => {
         incognito: false,
       } as any);
 
-      vi.spyOn(browser.tabs, 'query').mockResolvedValue([]);
+      vi.spyOn(browser.tabs, 'query').mockResolvedValue([] as any);
 
       const removeSpy = vi.spyOn(browser.tabs, 'remove');
 

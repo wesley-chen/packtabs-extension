@@ -58,14 +58,16 @@ describe('Property 12: Individual Tab Opening', () => {
         // Verify tab was created
         expect(createdTab).toBeTruthy();
 
+        const verifiedTab = createdTab as unknown as { url: string; windowId: number; active: boolean };
+
         // Verify URL matches
-        if (createdTab.url !== tab.url) {
-          throw new Error(`URL mismatch: expected ${tab.url}, got ${createdTab.url}`);
+        if (verifiedTab.url !== tab.url) {
+          throw new Error(`URL mismatch: expected ${tab.url}, got ${verifiedTab.url}`);
         }
 
         // Verify it was opened in the correct window
-        if (createdTab.windowId !== windowId) {
-          throw new Error(`Window mismatch: expected ${windowId}, got ${createdTab.windowId}`);
+        if (verifiedTab.windowId !== windowId) {
+          throw new Error(`Window mismatch: expected ${windowId}, got ${verifiedTab.windowId}`);
         }
 
         return true;
@@ -104,7 +106,9 @@ describe('Property 12: Individual Tab Opening', () => {
         // Verify the tab is opened with active: true (switches to the tab)
         expect(createdTab).toBeTruthy();
 
-        if (!createdTab?.active) {
+        const verifiedTab = createdTab as unknown as { url: string; windowId: number; active: boolean };
+
+        if (!verifiedTab.active) {
           throw new Error('Single tab should be opened as active');
         }
 

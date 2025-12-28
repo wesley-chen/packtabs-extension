@@ -1,5 +1,5 @@
 import * as fc from 'fast-check';
-import { beforeEach, describe, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { openSingleTab, openTabs } from '../../utils/tabManager';
 
@@ -221,9 +221,12 @@ describe('Tab Restoration Property Tests', () => {
 
         // Verify tab was created
         expect(createdTab).toBeTruthy();
-        expect(createdTab?.url).toBe(tab.url);
-        expect(createdTab?.windowId).toBe(windowId);
-        expect(createdTab?.active).toBe(true);
+
+        const verifiedTab = createdTab as unknown as { url: string; windowId: number; active: boolean };
+
+        expect(verifiedTab.url).toBe(tab.url);
+        expect(verifiedTab.windowId).toBe(windowId);
+        expect(verifiedTab.active).toBe(true);
 
         return true;
       }),
