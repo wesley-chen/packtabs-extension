@@ -1,8 +1,6 @@
 import * as fc from 'fast-check';
 import { describe, it } from 'vitest';
 
-import type { TabItem } from '../../types/TabGroup';
-
 /**
  * Feature: tab-group-manager, Property 17: Tab Entry Display Completeness
  *
@@ -112,7 +110,7 @@ describe('Tab Entry Display Property Tests', () => {
         // URL should be parseable (basic check)
         try {
           new URL(tab.url);
-        } catch (error) {
+        } catch (_error) {
           throw new Error(`Tab URL must be a valid URL: ${tab.url}`);
         }
 

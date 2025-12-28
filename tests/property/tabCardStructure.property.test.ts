@@ -1,7 +1,6 @@
 import * as fc from 'fast-check';
 import { describe, it } from 'vitest';
 
-import type { TabGroup } from '../../types/TabGroup';
 
 /**
  * Feature: tab-group-manager, Property 16: Tab Card Structure Consistency

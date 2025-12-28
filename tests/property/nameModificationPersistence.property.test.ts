@@ -8,7 +8,7 @@
  */
 
 import * as fc from 'fast-check';
-import { beforeEach, describe, it, vi } from 'vitest';
+import { beforeEach, describe, it } from 'vitest';
 
 import { tabGroupsStorage } from '~/types/Storage';
 import type { TabGroup } from '~/types/TabGroup';

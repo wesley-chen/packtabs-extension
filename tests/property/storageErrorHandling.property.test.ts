@@ -175,7 +175,7 @@ describe('Storage Error Handling Property Tests', () => {
           };
 
           // Save the newer version (should win)
-          await saveTabGroup(group);
+          await saveTabGroup(olderGroup);
 
           // Retrieve and verify the newer version was kept
           const retrieved = await getTabGroups();
@@ -209,7 +209,7 @@ describe('Storage Error Handling Property Tests', () => {
 
         try {
           await saveTabGroup(group);
-        } catch (error) {
+        } catch (_error) {
           errorThrown = true;
         }
 

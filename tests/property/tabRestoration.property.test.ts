@@ -1,7 +1,6 @@
 import * as fc from 'fast-check';
 import { beforeEach, describe, it, vi } from 'vitest';
 
-import type { TabItem } from '../../types/TabGroup';
 import { openSingleTab, openTabs } from '../../utils/tabManager';
 
 /**

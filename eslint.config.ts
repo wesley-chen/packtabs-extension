@@ -6,6 +6,7 @@ import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import prettierConfig from 'eslint-config-prettier';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import unusedImports from 'eslint-plugin-unused-imports';
 import vuePlugin from 'eslint-plugin-vue';
 import tseslint from 'typescript-eslint';
 
@@ -60,6 +61,7 @@ export default defineConfig([
   {
     plugins: {
       'simple-import-sort': simpleImportSort,
+      'unused-imports': unusedImports,
     },
     rules: {
       // --- ESLint Core Auto-fixes ---
@@ -79,11 +81,15 @@ export default defineConfig([
           fixStyle: 'separate-type-imports',
         },
       ],
-      '@typescript-eslint/no-unused-vars': [
+      // Replace the @typescript-eslint/no-unused-vars rule
+      '@typescript-eslint/no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
         'error',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
 
@@ -116,7 +122,6 @@ export default defineConfig([
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',

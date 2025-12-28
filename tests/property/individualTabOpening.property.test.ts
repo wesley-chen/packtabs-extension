@@ -137,7 +137,7 @@ describe('Property 12: Individual Tab Opening', () => {
           try {
             await openSingleTab(tab);
             throw new Error('Expected openSingleTab to throw an error for invalid URL');
-          } catch (error) {
+          } catch (_error) {
             // Expected to throw
             return true;
           }

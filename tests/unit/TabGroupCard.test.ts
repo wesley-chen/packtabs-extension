@@ -3,10 +3,9 @@ import { createPinia, setActivePinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import TabGroupCard from '../../components/TabGroupCard.vue';
-import { useTabStore } from '../../stores/useTabStore';
 import type { TabGroup } from '../../types/TabGroup';
 
 /**

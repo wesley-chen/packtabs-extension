@@ -4,7 +4,6 @@ import { afterEach, beforeEach, describe, it } from 'vitest';
 
 import { useTabStore } from '../../stores/useTabStore';
 import { tabGroupsStorage } from '../../types/Storage';
-import type { TabGroup } from '../../types/TabGroup';
 import { saveTabGroup } from '../../utils/storage';
 
 /**

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useTabStore } from '../../stores/useTabStore';
 import { tabGroupsStorage } from '../../types/Storage';
-import type { TabGroup, TabItem } from '../../types/TabGroup';
+import type { TabGroup } from '../../types/TabGroup';
 
 describe('useTabStore', () => {
   beforeEach(async () => {
